@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/png" href="img/cointoss.png"/>
+    <link rel="stylesheet" href="style.css">
+    <title>Stats | Portfolio App</title>
+</head>
+<body>
+    <div class="headerBar" id="headerBar">
+        <div class="maxHolder">
+            <div class='dropdown menu' id='userMenu'></div>
+            <h1 class="center sectionTitle">Stats</h1>
+            <div class="refresh button"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="inner hide">
+            <div id="assetCategories" class="grid three box">
+                <div id="portfolioCategory" class="categoryGrid">
+                    <div class="minorLightText miniTitle">Portfolio</div>
+                    <div id="portfolioTotal" class="highlight subtitle"></div>
+                    <div id="portfolioChange" class="highlight subtitle"></div>
+                </div>
+                <div id="CryptoCategory" class="categoryGrid">
+                    <div class="minorLightText miniTitle">Crypto</div>
+                    <div id="cryptoTotal" class="highlight subtitle"></div>
+                    <div id="cryptoChange" class="highlight subtitle"></div>
+                    <div id="cryptoPercent" class="minorLightText miniTitle">75% of Portfolio</div>
+                </div>
+                <div id="StockCategory" class="categoryGrid">
+                    <div class="minorLightText miniTitle">Stock</div>
+                    <div id="stockTotal" class="highlight subtitle"></div>
+                    <div id="stockChange" class="highlight subtitle"></div>
+                    <div id="stockPercent" class="minorLightText miniTitle">75% of Portfolio</div>
+                </div>
+            </div>
+            <div id="winners" class="grid four box table alt">
+                <div id="dollarWinners" class="col">
+                    <div class="minorLightText miniTitle">Winners $</div>
+                    <div id="dollarWinner1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarWinner2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarWinner3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarWinner4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarWinner5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+                <div id="percentWinners" class="col">
+                    <div class="minorLightText miniTitle">Winners %</div>
+                    <div id="percentWinner1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentWinner2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentWinner3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentWinner4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentWinner5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+                <div id="dollarLosers" class="col">
+                    <div class="minorLightText miniTitle">Losers $</div>
+                    <div id="dollarLoser1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarLoser2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarLoser3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarLoser4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="dollarLoser5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+                <div id="percentLosers" class="col">
+                    <div class="minorLightText miniTitle">Losers %</div>
+                    <div id="percentLoser1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentLoser2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentLoser3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentLoser4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="percentLoser5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="change" class="grid four box table alt flush">
+                <div id="changeDollarWinners" class="col">
+                    <div class="minorLightText miniTitle">24hr winners $</div>
+                    <div id="changeDollarWinner1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarWinner2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarWinner3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarWinner4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarWinner5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+                <div id="changePercentWinners" class="col">
+                    <div class="minorLightText miniTitle">24hr winners %</div>
+                    <div id="changePercentWinner1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentWinner2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentWinner3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentWinner4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentWinner5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+                <div id="changeDollarLosers" class="col">
+                    <div class="minorLightText miniTitle">24hr Losers $</div>
+                    <div id="changeDollarLoser1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarLoser2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarLoser3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarLoser4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changeDollarLoser5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+                <div id="changePercentLosers" class="col">
+                    <div class="minorLightText miniTitle">24hr Losers %</div>
+                    <div id="changePercentLoser1" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentLoser2" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentLoser3" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentLoser4" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                    <div id="changePercentLoser5" class="cell">
+                        <span class="symbol">ETH:</span>
+                        <span class="value">$500</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="allocation" class="box table flush col center">
+                <div class="minorLightText miniTitle center">Exchange Marketshare</div>
+                <div id="exchangeHolder">
+                </div>
+                <div id="exchangeChart">
+                    <canvas id="exchangeCanvas" width="500px"></canvas>
+                </div>
+            </div>
+            <div id="chart" class="box table col">
+                <div class="minorLightText miniTitle center">Portfolio Value Over Time</div>
+                <div id="overviewChartHolder">
+                    <canvas id="valueCanvas" width="500px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="">
+        <div class="grid four maxHolder">
+            <a class="button" href="/overview"><div>Overview</div></a>
+            <a class="button" href="/portfolio"><div>Portfolio</div></a>
+            <a class="button active" href="/stats"><div>Stats</div></a>
+            <a class="button" href="/historical"><div>Historical</div></a>
+        </div>
+    </nav>
+    <script type="text/javascript">
+        let initUser = (u) => {
+            let costBasis, marketValue, totalGrowth, totalGain, todayPercent, todayGain;
+            let row = document.querySelector('#assetList tbody');
+            if (!assets) {let assets = [];}
+            let i = 0;
+            let holder=[3,2,3]
+
+            {{#each asset}}
+                assets[i] = {
+                    symbol: `{{symbol}}`,
+                    costBasis : `${parseFloat({{{quantity}}} * {{{purchasePrice}}})}`,
+                    marketValue : `${parseFloat({{{quantity}}} * {{{price}}})}`,
+                    todayPercent : `${parseFloat({{{priceChangePercent}}})}`,
+                    todayGain : `${parseFloat({{{priceChange}}})}`,
+                    type: `{{type}}`,
+                    exchange: `{{exchange}}`
+                }
+                console.log('today percent',assets[i].todayGain);
+                assets[i].totalGrowth = `${(assets[i].marketValue/assets[i].costBasis)*100}`;
+                assets[i].totalGain = `${assets[i].marketValue - assets[i].costBasis}`;
+                i++;
+            {{/each}}
+
+            // chart data
+            let snapHolder = JSON.parse(`{{{snapshots}}}`);
+            //let chartPoints = [];
+            console.log('this should be a snapshot',typeof(snapHolder),snapHolder)
+            console.log('snap inside spot 0',snapHolder[0]);
+            for (e in snapHolder[0]) {
+                chartPoints.push([snapHolder[0][e].date,snapHolder[0][e].portfolioValue,snapHolder[0][e].portfolioGrowth])
+            }
+            console.log('chart data, yall',chartPoints);
+            chartPoints.forEach(item => {
+                //document.querySelector('#chartHolder').innerHTML += `<div class='row'>${item}</div>`;
+            })
+            
+            runStats();
+            runValueCanvas();
+            runExchangeCanvas();
+
+            document.querySelector('.inner').classList.remove('hide')
+        }                
+    </script>
+    <script src="js/app.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <script src="js/chart.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-17373319-21"></script>
+    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());gtag('config', 'UA-17373319-21');
+    </script>
+</body>
+</html>

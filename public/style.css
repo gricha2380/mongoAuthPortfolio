@@ -1,0 +1,602 @@
+/********************* BASE *********************/
+body {
+    background: #1B1D24;
+    color: white;
+    margin:0;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+h1 {
+    margin: 0;
+    color: #B3C8D3;
+    opacity: .5;
+    text-transform: uppercase;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+thead {
+    text-align: left;
+}
+.padTop {
+    padding-top: 1rem;
+}
+/********************* LAYOUT *********************/
+.container {
+    padding: 1rem;
+    flex: 1;
+    transition: .3s;
+}
+
+.maxHolder {
+    max-width: 1200px;
+    margin: auto;
+    position: relative;
+}
+.inner {
+    max-width: 1500px;
+    margin: auto;
+}
+
+.dim {
+    opacity: .3;
+    transition: .3s;
+}
+
+.pad0 {
+    padding: 0;
+}
+
+.flushSide {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.full {
+    padding: 0;
+}
+.title {
+    font-size: 2.5rem;
+    padding: 1rem;
+}
+.subtitle {
+    font-size: 1.3rem;
+}
+.highlight {
+    color: #008000;
+}
+.minorDark {
+    background: #92AEBC;
+}
+.minorDarkText {
+
+}
+.minorLight {
+    background: #B4C8D2;
+}
+.minorLightText {
+    color: #B4C8D2;
+}
+table.alt tr:nth-of-type(even),.alt>div:nth-of-type(even) {
+    background: #f3f3f3;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.rightText {
+    text-align: right;
+}
+.center {
+    text-align: center;
+}
+.textNetural {
+    color: black;
+}
+.textBold {
+    font-weight: bold;
+}
+.grid {
+    display: grid;
+}
+.grid.three {
+    grid-template-columns: 33.3% 33.3% 33.3%;
+}
+.grid.four {
+    grid-template-columns: 25% 25% 25% 25%;
+}
+.grid.ten {
+    grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+}
+.show {
+    display: block!important;
+}
+.hide {
+    display: none;
+}
+.dropdown{
+    position: relative;
+    cursor: pointer;
+}
+.dropdownList {
+    display: none;
+    position: absolute;
+	background: white;
+    z-index: 1;
+    width: 100%;
+}
+.small {
+    font-size: .9em;
+    opacity: .8;
+    vertical-align: top;
+}
+.flex {
+    display: flex;
+}
+.flexCenter {
+    align-items: center;
+    justify-content: center;
+}
+/********************* MODULE *********************/
+.bar {
+    padding: 1rem;
+    display: inline-block;
+}
+#percentBar .bar {width: 50%}
+.headerBar {
+    background: black;
+    color: white;
+    padding: .5rem;
+    text-align: center;
+    /* margin-bottom: 1rem; */
+}
+.refresh {
+    background-image: url(../img/refresh.svg);
+    width: 30px;
+    background-size: contain;
+    margin: .5rem;
+    position: absolute;
+    right: 1rem;
+    top: -.5rem;
+    height: 1.5rem;
+    background-repeat: no-repeat;
+    opacity: .5;
+}
+#percentText {
+    font-size: 1.3rem;
+}
+#assetList {
+    width: 100%;
+    background: white;
+    border-spacing: 0;
+    font-family: serif;
+}
+
+#assetList th {
+    background: #92aebc;
+}
+
+#assetList th, #assetList td{
+    padding: .5rem 1rem;
+    border-right: 1px solid #f1f1f1;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+#percentBar {
+    display: flex;
+}
+#symbol.block .symbol {
+    display: block;
+}
+.symbol {
+    color: #15c;
+    font-family: sans-serif;
+    text-transform: uppercase;
+}
+.addNew {
+    text-align: center;
+    background: white;
+    padding: 1rem;
+    color: rgba(0, 0, 0, .5);
+    font-size: 1.2rem;
+}
+
+.modal {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.50);
+    color: white;
+    z-index: 1;
+}
+
+.modal .inner {
+    position: absolute;
+    top: calc(50% - 100px);
+    left: calc(50% - 250px);
+    
+    padding: 2rem 2rem 0;
+    max-width: 500px;
+    background: black;  
+    z-index: 2; 
+}
+.modal .inner label {
+    width: 45%;
+    display: inline-block;
+    padding-bottom: 1rem;
+    text-align: right;
+}
+.button {
+
+}
+
+.modal .inner input,.modal .inner select {
+    margin-left: 1rem;
+}
+
+.modal .inner select {
+    min-width: 133px;
+}
+
+.modal .inner .buttonHolder .secondary{
+    margin-left: -2rem;
+    background: #B4C8D2;
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    padding: .5rem 1rem;
+}
+
+.modal .inner .buttonHolder .primary{
+    margin-right: -2rem;
+    background: #92AEBC;
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    padding: .5rem 1rem;
+}
+
+.edit {
+    float: right;
+    opacity: .2;
+    background-image: url(../img/edit.svg);
+    height: 20px;
+    width: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#currentIDModal {
+    display: none;
+}
+
+nav {
+    background: black;
+    text-align: center;
+    padding: 1rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    display: inline-block;
+}
+
+nav a.active {
+    color: #92aebc;
+}
+
+#loader {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(176, 176, 183, 0.47);
+    background-image: url(../img/loader.gif);
+}
+
+#assetBreakdown {
+    clear: both;
+}
+
+#actionList {
+    background: black;
+    margin-left: -.5rem;
+    padding: .5rem;
+    color: rgba(255, 255, 255, .7);
+    min-width: 15rem;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+#actionList .menu {
+    padding: .5rem 0;
+}
+
+#actionList .menu:hover {
+    color: white;
+}
+
+#logOut {border-top: 1px solid rgba(255, 255, 255, .2);}
+
+#userMenu {
+    position: absolute;
+    line-height: 2.5rem;
+}
+
+#userName {
+    padding-left: .5rem;
+}
+
+#demo {
+    margin-top: 2rem;
+}
+
+#demoCred {
+    text-transform: lowercase;
+    padding-left: .5rem;
+}
+
+#login input{
+    display: block;
+    margin-bottom: 1rem;
+    min-width: 200px;
+}
+
+#signin {
+    width: 100%;
+    background: black;
+    color: white;
+    border: none;
+    margin: 0;
+    padding: .5rem;
+}
+
+#valueCanvas {
+    margin: auto;
+}
+
+#exchangeChart {
+    width: 350px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#exchangeHolder {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+}
+.exchangeRow {
+    grid-template-columns: 40% 30% 30%;
+    font-size: 1.1rem;
+    margin-bottom: .5rem;
+}
+.exchange {
+    width: 10rem;
+}
+
+#mainTitle { padding-bottom: 0;}
+
+/********************* STATE *********************/
+.button:hover{
+    cursor: pointer;
+    opacity: .8;
+}
+/********************* THEME *********************/
+.box {
+    background: none;
+    box-shadow: none;
+    margin-bottom: 0;
+    padding:0;
+}
+.flush {
+    margin-top: -.5rem;
+}
+
+.miniTitle {
+    text-transform: uppercase;
+    font-size: .7rem;
+}
+
+.minorLightText {
+    color: rgba(255, 255, 255, .5);
+}
+
+.col .miniTitle {
+    padding: .5rem 0;
+    border-top: #474D63 solid 1px;
+    border-bottom: #474D63 solid 1px;
+    margin-bottom: .5rem;
+    padding-left: .5rem;
+}
+
+.cell {
+    padding: .5rem;
+    border-bottom: rgba(71, 77, 99, .2) solid 1px;
+}
+
+.cell.pos {
+    border-right: 2px solid #4F9601
+}
+
+.cell.neg {
+    border-right: 2px solid #A70000;
+}
+
+.value.pos {
+    color: #4F9601;
+}
+
+.value.neg {
+    color: #A70000;
+}
+
+#portfolioTotal,#cryptoTotal,#stockTotal {
+    color: white;
+    font-size: 1.5rem;
+}
+
+#assetCategories {
+    margin-bottom: 1rem;
+}
+
+.headerBar .sectionTitle {
+    background: url('img/globe.svg') no-repeat;
+    padding-left: 2rem;
+    background-size: contain;
+    display: inline-block;
+    margin-left: -1rem;
+    background-position-x: 1px;
+}
+
+.highlight {color: #4C9700;}
+
+.textNetural {color: white}
+#portfolioChange {font-size: 1rem;}
+
+.table {
+    font-size: .7rem;   
+}
+
+.col {
+    /* border-bottom: rgba(71, 77, 99, .2) solid 1px; */
+    margin-bottom: .5rem;
+    padding-bottom: .5rem;
+}
+
+.cell:last-of-type {
+    border-bottom: none;
+}
+
+table.alt tr:nth-of-type(even), .alt>div:nth-of-type(even) {
+    background: inherit;
+}
+.table.alt .col:nth-of-type(even) {
+    background: rgba(255, 255, 255, .03);
+}
+
+.symbol {
+    color: white;
+    max-width: 3rem;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.edit {
+    margin-right: 1rem;
+    margin-top: -.1rem;
+    background-image: url(../img/edit-w.svg);
+}
+.exchange {
+    text-transform: uppercase;
+}
+
+.table .value {
+    opacity: .5;
+    float: right;
+    padding-right: .5rem;
+}
+
+#userMenu {
+    line-height: normal;
+    color: rgba(179, 200, 211, .5);
+}
+
+#userMenu:hover {
+    color: rgba(179, 200, 211, 1);
+}
+
+nav a {
+    text-transform: uppercase;
+    color: rgba(179, 200, 211, .5);
+    position: relative;
+}
+
+nav a.active {
+    color: white;
+}
+
+nav a.active div:before {
+    content: '';
+    position: absolute;
+    background: url(img/globe-w.svg) no-repeat;
+    margin-left: -1.5rem;
+    width: 1rem;
+    background-size: contain;
+    height: 1.2rem;
+}
+#assetList {
+    width: inherit;
+    background: inherit;
+    font-family: inherit;
+    border-spacing: inherit;
+}
+
+#assetList .cell{
+    color: rgba(255, 255, 255, .8);
+}
+
+.addNew {
+    /* border-bottom: rgba(71, 77, 99, .2) solid 1px; */
+    background: none;
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, .5);
+    border-top: #474D63 solid 1px;
+    border-bottom: #474D63 solid 1px;
+}
+
+#lowerPanel {
+    background: rgba(255, 255, 255, .03);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+#todayDollar .cell {
+    margin-right: 2px;
+}
+
+/********************* MOBILE *********************/
+@media (max-width: 600px) {
+    .grid.ten {
+        grid-template-columns: 25% 25% 25% 25%;
+    }
+
+    .grid.four {
+        grid-template-columns: 50% 50%;
+        padding: 0;
+    }
+    nav.grid.four {
+        padding-bottom: 1rem;
+    }
+    nav a{
+        padding-top: 1rem;
+    }
+    .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .grid.three {
+        grid-template-columns: 50% 50%;
+    }
+
+    #actionList {
+        min-width: 95vw;
+        margin-top: .5rem;
+    }
+    #actionList .menu {
+        padding: 1rem 0;
+    }
+}

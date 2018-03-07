@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/png" href="img/cointoss.png"/>
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="headerBar">
+        <h1 class="center">{{title}}</h1>
+    </div>
+    <div class="container">
+        <div id="" class="padTop flex flexCenter">
+            <form id="login" method="POST" action="/login" enctype="application/json">
+                <div>
+                    <label class="minorLightText miniTitle">
+                        Email
+                        <input type="text" placeholder="email" id="email" name="email">
+                    </label>
+                </div>
+                <div>
+                    <label class="minorLightText miniTitle">
+                        Password
+                        <input type="password" placeholder="password" id="password" name="password">
+                    </label>
+                </div>
+                <input type="submit" value="Sign In" id="signin" />
+            </form>
+        </div>
+        <div class="center minorLightText miniTitle" id="demo">Test account: <div id="demoCred">demo / demo</div></div>
+    </div>
+    {{!-- <script src="js/login.js"></script> --}}
+    {{!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-17373319-21"></script>
+    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());gtag('config', 'UA-17373319-21');
+    </script> --}}
+</body>
+</html>
