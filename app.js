@@ -39,6 +39,7 @@ app.use(express.static(__dirname + '/public'));
 app.engine('hbs', engines.handlebars); // use consolidate to attach handlebars templating
 app.set('views', './views'); // set views folder to our directory
 app.set('view engine', 'hbs'); // use our engine
+app.registerPartials('./views/partials');
 
 
 // include routes

@@ -10,6 +10,7 @@ router.get('/logout', (req,res, next)=> {
       if (err) {
         return next(err)
       } else {
+        User.info = null;
         return res.redirect('/')
       }
     })
@@ -17,14 +18,11 @@ router.get('/logout', (req,res, next)=> {
 })
 
 // login page
-router.get('/login', mid.loggedOut, (req, res, next)=>{
+router.get('/login', mid.loggedOut, (req, res, next) => {
   return res.render('login', {title: 'Log In'})
 })
 
 router.post('/login', (req, res, next)=> {
-  console.log('request body content',req.body)
-  console.log('request email',req.body.email)
-  console.log('request password',req.body.password)
   if (req.body.email && req.body.password) {
     User.authenticate(req.body.email, req.body.password, (error, user) => {
       if (error || !user) {
@@ -32,9 +30,26 @@ router.post('/login', (req, res, next)=> {
         err.status = 401;
         return next(err);
       } else {
-        console.log('redirecting to overview')
-        req.session.userId = user._id;
-        return res.redirect('/overview');
+        req.session.userId = user._id; // set session
+        console.log('login info correct, redirecting to overview');
+        // return res.redirect('/overview')
+
+        // loadMenuInfo(user._id) // todo
+        
+        // from profile page
+        User.findById(user._id)
+          .exec((error, user)=>{
+            if (error) {
+              return next(error);
+            } else {
+              console.log('user info dump', user)
+              User.info = {name:user.name}
+              console.log('user name object is...', User.info.name)
+              return res.redirect('/overview')
+              // return res.render('overview', {title: 'Overview', name: user.name, favorite: user.favoriteBook})
+            }
+          })
+          // end profile
       }
     });
   } else {
@@ -64,7 +79,7 @@ router.post('/register', (req, res, next) => {
         return next(error)
       } else {
         req.session.userId = user._id;
-        return res.redirect('/profile')
+        return res.redirect('/overview')
       }
     })
 
@@ -82,7 +97,7 @@ router.post('/register', (req, res, next) => {
 });
 
 // GET /profile
-router.get('/profile', mid.requiresLogin, (req, res, next)=>{
+router.get('/profile', mid.requiresLogin, (req, res, next) => {
   //  replaced with mid.requiresLogin
   //   if (!req.session.userId) {
   //   let err = new Error("You are not authorized to view this page")
@@ -97,18 +112,18 @@ router.get('/profile', mid.requiresLogin, (req, res, next)=>{
         return res.render('profile', {title: 'Profile', name: user.name, favorite: user.favoriteBook})
       }
     })
-})
+});
 
 // GET /overview
 router.get('/overview', mid.requiresLogin, (req, res, next) => {
-  console.log('inside overview route')
-  return res.render('overview', { title: 'Overview' });
+  console.log('inside overview');
+  return res.render('overview', { title: 'Overview', user:User.info });
 });
 
 
 // GET /about
 router.get('/about', (req, res, next) => {
-  return res.render('about', { title: 'About' });
+  return res.render('about', { title: 'About' , user:User.info});
 });
 
 // GET /contact
