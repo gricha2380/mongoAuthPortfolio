@@ -42,9 +42,7 @@ router.post('/login', (req, res, next)=> {
             if (error) {
               return next(error);
             } else {
-              console.log('user info dump', user)
               User.info = {name:user.name}
-              console.log('user name object is...', User.info.name)
               return res.redirect('/overview')
               // return res.render('overview', {title: 'Overview', name: user.name, favorite: user.favoriteBook})
             }
@@ -117,13 +115,13 @@ router.get('/profile', mid.requiresLogin, (req, res, next) => {
 // GET /overview
 router.get('/overview', mid.requiresLogin, (req, res, next) => {
   console.log('inside overview');
-  return res.render('overview', { title: 'Overview', user:User.info });
+  return res.render('overview', { title: 'Overview', user:User.info, partials : { menuPartial : './partials/nav'} });
 });
 
 
 // GET /about
 router.get('/about', (req, res, next) => {
-  return res.render('about', { title: 'About' , user:User.info});
+  return res.render('about', { title: 'About' , user:User.info, partials : { menuPartial : './partials/nav'} });
 });
 
 // GET /contact
