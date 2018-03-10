@@ -42,12 +42,13 @@ app.set('view engine', 'hbs'); // use our engine
 
 
 // include routes
-var routes = require('./routes/index');
-app.use('/', routes);
+// let routes = require('./routes/index'); DELETE
+let routes = require('./routes')(app);
+// app.use('/', routes); DELETE
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('File Not Found');
+  let err = new Error('File Not Found');
   err.status = 404;
   next(err);
 });
