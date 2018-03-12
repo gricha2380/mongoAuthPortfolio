@@ -11,12 +11,13 @@ let userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
         trim: true
     },
     favoriteBook: {
         type: String,
         trim: true,
-        required: true
+        required: false
     },
     password: {
         type: String,
@@ -25,8 +26,8 @@ let userSchema = new mongoose.Schema({
 })
 
 // authenticate input against database documents
-userSchema.statics.authenticate = (email, password, callback) => {
-    User.findOne({ email: email})
+userSchema.statics.authenticate = (name, password, callback) => {
+    User.findOne({ name: name})
     .exec((error, user) => {
         if (error) {
             return callback(error);
@@ -46,9 +47,9 @@ userSchema.statics.authenticate = (email, password, callback) => {
 }
 
 // has password before saving to database
-userSchema.pre('save', (next) => {
+userSchema.pre('save', function (next) {
     let user = this;
-    bcrypt.hash(user.password, 10, (err,hash) => {
+    bcrypt.hash(user.password, 10, function (err,hash) {
         if (err) {
             return next(err);
         }

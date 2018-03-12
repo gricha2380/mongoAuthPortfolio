@@ -4,7 +4,7 @@ const User = require('../models/user')
 const mid = require('../middleware');
 
 router.get('/', mid.loggedOut, (req, res, next) => {
-    return res.render('login', {title: 'Log In'})
+    return res.render('login')
   })
   
 router.post('/', (req, res, next)=> {
@@ -21,8 +21,9 @@ router.post('/', (req, res, next)=> {
                 if (error) {
                 return next(error);
                 } else {
-                User.info = {name:user.name}
-                return res.redirect('/overview')
+                    User.info = user;
+                    console.log('userinfo',User.info)
+                    return res.redirect('/overview')
                 }
             })
         }

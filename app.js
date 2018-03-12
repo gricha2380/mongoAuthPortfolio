@@ -6,8 +6,17 @@ let MongoStore = require('connect-mongo')(session);
 const engines = require('consolidate'); // allows popular templating libaries to work with Express
 const app = express();
 
+// helpers
+const superagent = require('superagent'); // for performing backend AJAX calls
+const nf = require('nasdaq-finance'); // stock API
+const stock = new nf.default();
+const coinTicker = require('coin-ticker'); // crypto API
+
+
 // mongodb connection
-mongoose.connect('mongodb://localhost:27017/bookworm')
+// mongoose.connect('mongodb://localhost:27017/bookworm')
+mongoose.connect('mongodb://mustBeFunny:mu*85fadwdd@ds263988.mlab.com:63988/portfolioapp2380')
+
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 

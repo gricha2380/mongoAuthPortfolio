@@ -10,14 +10,20 @@
 </head>
 <body>
     <div class="headerBar">
-        <h1 class="center sectionTitle">Login</h1>
+        <h1 class="center">{{title}}</h1>
     </div>
     <div class="container">
         <div id="" class="padTop flex flexCenter">
-            <form id="login" method="POST" action="/login" enctype="application/json">
+            <form id="login" method="POST" action="/register" enctype="application/json">
                 <div>
                     <label class="minorLightText miniTitle">
-                        Username
+                        Name
+                        <input type="text" placeholder="Name" id="name" name="name">
+                    </label>
+                </div>
+                <div>
+                    <label class="minorLightText miniTitle">
+                        Email
                         <input type="text" placeholder="email" id="email" name="email">
                     </label>
                 </div>
@@ -27,10 +33,16 @@
                         <input type="password" placeholder="password" id="password" name="password">
                     </label>
                 </div>
-                <input type="submit" value="Sign In" id="signin" />
+                <div>
+                    <label class="minorLightText miniTitle">
+                        Confirm Password
+                        <input type="password" placeholder="confirm password" id="confirmPassword" name="confirmPassword">
+                    </label>
+                </div>
+                <input type="submit" value="Register" id="signin" />
             </form>
         </div>
-        <div class="center minorLightText miniTitle" id="demo">Test account: <div id="demoCred">demo / demo</div></div>
+        <div class="center minorLightText miniTitle" id="demo">Already have an account? <div id="demoCred"><a href="/login">Sign In</a></div></div>
     </div>
     {{!-- <script src="js/login.js"></script> --}}
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-17373319-21"></script>

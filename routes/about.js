@@ -4,7 +4,11 @@ const User = require('../models/user')
 const mid = require('../middleware');
 
 router.get('/', (req, res, next) => {
-  return res.render('about', { title: 'About' , user:User.info, partials : { menuPartial : './partials/nav'} });
+  let data = {
+    user: User.info
+}
+  data = JSON.stringify(data);
+  return res.render('about', { data, partials : { menuPartial : './partials/nav'} });
 });
 
 module.exports = router;

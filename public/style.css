@@ -24,6 +24,12 @@ thead {
 .padTop {
     padding-top: 1rem;
 }
+.padTop2 {
+    padding-top: 2rem;
+}
+.colorDefault {
+    color: inherit;
+}
 /********************* LAYOUT *********************/
 .container {
     padding: 1rem;
