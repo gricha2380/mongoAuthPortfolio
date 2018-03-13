@@ -65,6 +65,7 @@ app.use(function(req, res, next) {
 // error handler
 // define as the last app.use callback
 app.use(function(err, req, res, next) {
+  console.log('error capture:',err)
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,

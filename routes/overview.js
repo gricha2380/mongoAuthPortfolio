@@ -12,7 +12,8 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
         totalValue: {
             portfolioValue: 0, portfolioGrowth: 0, portfolioGains: 0, stockValue: 0, stockGrowth: 0, stockGains: 0, cryptoValue: 0, cryptoGrowth: 0, cryptoGains: 0
         },
-        snapshots: []
+        snapshots: [],
+        chartpoints: []
     }
     let promises = [];
     
@@ -38,8 +39,10 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
         }
     }
     
-    data.assets = JSON.parse(data.user.assets);
-    console.log('parsed assets', data.assets);
+    // data.assets = JSON.parse(data.user.assets);
+    data.assets = data.user;
+    console.log('type of for assets', typeof data.assets) // why is this an array?
+    console.log('unparsed assets', data.assets);
 
     // promises.push(getAssets().then(asset => {
         for (let a in data.assets) {

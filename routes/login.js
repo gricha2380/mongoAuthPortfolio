@@ -22,7 +22,7 @@ router.post('/', (req, res, next)=> {
                 return next(error);
                 } else {
                     User.info = user;
-                    console.log('userinfo',User.info)
+                    // console.log('userinfo',User.info)
                     return res.redirect('/overview')
                 }
             })
