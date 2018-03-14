@@ -104,8 +104,8 @@
             console.log('I found chartpoints',chartPoints);
             console.log('this should be a snapshot',typeof(snapHolder),snapHolder)
             console.log('snap inside spot 0',snapHolder[0]);
-            for (e in snapHolder[0]) {
-                chartPoints.push([snapHolder[0][e].date,snapHolder[0][e].portfolioValue,snapHolder[0][e].portfolioGrowth])
+            for (let e = 0;e<snapHolder.length;e++){
+                chartPoints.push([snapHolder[e].date,snapHolder[e].portfolioValue,snapHolder[e].portfolioGrowth])
             }
             console.log('chart data, yall',chartPoints);
             chartPoints.forEach(item => {
