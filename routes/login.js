@@ -21,7 +21,7 @@ router.post('/', (req, res, next)=> {
                 if (error) {
                 return next(error);
                 } else {
-                    User.info = user;
+                    User.info = user; //saving all user info from mongo database
                     // console.log('userinfo',User.info)
                     return res.redirect('/overview')
                 }

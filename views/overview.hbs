@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="container flushSide">
-        <div class="inner hide">
+        <div class="inner max hide">
             <div class="minorLightText miniTitle center">Portfolio</div>
             <div class="center title" id="mainTitle"></div>
             <div class="subtitle center minorLightText" id="mainSub"></div>
@@ -63,38 +63,44 @@
             <a class="button" href="/historical"><div>Historical</div></a>
         </div>
     </nav>
+    <script src="js/app.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <script src="js/chart.js"></script>
     <script>
-        let dataHolder = JSON.parse(`{{{data}}}`);
-        console.log('assets here',dataHolder.user.assets);
+        //let dataHolder = `{{{data.user}}}`;
+        let dataHolder = `{{{data}}}`;
+        //dataHolder = JSON.parse(dataHolder.replace(/ 0+(?![\. }])/g, ' '));
+        console.log('dataholder type',typeof dataHolder);
+        dataHolder = JSON.parse(dataHolder)
         console.log('dataholder here',dataHolder);
-    </script>
-
-    <script>
+        console.log('dataholder type',typeof dataHolder);
+        console.log('assets here',dataHolder.user.assets);
+        
         let initUser = (u) => {
-            console.log({{data.totalValue.portfolioValue}});
+            console.log('port val',dataHolder.totalValue.portfolioValue);
             // percentBar + text
-            let cryptoVal = `${parseFloat(({{data.totalValue.cryptoValue}}/{{data.totalValue.portfolioValue}}))*100}`;
-            let stockVal = `${parseFloat(({{data.totalValue.stockValue}}/{{data.totalValue.portfolioValue}}))*100}`;
+            let cryptoVal = `${parseFloat((dataHolder.totalValue.cryptoValue/dataHolder.totalValue.portfolioValue))*100}`;
+            let stockVal = `${parseFloat((dataHolder.totalValue.stockValue/dataHolder.totalValue.portfolioValue))*100}`;
             document.querySelector('#percentCrypto').setAttribute(`style`, `width:${cryptoVal}%`);
             document.querySelector('#percentStocks').setAttribute(`style`, `width:${stockVal}%`);
             document.querySelector('#cryptoPercent').innerHTML = `${Math.round(parseFloat(cryptoVal))}%`;
             document.querySelector('#stockPercent').innerHTML = `${Math.round(parseFloat(stockVal))}%`;
 
             // portfolio total
-            document.querySelector('#mainTitle').innerHTML = `$${parseFloat({{data.totalValue.portfolioValue}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`;
-            document.querySelector('#mainSub').innerHTML = `<span class=''>(</span>$${parseFloat({{data.totalValue.portfolioGains}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')} <span class=''>/</span> ${parseFloat({{data.totalValue.portfolioGrowth}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}%<span class=''>)</span>`;
+            document.querySelector('#mainTitle').innerHTML = `$${parseFloat(dataHolder.totalValue.portfolioValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`;
+            document.querySelector('#mainSub').innerHTML = `<span class=''>(</span>$${parseFloat(dataHolder.totalValue.portfolioGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')} <span class=''>/</span> ${parseFloat(dataHolder.totalValue.portfolioGrowth).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}%<span class=''>)</span>`;
 
             // crypto total
-            document.querySelector('#cryptoTotal').innerHTML = `$${parseFloat({{data.totalValue.cryptoValue}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`;
-            document.querySelector('#cryptoSub').innerHTML = `<span class=''>(</span>$${parseFloat({{data.totalValue.cryptoGains}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')} <span class=''>/</span> ${parseFloat({{data.totalValue.cryptoGrowth}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}%<span class=''>)</span>`;
+            document.querySelector('#cryptoTotal').innerHTML = `$${parseFloat(dataHolder.totalValue.cryptoValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`;
+            document.querySelector('#cryptoSub').innerHTML = `<span class=''>(</span>$${parseFloat(dataHolder.totalValue.cryptoGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')} <span class=''>/</span> ${parseFloat(dataHolder.totalValue.cryptoGrowth).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}%<span class=''>)</span>`;
 
             // stock total
-            document.querySelector('#stockTotal').innerHTML = `$${parseFloat({{data.totalValue.stockValue}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`;
-            document.querySelector('#stockSub').innerHTML = `<span class=''>(</span>$${parseFloat({{data.totalValue.stockGains}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')} <span class=''>/</span> ${parseFloat({{data.totalValue.stockGrowth}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}%<span class=''>)</span>`;
+            document.querySelector('#stockTotal').innerHTML = `$${parseFloat(dataHolder.totalValue.stockValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`;
+            document.querySelector('#stockSub').innerHTML = `<span class=''>(</span>$${parseFloat(dataHolder.totalValue.stockGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')} <span class=''>/</span> ${parseFloat(dataHolder.totalValue.stockGrowth).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}%<span class=''>)</span>`;
             
 
             // chart data
-            let snapHolder = JSON.parse(`{{{snapshots}}}`);
+            let snapHolder = dataHolder.snapshots;
             console.log('I found chartpoints',chartPoints);
             console.log('this should be a snapshot',typeof(snapHolder),snapHolder)
             console.log('snap inside spot 0',snapHolder[0]);
@@ -108,12 +114,10 @@
 
             runValueCanvas();
             document.querySelector('.inner').classList.remove('hide')
-           
+           console.log('ready')
         }
+        initUser();
     </script>
-    <script src="js/app.js"></script>
-    <script src="js/Chart.min.js"></script>
-    <script src="js/chart.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-17373319-21"></script>
     <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());gtag('config', 'UA-17373319-21');
