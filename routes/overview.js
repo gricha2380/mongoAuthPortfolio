@@ -60,13 +60,10 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
           }
     ]
     
-    // data.assets = JSON.parse(data.user.assets);
-    // data.assets = data.user.toObject(); // turn into a real object
     data.assets = data.user.toObject(); // turn into a real object
-    console.log('type of for assets', typeof data.assets) // why isn't this an array?
-    // console.log('unparsed assets', data.assets);
-    console.log('unparsed assets again', data.assets.assets[0]);
-    console.log('exchange WILL WORK', data.assets.assets[0].exchange);
+    // console.log('type of for assets', typeof data.assets)
+    // console.log('unparsed assets again', data.assets.assets[0]);
+    // console.log('exchange WILL WORK', data.assets.assets[0].exchange);
 
     // promises.push(getAssets().then(asset => {
         for (let a in data.assets.assets) {

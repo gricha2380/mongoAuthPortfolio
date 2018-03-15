@@ -11,13 +11,13 @@
 <body>
     <div class="headerBar" id="headerBar">
         <div class="maxHolder">
-            <div class='dropdown menu' id='userMenu'></div>
+            {{>menuPartial}}
             <h1 class="center sectionTitle">Portfolio</h1>
             <div class="refresh button"></div>
         </div>
     </div>
     <div class="container full">
-        <div class="inner hide">
+        <div class="inner max hide">
             <div id="assetList" class="grid ten box table">
                 <div id="symbol" class="col block">
                     <div class="minorLightText miniTitle">Symbol</div>
@@ -71,40 +71,47 @@
         </div>
     </nav>
     <script type="text/javascript">
-            let initUser = (u) => {
-                let costBasis, marketValue, totalGrowth, totalGain, todayPercent, todayGain;
-                let assets = {};
-                let i = 0;
-                {{#each asset}}
-                    assets[i] = {
-                        costBasis : `${parseFloat({{{quantity}}} * {{{purchasePrice}}})}`,
-                        marketValue : `${parseFloat({{{quantity}}} * {{{price}}})}`,
-                        todayPercent : `${parseFloat({{{priceChangePercent}}})}`,
-                        todayGain : `${parseFloat({{{priceChange}}})}`
-                    }
-                    assets[i].totalGrowth = `${((assets[i].marketValue/assets[i].costBasis)-1)*100}`;
-                    assets[i].totalGain = `${assets[i].marketValue - assets[i].costBasis}`;
-                    console.log('while asset',assets[i])
+        let dataHolder = `{{{data}}}`;
+        dataHolder = JSON.parse(dataHolder);
+        console.log('dataholder here',dataHolder);
+        
+        let initUser = (u) => {
+            let costBasis, marketValue, totalGrowth, totalGain, todayPercent, todayGain;
+            let assets = {};
 
-                    // new school
-                    document.querySelector('#symbol').innerHTML += `<div class='cell {{{id}}}'><span class='edit button'></span><span class='symbol'>{{{symbol}}}</span></div>`;
-                    document.querySelector('#price').innerHTML += `<div class='cell'>${parseFloat({{price}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}<div>`;
-                    document.querySelector('#pricePaid').innerHTML += `<div class='cell'>${{{purchasePrice}}}</div>`;
-                    document.querySelector('#quantity').innerHTML += `<div class='cell'>{{{quantity}}}</div>`;
-                    document.querySelector('#cost').innerHTML += `<div class='cell'>${parseFloat(assets[i].costBasis).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
-                    document.querySelector('#value').innerHTML += `<div class='cell'>${parseFloat(assets[i].marketValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
-                    document.querySelector('#growth').innerHTML += `<div class='cell'>${(parseFloat(assets[i].totalGrowth)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
-                    document.querySelector('#gain').innerHTML += `<div class='cell'>${parseFloat(assets[i].totalGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
-                    document.querySelector('#todayPercent').innerHTML += `<div class='cell'>${parseFloat(assets[i].todayPercent)}</div>`;
-                    (parseFloat(assets[i].todayGain)>0) ?
-                        document.querySelector('#todayDollar').innerHTML += `<div class='cell pos'>${parseFloat(assets[i].todayGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`
-                        :
-                        document.querySelector('#todayDollar').innerHTML += `<div class='cell neg'>${parseFloat(assets[i].todayGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`
-                    ;
-                    i++;            
-                {{/each}}
-                document.querySelector('.inner').classList.remove('hide')
+            //todo: write normal forloop and go through contents of data.assets.assets
+            let current = dataHolder.assets.assets;
+            console.log('assets showing',current, current.length)
+            for(let i=0;i<current.length;i++){
+                console.log('one asset')
+                assets[i] = {
+                    costBasis : `${parseFloat(current[i].quantity * current[i].purchasePrice)}`,
+                    marketValue : `${parseFloat(current[i].quantity * current[i].price)}`,
+                    todayPercent : `${parseFloat(current[i].priceChangePercent)}`,
+                    todayGain : `${parseFloat(current[i].priceChange)}`
+                }
+                assets[i].totalGrowth = `${((assets[i].marketValue/assets[i].costBasis)-1)*100}`;
+                assets[i].totalGain = `${assets[i].marketValue - assets[i].costBasis}`;
+                console.log('while asset',assets[i])
+
+                // new school
+                document.querySelector('#symbol').innerHTML += `<div class='cell ${current[i].id}'><span class='edit button'></span><span class='symbol'>${current[i].symbol}</span></div>`;
+                document.querySelector('#price').innerHTML += `<div class='cell'>${parseFloat(current[i].price).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}<div>`;
+                document.querySelector('#pricePaid').innerHTML += `<div class='cell'>${current[i].purchasePrice}</div>`;
+                document.querySelector('#quantity').innerHTML += `<div class='cell'>${current[i].quantity}</div>`;
+                document.querySelector('#cost').innerHTML += `<div class='cell'>${parseFloat(assets[i].costBasis).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
+                document.querySelector('#value').innerHTML += `<div class='cell'>${parseFloat(assets[i].marketValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
+                document.querySelector('#growth').innerHTML += `<div class='cell'>${(parseFloat(assets[i].totalGrowth)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
+                document.querySelector('#gain').innerHTML += `<div class='cell'>${parseFloat(assets[i].totalGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
+                document.querySelector('#todayPercent').innerHTML += `<div class='cell'>${parseFloat(assets[i].todayPercent)}</div>`;
+                (parseFloat(assets[i].todayGain)>0) ?
+                    document.querySelector('#todayDollar').innerHTML += `<div class='cell pos'>${parseFloat(assets[i].todayGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`
+                    :
+                    document.querySelector('#todayDollar').innerHTML += `<div class='cell neg'>${parseFloat(assets[i].todayGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
             }
+        }
+        initUser()
+        document.querySelector('.inner').classList.remove('hide')
     </script>
     <script src="js/app.js"></script>
     <script src="js/portfolio.js"></script>

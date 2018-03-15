@@ -21,11 +21,6 @@ console.log('working')
         expandMenu(this.id); //pass id to menu function
     });
 
-    document.querySelector('#logOut').addEventListener('click',function(event){
-        window.localStorage.removeItem('account');
-        window.location.replace('/login'); 
-    });
-
     document.querySelector('#sendEmail').addEventListener('click',function(event){
         document.querySelector('.dropdownList.show').classList.remove('show');
         if (document.querySelector('.container')) {document.querySelector('.container').classList.remove('dim')}
