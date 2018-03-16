@@ -94,7 +94,7 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
         }
         Promise.all(promises).then(function(results) {
             // data.snapshots = JSON.stringify(data.snapshots);
-            console.log('processed data', data)
+            // console.log('processed data', data)
             data = JSON.stringify(data);
             if (req.body.refresh) res.send(data.totalValue, data.snapshots)
             else {return res.render('overview', {data, partials : { menuPartial : './partials/nav'} })}

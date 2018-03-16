@@ -95,7 +95,7 @@
                 console.log('while asset',assets[i])
 
                 // new school
-                document.querySelector('#symbol').innerHTML += `<div class='cell ${current[i].id}'><span class='edit button'></span><span class='symbol'>${current[i].symbol}</span></div>`;
+                document.querySelector('#symbol').innerHTML += `<div class='cell' id='${current[i].id}'><span class='edit button'></span><span class='symbol'>${current[i].symbol}</span></div>`;
                 document.querySelector('#price').innerHTML += `<div class='cell'>${parseFloat(current[i].price).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}<div>`;
                 document.querySelector('#pricePaid').innerHTML += `<div class='cell'>${current[i].purchasePrice}</div>`;
                 document.querySelector('#quantity').innerHTML += `<div class='cell'>${current[i].quantity}</div>`;

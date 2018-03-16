@@ -48,8 +48,9 @@ var app = {};
         if (event.target.matches('.edit')) {
             showLoader();
             // console.log('edit was clicked',event);
-            let eventID = event.target.parentElement.className.split(' ').reverse();
-            console.log('eventID',eventID[0]);
+            // let eventID = event.target.parentElement.className.split(' ').reverse();
+            let eventID = event.target.parentElement.getAttribute('id');
+            console.log('eventID',eventID);
             loadRecord(eventID);
         }
     })
@@ -136,13 +137,17 @@ var app = {};
 
     let loadRecord = (id) => {
         let xhttp = new XMLHttpRequest();
-        xhttp.open('GET', `${__API_URL__}/find/${id}`, true);
+        //TO DO: SEARCH FOR MONGO RECORD
+        xhttp.open('GET', `/portfolio/edit/${id}`, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                // console.log('load record complete, now populting fields', this.responseText)
+                console.log('load record complete, now populting fields', this.responseText)
                 populateEditFields(JSON.parse(this.responseText));
                 hideLoader();
+            } else {
+                // hideLoader();
+                console.error('problem happened...')
             }
         }
         xhttp.send();
@@ -150,14 +155,13 @@ var app = {};
     }
 
     let populateEditFields = (data) => {
-        // console.log(data);
-        // console.log(data.asset);
-        for (let i in data.asset) {
-            if (data.asset[i]) {
+        // console.log(data, typeof data);
+        // for (let i in data.asset) {
+            if (data) {
                 // console.log(data.asset[i].id)
-                modal(data.asset[i])
+                modal(data)
             }
-        }
+        // }
         // modal(data.asset);
     }
 

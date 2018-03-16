@@ -44,7 +44,7 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
             }
         }
         Promise.all(promises).then(function(results) {
-            console.log('processed data', data)
+            // console.log('processed data', data)
             data = JSON.stringify(data);
             if (req.body.refresh) res.send(data.totalValue, data.snapshots)
             else {return res.render('portfolio', {data, partials : { menuPartial : './partials/nav'} })}
@@ -52,5 +52,24 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
     // })
     // .catch(console.error));
 });
+
+router.get('/edit/:id', (req, res) =>{
+    console.log('here is the id',req.params.id)
+    req.params.id = Number(req.params.id);
+    let promises = [];
+    let data = {
+        user: User.info
+    }
+    data.assets = data.user.toObject(); // turn into a real object
+    let current = data.assets.assets;
+    console.log('dater assets length',current.length);
+    for(let i=0;i<current.length;i++){
+        console.log('the id:',current[i].id, typeof current[i].id, typeof req.params.id)
+        if(Number(current[i].id)==Number(req.params.id)) {
+            console.log('yeehaw',current[i])
+            res.send(current[i])
+        }
+    }
+})
 
 module.exports = router;
