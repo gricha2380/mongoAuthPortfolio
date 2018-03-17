@@ -65,17 +65,18 @@ var app = {};
     })
 
     let refresh = () => {
-        let xhttp = new XMLHttpRequest();
-        xhttp.open('GET', `${__API_URL__}/all`, true);
-        xhttp.setRequestHeader('Content-Type', 'application/json');
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                // console.log('load all records complete, now refreshing page', this.responseText)
-                document.querySelector('html').innerHTML = this.responseText;
-            }
-        }
-        xhttp.send();
+        // let xhttp = new XMLHttpRequest();
+        // xhttp.open('GET', `${__API_URL__}/all`, true);
+        // xhttp.setRequestHeader('Content-Type', 'application/json');
+        // xhttp.onreadystatechange = function() {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         // console.log('load all records complete, now refreshing page', this.responseText)
+        //         document.querySelector('html').innerHTML = this.responseText;
+        //     }
+        // }
+        // xhttp.send();
         // console.log('asset created... needs a then')
+        window.location.reload(true);
     }
 
     let modalListeners = () => {
@@ -120,7 +121,7 @@ var app = {};
         //.then(() => console.log('asset created!'))
         // console.log('asset created... needs a then')
         document.querySelector('#newForm').remove();
-        // refresh();
+        refresh();
     }
 
     let updateRecord = (asset) => {
@@ -128,16 +129,19 @@ var app = {};
         let xhttp = new XMLHttpRequest();
         xhttp.open('POST', `${__API_URL__}/edit/${asset.currentID}`, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.querySelector('#newForm').remove();
+                refresh();
+            } else if (this.readyState == 4) {
+                console.error('problem happened...')
+            }
+        }
         xhttp.send(JSON.stringify(asset));
-        //.then(console.log('inserting new asset'))
-        //.then(() => console.log('asset created!'))
-        // console.log('asset updated', asset);
-        document.querySelector('#newForm').remove();
     }
 
     let loadRecord = (id) => {
         let xhttp = new XMLHttpRequest();
-        //TO DO: SEARCH FOR MONGO RECORD
         xhttp.open('GET', `/portfolio/edit/${id}`, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.onreadystatechange = function() {
@@ -145,13 +149,12 @@ var app = {};
                 console.log('load record complete, now populting fields', this.responseText)
                 populateEditFields(JSON.parse(this.responseText));
                 hideLoader();
-            } else {
+            } else if (this.readyState == 4) {
                 // hideLoader();
                 console.error('problem happened...')
             }
         }
         xhttp.send();
-        console.log('asset created... needs a then')
     }
 
     let populateEditFields = (data) => {

@@ -72,4 +72,45 @@ router.get('/edit/:id', (req, res) =>{
     }
 })
 
+router.post('/edit/:id', (req, res) =>{
+    let rb = req.body;
+    if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange) {
+        response.status(400).send(JSON.stringify(request.body));
+    } else {
+        let db;
+        let item = {
+            "name": rb.name,
+            "symbol": rb.symbol,
+            "type": rb.type,
+            "purchasePrice": rb.purchasePrice,
+            "quantity": rb.quantity,
+            "exchange" : rb.exchange
+        }
+        // db.update(item);
+
+        db.collection('quotes') // to do
+        .findOneAndUpdate({name: 'Yoda'}, {
+          $set: item
+        }, {
+          sort: {_id: -1},
+          upsert: true
+        }, (err, result) => {
+          if (err) return res.send(err)
+          res.send(result)
+        })
+
+        res.send(`${rb.name} asset updated`)
+    }
+})
+
 module.exports = router;
+
+// edit post scratch pad...
+// User.findById(req.session.userId)
+//     .exec((error, user)=>{
+//       if (error) {
+//         return next(error);
+//       } else {
+//         return res.render('profile', {title: 'Profile', name: user.name, favorite: user.favoriteBook})
+//       }
+//     })
