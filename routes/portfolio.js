@@ -53,6 +53,7 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
     // .catch(console.error));
 });
 
+// find asset
 router.get('/edit/:id', (req, res) =>{
     console.log('here is the id',req.params.id)
     req.params.id = Number(req.params.id);
@@ -72,12 +73,13 @@ router.get('/edit/:id', (req, res) =>{
     }
 })
 
+// edit asset
 router.post('/edit/:id', (req, res) =>{
     let rb = req.body;
     if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange) {
         response.status(400).send(JSON.stringify(request.body));
     } else {
-        let db;
+        // let db;
         let item = {
             "name": rb.name,
             "symbol": rb.symbol,
@@ -87,19 +89,43 @@ router.post('/edit/:id', (req, res) =>{
             "exchange" : rb.exchange
         }
         // db.update(item);
+        mongoose.connect('mongodb://mustBeFunny:mu*85fadwdd@ds263988.mlab.com:63988/portfolioapp2380')
+        let db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'connection error:'));
 
-        db.collection('quotes') // to do
-        .findOneAndUpdate({name: 'Yoda'}, {
+        db.collection('users') // to do
+        .findOneAndUpdate({id: rb.id}, {
           $set: item
         }, {
           sort: {_id: -1},
           upsert: true
         }, (err, result) => {
           if (err) return res.send(err)
+          console.log('updated record', result)
           res.send(result)
         })
+        // res.send(`${rb.name} asset updated`)
+    }
+})
 
-        res.send(`${rb.name} asset updated`)
+// new asset
+router.post('/add/:id', (req, res) =>{
+    let rb = req.body;
+    if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange || !rb.id) {
+        response.status(400).send(JSON.stringify(request.body));
+    } else {
+        let item = {
+            "name": rb.name,
+            "symbol": rb.symbol,
+            "type": rb.type,
+            "purchasePrice": rb.purchasePrice,
+            "quantity": rb.quantity,
+            "exchange" : rb.exchange,
+            "id" : rb.id
+        }
+
+        db.child(request.body.id).set(item);
+        response.send(`${request.body.name} asset created`)
     }
 })
 

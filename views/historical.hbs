@@ -71,26 +71,32 @@
         </div>
     </nav>
     <script type="text/javascript">
+        let dataHolder = `{{{data}}}`;
+        dataHolder = JSON.parse(dataHolder);
+        console.log('dataholder here',dataHolder);
+
         let initUser = (u) => {
             let costBasis, marketValue, totalGrowth, totalGain, todayPercent, todayGain;
             let assets = {};
             let id = 0;
 
-            {{#each asset}}          
-                document.querySelector('#date').innerHTML += `<div class='cell'>{{{date}}}</div>`;  
-                document.querySelector('#portfolioValue').innerHTML += `<div class='cell'>$${parseFloat({{portfolioValue}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#portfolioGain').innerHTML += `<div class='cell'>$${parseFloat({{portfolioGains}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#portfolioGrowth').innerHTML += `<div class='cell'>${parseFloat({{portfolioGrowth}}).toFixed(2)}%</div>`;  
-                document.querySelector('#cryptoValue').innerHTML += `<div class='cell'>$${parseFloat({{cryptoValue}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#cryptoGain').innerHTML += `<div class='cell'>$${parseFloat({{cryptoGains}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#cryptoGrowth').innerHTML += `<div class='cell'>${parseFloat({{cryptoGrowth}}).toFixed(2)-1}%</div>`;  
-                document.querySelector('#stockValue').innerHTML += `<div class='cell'>$${parseFloat({{stockValue}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#stockGain').innerHTML += `<div class='cell'>$${parseFloat({{stockGains}}).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#stockGrowth').innerHTML += `<div class='cell'>${parseFloat({{stockGrowth}}).toFixed(2)}%</div>`;  
-            {{/each}}
-            console.log('ready to show')
-            document.querySelector('.inner').classList.remove('hide')
+            let current = dataHolder.assets.assets;
+            console.log('assets showing',current, current.length)
+            for(let i=0;i<current.length;i++){
+                document.querySelector('#date').innerHTML += `<div class='cell'>${current[i].date}</div>`;  
+                document.querySelector('#portfolioValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].portfolioValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                document.querySelector('#portfolioGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].portfolioGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                document.querySelector('#portfolioGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].portfolioGrowth).toFixed(2)}%</div>`;  
+                document.querySelector('#cryptoValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].cryptoValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                document.querySelector('#cryptoGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].cryptoGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                document.querySelector('#cryptoGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].cryptoGrowth).toFixed(2)-1}%</div>`;  
+                document.querySelector('#stockValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].stockValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                document.querySelector('#stockGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].stockGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                document.querySelector('#stockGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].stockGrowth).toFixed(2)}%</div>`;  
+            }
         }
+        initUser()
+        document.querySelector('.inner').classList.remove('hide')
     </script>
     <script src="js/app.js"></script>
     <script src="js/historical.js"></script>
