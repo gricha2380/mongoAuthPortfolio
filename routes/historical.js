@@ -19,3 +19,5 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
             else {return res.render('historical', {data, partials : { menuPartial : './partials/nav'} })}
         });
 });
+
+module.exports = router;
