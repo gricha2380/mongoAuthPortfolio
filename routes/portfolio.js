@@ -12,6 +12,7 @@ const coinTicker = require('coin-ticker'); // crypto API
 let coinAPI = "https://api.coinmarketcap.com/v1/ticker/";
 
 router.get('/', mid.requiresLogin, (req, res, next) => {
+    console.log('here is user stuff',User)
     let data = {
         user: User.info,
         totalValue: {

@@ -14,7 +14,7 @@ let userSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    favoriteBook: {
+    portfolio: {
         type: String,
         trim: true,
         required: false

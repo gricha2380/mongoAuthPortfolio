@@ -112,9 +112,8 @@ var app = {};
     }
     
     let insertRecord = (asset) => {
-        // console.log(`this is the url: ${__API_URL__}/add`);
         let xhttp = new XMLHttpRequest();
-        xhttp.open('POST', `${__API_URL__}/add`, true);
+        xhttp.open('POST', `/portfolio/add`, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.send(JSON.stringify(asset));
         //.then(console.log('inserting new asset'))
@@ -127,7 +126,7 @@ var app = {};
     let updateRecord = (asset) => {
         // console.log(`this is the url: ${__API_URL__}/edit/${asset.currentID}`);
         let xhttp = new XMLHttpRequest();
-        xhttp.open('POST', `${__API_URL__}/edit/${asset.currentID}`, true);
+        xhttp.open('POST', `portfolio/edit/${asset.currentID}`, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
