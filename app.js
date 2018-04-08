@@ -14,7 +14,7 @@ const coinTicker = require('coin-ticker'); // crypto API
 
 
 // mongodb connection
-// mongoose.connect('mongodb://localhost:27017/bookworm')
+// mongoose.connect('mongodb://localhost:27017/mongoPortfolio')
 mongoose.connect('mongodb://mustBeFunny:mu*85fadwdd@ds263988.mlab.com:63988/portfolioapp2380')
 
 let db = mongoose.connection;
