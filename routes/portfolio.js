@@ -2,56 +2,62 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
 const mid = require('../middleware');
+const fakeData = require('../middleware/fakeData');
 //import getSnapshots()... & getAssets()
 
 const superagent = require('superagent'); // for performing backend AJAX calls
-const nf = require('nasdaq-finance'); // stock API
-const stock = new nf.default();
-const coinTicker = require('coin-ticker'); // crypto API
 
 let coinAPI = "https://api.coinmarketcap.com/v1/ticker/";
+let stockAPI = {
+    "start": "https://api.iextrading.com/1.0/stock/",
+    "end": "/delayed-quote"
+} // e.g.: https://api.iextrading.com/1.0/stock/aapl/delayed-quote
 
 router.get('/', mid.requiresLogin, (req, res, next) => {
-    console.log('here is user stuff',User)
     let data = {
         user: User.info,
         totalValue: {
-            portfolioValue: 45, portfolioGrowth: 45, portfolioGains: 45, stockValue: 45, stockGrowth: 45, stockGains: 45, cryptoValue: 45, cryptoGrowth: 45, cryptoGains: 45
+            portfolioValue: 0, portfolioGrowth: 0, portfolioGains: 0, stockValue: 0, stockGrowth: 0, stockGains: 0, cryptoValue: 0, cryptoGrowth: 0, cryptoGains: 0
         },
         snapshots: [],
         chartpoints: []
     }
+    
+    data.assets = data.user.toObject();
+    // data.totalValue = fakeData.totalValue
+    // data.user.snapshots = fakeData.snapshots
+
     let promises = [];
     
-    data.assets = data.user.toObject(); // turn into a real object
-    
-    // promises.push(getAssets().then(asset => {
-        for (let a in data.assets.assets) {
-            if (data.assets.assets[a].type=='stock') {
-                promises.push(stock.getInfo(data.assets.assets[a].symbol.toLowerCase())
-                .then((res) => {
-                    data.assets.assets[a].price = res.price;
-                    data.assets.assets[a].priceChangePercent = res.priceChangePercent;
-                    data.assets.assets[a].priceChange = res.priceChange;
-                }).catch(console.error))
-            }
-            if (data.assets.assets[a].type=='crypto') {
-                promises.push(superagent.get(coinAPI+data.assets.assets[a].name)
-                .then((res) => {    
-                    data.assets.assets[a].price = res.body[0].price_usd;
-                    data.assets.assets[a].priceChangePercent = res.body[0].percent_change_24h;
-                    data.assets.assets[a].priceChange = parseFloat(data.assets.assets[a].priceChangePercent * (data.assets.assets[a].price * .01));
-                }).catch(console.error))
-            }
+    for (let a in data.assets.assets) {
+        if (data.assets.assets[a].type=='stock') {
+            promises.push(superagent.get(stockAPI.start+data.assets.assets[a].symbol+stockAPI.end).then((res) => {    
+                data.assets.assets[a].price = res.body.delayedPrice;
+                data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                data.totalValue.stockValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                data.totalValue.stockGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.stockGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+            }).catch(console.error))
         }
-        Promise.all(promises).then(function(results) {
-            // console.log('processed data', data)
-            data = JSON.stringify(data);
-            if (req.body.refresh) res.send(data.totalValue, data.snapshots)
-            else {return res.render('portfolio', {data, partials : { menuPartial : './partials/nav'} })}
-        });
-    // })
-    // .catch(console.error));
+        if (data.assets.assets[a].type=='crypto') {
+            promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {    
+                data.assets.assets[a].price = res.body[0].price_usd;
+                data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                    data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                    data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                    data.totalValue.cryptoValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                    data.totalValue.cryptoGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                    data.totalValue.cryptoGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+            }).catch(console.error))
+        }
+    }
+    Promise.all(promises).then(function(results) {
+        data = JSON.stringify(data);
+        if (req.body.refresh) res.send(data.totalValue, data.snapshots)
+        else {return res.render('portfolio', {data, partials : { menuPartial : './partials/nav'} })}
+    });
 });
 
 // find asset
@@ -90,7 +96,7 @@ router.post('/edit/:id', (req, res) =>{
             "exchange" : rb.exchange
         }
         // db.update(item);
-        mongoose.connect('mongodb://mustBeFunny:mu*85fadwdd@ds263988.mlab.com:63988/portfolioapp2380')
+        mongoose.connect(process.env.mongoPortfolioAppURL)
         let db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
 

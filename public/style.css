@@ -369,6 +369,10 @@ nav a.active {
     min-width: 200px;
 }
 
+#login input:hover{
+    cursor: pointer;
+}
+
 #signin {
     width: 100%;
     background: black;
@@ -376,6 +380,11 @@ nav a.active {
     border: none;
     margin: 0;
     padding: .5rem;
+}
+
+#signin:hover{
+    cursor: pointer;
+    color: rgba(179, 200, 211, 1);
 }
 
 #valueCanvas {
