@@ -87,8 +87,8 @@
                 assets[i] = {
                     costBasis : `${parseFloat(current[i].quantity * current[i].purchasePrice)}`,
                     marketValue : `${parseFloat(current[i].quantity * current[i].price)}`,
-                    todayPercent : `${parseFloat(current[i].priceChangePercent)}`,
-                    todayGain : `${parseFloat(current[i].priceChange)}`
+                    todayPercent : `${parseFloat(current[i].todayPercent)}`,
+                    todayGain : `${parseFloat(current[i].todayGain)}`
                 }
                 assets[i].totalGrowth = `${((assets[i].marketValue/assets[i].costBasis)-1)*100}`;
                 assets[i].totalGain = `${assets[i].marketValue - assets[i].costBasis}`;

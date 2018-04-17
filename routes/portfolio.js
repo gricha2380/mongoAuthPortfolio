@@ -7,7 +7,7 @@ const fakeData = require('../middleware/fakeData');
 
 const superagent = require('superagent'); // for performing backend AJAX calls
 
-let coinAPI = "https://api.coinmarketcap.com/v1/ticker/";
+let coinAPI = "https://api.coinmarketcap.com/v1/ticker/"; // e.g.: https://api.coinmarketcap.com/v1/ticker/Ethereum
 let stockAPI = {
     "start": "https://api.iextrading.com/1.0/stock/",
     "end": "/delayed-quote"
@@ -33,6 +33,8 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
         if (data.assets.assets[a].type=='stock') {
             promises.push(superagent.get(stockAPI.start+data.assets.assets[a].symbol+stockAPI.end).then((res) => {    
                 data.assets.assets[a].price = res.body.delayedPrice;
+                data.assets.assets[a].todayPercent = res.body.delayedPrice / res.body.low;
+                data.assets.assets[a].todayGain = res.body.delayedPrice - res.body.low;
                 data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
                 data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
                 data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
@@ -44,12 +46,14 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
         if (data.assets.assets[a].type=='crypto') {
             promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {    
                 data.assets.assets[a].price = res.body[0].price_usd;
+                data.assets.assets[a].todayPercent = res.body[0].percent_change_24h;
+                data.assets.assets[a].todayGain = parseInt(res.body.percent_change_24h) * parseInt(res.body.price_usd);
                 data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
-                    data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
-                    data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
-                    data.totalValue.cryptoValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
-                    data.totalValue.cryptoGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
-                    data.totalValue.cryptoGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                data.totalValue.cryptoValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                data.totalValue.cryptoGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.cryptoGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
             }).catch(console.error))
         }
     }
