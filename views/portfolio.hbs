@@ -103,7 +103,7 @@
                 document.querySelector('#value').innerHTML += `<div class='cell'>${parseFloat(assets[i].marketValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
                 document.querySelector('#growth').innerHTML += `<div class='cell'>${(parseFloat(assets[i].totalGrowth)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
                 document.querySelector('#gain').innerHTML += `<div class='cell'>${parseFloat(assets[i].totalGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
-                document.querySelector('#todayPercent').innerHTML += `<div class='cell'>${parseFloat(assets[i].todayPercent)}</div>`;
+                document.querySelector('#todayPercent').innerHTML += `<div class='cell'>${parseFloat(assets[i].todayPercent).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
                 (parseFloat(assets[i].todayGain)>0) ?
                     document.querySelector('#todayDollar').innerHTML += `<div class='cell pos'>${parseFloat(assets[i].todayGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`
                     :
