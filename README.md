@@ -11,6 +11,11 @@ MongoDB
 #Reseeding database
 To set local databse back to original condition
 
+#Exporting/backing up database
+set environment variable for mongoUser and mongoPass
+npm run export
+This will create file inside /dbexport
+
 ```
 # Start mongo daemon
 mongod

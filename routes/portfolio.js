@@ -14,6 +14,29 @@ let stockAPI = {
 } // e.g.: https://api.iextrading.com/1.0/stock/aapl/delayed-quote
 
 router.get('/', mid.requiresLogin, (req, res, next) => {
+    console.log("user id here!!",User.info._id)
+
+    // let search = User.find({"name":"demo"});
+    // console.log("search resilts",search)
+
+    // get a user with ID of 1
+    // User.findById(User.info._id, function(err, user) {
+    //     if (err) throw err;
+    
+    //     // change the users location
+    //     user.location = 'uk';
+    
+    //     // save the user
+    //     user.save(function(err) {
+    //     if (err) throw err;
+    
+    //     console.log('User successfully updated!');
+    //     console.log(user)
+    //     console.log(user.location)
+    //     });
+    
+    // });
+    // console.log('search results',search)
     let data = {
         user: User.info,
         totalValue: {
@@ -33,8 +56,8 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
         if (data.assets.assets[a].type=='stock') {
             promises.push(superagent.get(stockAPI.start+data.assets.assets[a].symbol+stockAPI.end).then((res) => {    
                 data.assets.assets[a].price = res.body.delayedPrice;
-                data.assets.assets[a].todayPercent = res.body.delayedPrice / res.body.low;
-                data.assets.assets[a].todayGain = res.body.delayedPrice - res.body.low;
+                res.body.low ? data.assets.assets[a].todayPercent = res.body.delayedPrice / res.body.low : data.assets.assets[a].todayPercent = 0;
+                res.body.low ? data.assets.assets[a].todayGain = res.body.delayedPrice - res.body.low : data.assets.assets[a].todayGain = 0;
                 data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
                 data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
                 data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
@@ -47,7 +70,7 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
             promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {    
                 data.assets.assets[a].price = res.body[0].price_usd;
                 data.assets.assets[a].todayPercent = res.body[0].percent_change_24h;
-                data.assets.assets[a].todayGain = parseInt(res.body.percent_change_24h) * parseInt(res.body.price_usd);
+                data.assets.assets[a].todayGain = parseInt(res.body[0].percent_change_24h) * parseInt(res.body[0].price_usd);
                 data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
                 data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
                 data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
@@ -99,28 +122,45 @@ router.post('/edit/:id', (req, res) =>{
             "quantity": rb.quantity,
             "exchange" : rb.exchange
         }
-        // db.update(item);
-        mongoose.connect(process.env.mongoPortfolioAppURL)
-        let db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'connection error:'));
+        // find mongo collection for 
 
-        db.collection('users') // to do
-        .findOneAndUpdate({id: rb.id}, {
-          $set: item
-        }, {
-          sort: {_id: -1},
-          upsert: true
-        }, (err, result) => {
-          if (err) return res.send(err)
-          console.log('updated record', result)
-          res.send(result)
-        })
-        // res.send(`${rb.name} asset updated`)
+        // db.update(item);
+        // mongoose.connect(process.env.mongoPortfolioAppURL)
+        // let db = mongoose.connection;
+        // db.on('error', console.error.bind(console, 'connection error:'));
+
+        // db.collection('users') // to do
+        // .findOneAndUpdate({id: rb.id}, {
+        //   $set: item
+        // }, {
+        //   sort: {_id: -1},
+        //   upsert: true
+        // }, (err, result) => {
+        //   if (err) return res.send(err)
+        //   console.log('updated record', result)
+        //   res.send(result)
+        // })
+        // // res.send(`${rb.name} asset updated`)
+
+        // User.findById(id, function (err, tank) {
+        //     if (err) return handleError(err);
+          
+        //     tank.size = 'large';
+        //     tank.save(function (err, updatedTank) {
+        //       if (err) return handleError(err);
+        //       res.send(updatedTank);
+        //     });
+        //   });
     }
 })
 
 // new asset
 router.post('/add/:id', (req, res) =>{
+    User.find({ '_id': User._id }, 'name age', function (err, athletes) {
+        if (err) return handleError(err);
+        // 'athletes' contains the list of athletes that match the criteria.
+      })
+
     let rb = req.body;
     if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange || !rb.id) {
         response.status(400).send(JSON.stringify(request.body));

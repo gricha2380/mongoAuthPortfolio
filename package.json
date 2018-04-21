@@ -5,7 +5,8 @@
   "author": "",
   "private": true,
   "scripts": {
-    "start": "node ./app"
+    "start": "node ./app",
+    "export": "mongoexport -h ds263988.mlab.com:63988 -d portfolioapp2380 -c users -u $mongoUser -p $mongoPass -o dbexport/users-export.json"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
