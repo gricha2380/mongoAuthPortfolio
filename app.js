@@ -8,9 +8,6 @@ const app = express();
 
 // helpers
 const superagent = require('superagent'); // for performing backend AJAX calls
-const nf = require('nasdaq-finance'); // stock API
-const stock = new nf.default();
-const coinTicker = require('coin-ticker'); // crypto API
 
 
 // mongodb connection

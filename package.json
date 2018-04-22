@@ -2,8 +2,9 @@
   "name": "mongoAuth",
   "version": "0.5.0",
   "description": "Financial portfolio tracking system, built for personal use and for practice with full stack Javascript development.",
-  "author": "",
+  "author": "Gregor Richardson",
   "private": true,
+  "main": "app.js",
   "scripts": {
     "start": "node ./app",
     "export": "mongoexport -h ds263988.mlab.com:63988 -d portfolioapp2380 -c users -u $mongoUser -p $mongoPass -o dbexport/users-export.json",

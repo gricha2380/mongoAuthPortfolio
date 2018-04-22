@@ -14,11 +14,11 @@ Start server: `nodemon`
 Run db: `mongod`
 Deploy: `npm run deploy` 
 
-##Reseeding database
+## Reseeding database
 `npm run seed`
 To set local database back to original condition 
 
-##Exporting/backing up database
+## Exporting/backing up database
 set environment variable for mongoUser and mongoPass
 npm run export
 This will create file inside /dbexport
