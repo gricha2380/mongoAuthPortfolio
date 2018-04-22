@@ -14,29 +14,8 @@ let stockAPI = {
 } // e.g.: https://api.iextrading.com/1.0/stock/aapl/delayed-quote
 
 router.get('/', mid.requiresLogin, (req, res, next) => {
-    console.log("user id here!!",User.info._id)
+    // console.log("user id here!!",User.info._id)
 
-    // let search = User.find({"name":"demo"});
-    // console.log("search resilts",search)
-
-    // get a user with ID of 1
-    // User.findById(User.info._id, function(err, user) {
-    //     if (err) throw err;
-    
-    //     // change the users location
-    //     user.location = 'uk';
-    
-    //     // save the user
-    //     user.save(function(err) {
-    //     if (err) throw err;
-    
-    //     console.log('User successfully updated!');
-    //     console.log(user)
-    //     console.log(user.location)
-    //     });
-    
-    // });
-    // console.log('search results',search)
     let data = {
         user: User.info,
         totalValue: {
@@ -91,20 +70,14 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
 router.get('/edit/:id', (req, res) =>{
     console.log('here is the id',req.params.id)
     req.params.id = Number(req.params.id);
-    let promises = [];
-    let data = {
-        user: User.info
-    }
-    data.assets = data.user.toObject(); // turn into a real object
-    let current = data.assets.assets;
-    console.log('dater assets length',current.length);
-    for(let i=0;i<current.length;i++){
-        console.log('the id:',current[i].id, typeof current[i].id, typeof req.params.id)
-        if(Number(current[i].id)==Number(req.params.id)) {
-            console.log('yeehaw',current[i])
-            res.send(current[i])
-        }
-    }
+    User.findOne( {"assets.id" : req.params.id}, 
+        {assets:{$elemMatch: 
+            {id: req.params.id}}}, 
+            (err, obj) => {
+                console.log("I found this...",obj); 
+                res.send(obj)
+            }
+        );
 })
 
 // edit asset
@@ -113,7 +86,7 @@ router.post('/edit/:id', (req, res) =>{
     if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange) {
         response.status(400).send(JSON.stringify(request.body));
     } else {
-        // let db;
+        console.log("id is...",req.params.id)
         let item = {
             "name": rb.name,
             "symbol": rb.symbol,
@@ -122,35 +95,27 @@ router.post('/edit/:id', (req, res) =>{
             "quantity": rb.quantity,
             "exchange" : rb.exchange
         }
-        // find mongo collection for 
 
-        // db.update(item);
-        // mongoose.connect(process.env.mongoPortfolioAppURL)
-        // let db = mongoose.connection;
-        // db.on('error', console.error.bind(console, 'connection error:'));
-
-        // db.collection('users') // to do
-        // .findOneAndUpdate({id: rb.id}, {
-        //   $set: item
-        // }, {
-        //   sort: {_id: -1},
-        //   upsert: true
-        // }, (err, result) => {
-        //   if (err) return res.send(err)
-        //   console.log('updated record', result)
-        //   res.send(result)
-        // })
-        // // res.send(`${rb.name} asset updated`)
-
-        // User.findById(id, function (err, tank) {
-        //     if (err) return handleError(err);
-          
-        //     tank.size = 'large';
-        //     tank.save(function (err, updatedTank) {
-        //       if (err) return handleError(err);
-        //       res.send(updatedTank);
-        //     });
-        //   });
+        // experimental example, updating nested asset array
+        console.log("what's in item now?",item)
+        User.update(
+            { "assets.id": Number(req.params.id) },
+            { $set:  { 
+                "assets.$.name": item.name,
+                "assets.$.symbol": item.symbol,
+                "assets.$.type": item.type,
+                "assets.$.purchasePrice": item.purchasePrice,
+                "assets.$.quantity": item.quantity,
+                "assets.$.exchange": item.exchange
+            }},
+            (err, result) => {
+            if (err) {
+                console.log("error:",err);
+            } else {
+                console.log("success, asset updated", result);
+                res.send(`${rb.name} asset updated`);
+            }
+        })
     }
 })
 
@@ -158,12 +123,11 @@ router.post('/edit/:id', (req, res) =>{
 router.post('/add/:id', (req, res) =>{
     User.find({ '_id': User._id }, 'name age', function (err, athletes) {
         if (err) return handleError(err);
-        // 'athletes' contains the list of athletes that match the criteria.
       })
 
     let rb = req.body;
     if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange || !rb.id) {
-        response.status(400).send(JSON.stringify(request.body));
+        res.status(400).send(JSON.stringify(req.body));
     } else {
         let item = {
             "name": rb.name,
@@ -175,19 +139,9 @@ router.post('/add/:id', (req, res) =>{
             "id" : rb.id
         }
 
-        db.child(request.body.id).set(item);
-        response.send(`${request.body.name} asset created`)
+        db.child(res.body.id).set(item);
+        res.send(`${req.body.name} asset created`)
     }
 })
 
 module.exports = router;
-
-// edit post scratch pad...
-// User.findById(req.session.userId)
-//     .exec((error, user)=>{
-//       if (error) {
-//         return next(error);
-//       } else {
-//         return res.render('profile', {title: 'Profile', name: user.name, favorite: user.favoriteBook})
-//       }
-//     })

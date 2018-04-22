@@ -24,6 +24,9 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
     }
     
     data.assets = data.user.toObject();
+    // data.assets = User.info.assets;
+    // console.log('asset spitout info', data.assets)
+    // console.log('asset spitout info', User.info)
     // data.totalValue = fakeData.totalValue
     // data.user.snapshots = fakeData.snapshots
     

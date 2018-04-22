@@ -29,7 +29,8 @@ var app = {};
         document.querySelector("body").append(modalBox);
         if (asset) {
             console.log('there is an asset id', asset);
-            // console.log(asset)
+            asset = asset.assets[0];
+            console.log('shortened asset',asset)
             // console.log('there is an asset id', asset.target.parentElement.className);
             document.querySelector('#nameModal').value = asset.name;
             document.querySelector('#symbolModal').value = asset.symbol;
@@ -124,7 +125,7 @@ var app = {};
     }
 
     let updateRecord = (asset) => {
-        // console.log(`this is the url: ${__API_URL__}/edit/${asset.currentID}`);
+        console.log('updating record', asset)
         let xhttp = new XMLHttpRequest();
         xhttp.open('POST', `portfolio/edit/${asset.currentID}`, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');

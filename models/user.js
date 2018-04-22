@@ -14,14 +14,23 @@ let userSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    portfolio: {
-        type: String,
-        trim: true,
-        required: false
-    },
+    // assets: [{
+    //     exchange: String,
+    //     id: Number,
+    //     name: String,
+    //     purchasePrice: Number,
+    //     quantity: Number,
+    //     symbol: String,
+    //     type: String
+    // }],
+    assets : { type : Array , "default" : [] },
     password: {
         type: String,
         required: true
+    },
+    color: {
+        type: String,
+        required: false
     }
 })
 

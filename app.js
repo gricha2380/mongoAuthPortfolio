@@ -16,13 +16,14 @@ const coinTicker = require('coin-ticker'); // crypto API
 // mongodb connection
 // mongoose.connect('mongodb://localhost:27017/mongoPortfolio')
 mongoose.connect(process.env.mongoPortfolioAppURL)
+// mongoose.set('debug', true);
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 // use session for tracking logins
 app.use(session({
-  secret: 'fear is the mindkiller',
+  secret: process.env.mongoSecret,
   resave: true,
   saveUninitialized: false
 }));
