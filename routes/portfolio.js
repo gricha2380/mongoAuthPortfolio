@@ -74,7 +74,7 @@ router.get('/edit/:id', (req, res) =>{
         {assets:{$elemMatch: 
             {id: req.params.id}}}, 
             (err, obj) => {
-                console.log("I found this...",obj); 
+                // console.log("I found this...",obj); 
                 res.send(obj)
             }
         );
@@ -97,7 +97,7 @@ router.post('/edit/:id', (req, res) =>{
         }
 
         // experimental example, updating nested asset array
-        console.log("what's in item now?",item)
+        // console.log("what's in item now?",item)
         User.update(
             { "assets.id": Number(req.params.id) },
             { $set:  { 
@@ -112,7 +112,7 @@ router.post('/edit/:id', (req, res) =>{
             if (err) {
                 console.log("error:",err);
             } else {
-                console.log("success, asset updated", result);
+                // console.log("success, asset updated", result);
                 res.send(`${rb.name} asset updated`);
             }
         })
@@ -120,15 +120,12 @@ router.post('/edit/:id', (req, res) =>{
 })
 
 // new asset
-router.post('/add/:id', (req, res) =>{
-    User.find({ '_id': User._id }, 'name age', function (err, athletes) {
-        if (err) return handleError(err);
-      })
-
+router.post('/add', (req, res) =>{
     let rb = req.body;
     if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange || !rb.id) {
-        res.status(400).send(JSON.stringify(req.body));
+        response.status(400).send(JSON.stringify(request.body));
     } else {
+        console.log("id is...",rb.id)
         let item = {
             "name": rb.name,
             "symbol": rb.symbol,
@@ -138,9 +135,15 @@ router.post('/add/:id', (req, res) =>{
             "exchange" : rb.exchange,
             "id" : rb.id
         }
-
-        db.child(res.body.id).set(item);
-        res.send(`${req.body.name} asset created`)
+        // console.log("what's in item now?",item)
+        let query   = { _id: User.info._id }; 
+        let update  = { $push: {assets: item}}; 
+        let options = { new: true }; 
+        User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+            if (err) throw err;
+            console.log("new asset added...",asset)
+            res.send(`${rb.name} asset created`)
+        });
     }
 })
 

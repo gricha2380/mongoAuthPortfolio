@@ -40,7 +40,7 @@ var app = {};
             document.querySelector('#exchangeModal').value = asset.exchange;
             document.querySelector('#currentIDModal').value = asset.id;
         } else {
-            document.querySelector('#currentIDModal').value = document.querySelectorAll('#assetList #symbol .cell').length+1;
+            // document.querySelector('#currentIDModal').value = document.querySelectorAll('#assetList #symbol .cell').length+1;
         }
         modalListeners();
     }
@@ -66,6 +66,7 @@ var app = {};
     })
 
     let refresh = () => {
+        console.log("refresh imminent");
         // let xhttp = new XMLHttpRequest();
         // xhttp.open('GET', `${__API_URL__}/all`, true);
         // xhttp.setRequestHeader('Content-Type', 'application/json');
@@ -97,7 +98,7 @@ var app = {};
                     "id": document.querySelectorAll('#assetList #symbol .cell').length+1
                 };
 
-                console.log('currentID',asset.currentID);
+                console.log('asset contents',asset);
                 if (event.target.matches('div.save')) {
                     // console.log('you cllicked save');
                     
@@ -113,15 +114,20 @@ var app = {};
     }
     
     let insertRecord = (asset) => {
+        console.log("inserting record...")
         let xhttp = new XMLHttpRequest();
         xhttp.open('POST', `/portfolio/add`, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("clearing and reloading...")
+                document.querySelector('#newForm').remove();
+                refresh();
+            } else if (this.readyState == 4) {
+                console.error('problem happened...')
+            }
+        }
         xhttp.send(JSON.stringify(asset));
-        //.then(console.log('inserting new asset'))
-        //.then(() => console.log('asset created!'))
-        // console.log('asset created... needs a then')
-        document.querySelector('#newForm').remove();
-        refresh();
     }
 
     let updateRecord = (asset) => {
