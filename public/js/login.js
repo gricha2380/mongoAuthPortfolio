@@ -1,13 +1,13 @@
 'use strict';
 
 var app = {};
-var __API_URL__ = 'http://portfolioapp2380-portfolioapp.1d35.starter-us-east-1.openshiftapps.com'; // deployed URL
+var __API_URL__ = 'https://portfolioapp2380.herokuapp.com'; // deployed URL 
+// var __API_URL__ = 'http://portfolioapp2380-portfolioapp.1d35.starter-us-east-1.openshiftapps.com'; // deployed URL
 // var __API_URL__ = 'http://localhost:3000'; // local URL
 
 (function(module) {
     // document.querySelector('#login').addEventListener('click',function(event){
     //     event.preventDefault();
-
     //     let info = {
     //         "email": document.querySelector('#username').value,
     //         "password": document.querySelector('#password').value
@@ -37,8 +37,6 @@ var __API_URL__ = 'http://portfolioapp2380-portfolioapp.1d35.starter-us-east-1.o
                 console.log('incorrect username')
             } else if (response.status === 200) {
                 console.log(`Fully authorized. Saving ${info.username} into localstorage`)
-                // window.localStorage.setItem('account', JSON.stringify(info));
-                // window.location.replace('/overview');
             }
             console.log(response.json());
 
