@@ -110,7 +110,7 @@
                     document.querySelector('#todayDollar').innerHTML += `<div class='cell neg'>${parseFloat(assets[i].todayGain).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;
             }
         }
-        initUser()
+        initUser();
         document.querySelector('.inner').classList.remove('hide')
     </script>
     <script src="js/app.js"></script>

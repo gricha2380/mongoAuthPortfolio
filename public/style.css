@@ -389,6 +389,7 @@ nav a.active {
 
 #valueCanvas {
     margin: auto;
+    max-width: 100%;
 }
 
 #exchangeChart {

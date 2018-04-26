@@ -25,6 +25,7 @@ let runStats = () =>{
             }
         }
     }
+    console.log("i found assets from stats.js", assets)
     let mapPort = assets.map(x => {
         console.log(x)
         if (x.type == 'crypto') {

@@ -59,7 +59,7 @@ router.get('/', mid.requiresLogin, (req, res, next) => {
     Promise.all(promises).then( (results) => {
         data = JSON.stringify(data);
         if (req.body.refresh) res.send(data.totalValue, data.snapshots)
-        else {return res.render('overview', {data, partials : { menuPartial : './partials/nav'} })}
+        else {return res.render('stats', {data, partials : { menuPartial : './partials/nav'} })}
     });
 });
 
