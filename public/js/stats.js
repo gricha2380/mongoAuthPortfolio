@@ -1,4 +1,4 @@
-let runStats = () =>{
+let runStats = (assets) =>{
     let portfolioStats = {
         crypto:{
             total: 0, growth:0, gains:0
