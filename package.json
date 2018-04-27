@@ -9,7 +9,7 @@
     "start": "node ./app",
     "export": "mongoexport -h ds263988.mlab.com:63988 -d portfolioapp2380 -c users -u $mongoUser -p $mongoPass -o dbexport/users-export.json",
     "seed": "coming soon(ish)!",
-    "deploy": "oc start-build nodejs-ex --follow && oc get svc && echo '🚀  Deployed to OpenShift!'"
+    "deploy": "git push heroku master && echo '🚀  Deployed to Heroku!'"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -20,6 +20,7 @@
     "express-session": "^1.15.6",
     "handlebars": "^4.0.11",
     "mongoose": "^5.0.8",
+    "nodemailer": "^4.6.4",
     "pug": "^2.0.0-beta2",
     "superagent": "^3.8.2"
   },

@@ -1,10 +1,10 @@
 'use strict';
 
 var app = {};
-var __API_URL__ = 'https://portfolioapp2380.herokuapp.com'; // deployed URL
+// var __API_URL__ = 'https://portfolioapp2380.herokuapp.com'; // deployed URL
 // var __API_URL__ = 'http://portfolioapp2380-portfolioapp.1d35.starter-us-east-1.openshiftapps.com'; // deployed URL
 // var __API_URL__ = process.env.portfolioAppURL || 'https://portfolioapp2380.firebaseapp.com' // allow localhost:5000 URL
-// var __API_URL__ = 'http://localhost:3000'; // local URL
+var __API_URL__ = 'http://localhost:3000'; // local URL
 
 let chartPoints = [];
 let exchangePoints = [];
@@ -12,9 +12,6 @@ let assets = [];
 let none = {'neg':Number.NEGATIVE_INFINITY,'pos':Number.POSITIVE_INFINITY};
 initUserMenu()
 function initUserMenu(){
-    // let header = document.querySelector('#userMenu');
-    // let userMenu = `<div id='userName' class='menu'>${JSON.parse(currentUser).username}</div><div id='actionList' class='dropdownList menu'><div id='sendEmail' class='menu'>Send Email</div><div id='sendText' class='menu'>Send Text Message</div><div id='logOut' class='menu'>Log Out</div></div>`
-    // header.innerHTML +=userMenu;
 console.log('working')
     document.querySelector('#userName').addEventListener('click', function(event){
         event.preventDefault(); // stop button standard action

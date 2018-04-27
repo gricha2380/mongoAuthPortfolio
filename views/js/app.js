@@ -2,7 +2,6 @@
 
 var app = {};
 var __API_URL__ = 'https://portfolioapp2380.herokuapp.com'; // deployed URL
-// var __API_URL__ = 'http://portfolioapp2380-portfolioapp.1d35.starter-us-east-1.openshiftapps.com'; // deployed URL
 // var __API_URL__ = process.env.portfolioAppURL || 'https://portfolioapp2380.firebaseapp.com' // allow localhost:5000 URL
 // var __API_URL__ = 'http://localhost:3000'; // local URL
 
