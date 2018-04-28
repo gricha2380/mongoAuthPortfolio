@@ -8,6 +8,18 @@ let userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    phone: {
+        type: String,
+        unique: true,
+        required: false,
+        trim: true
+    },
+    carrier: {
+        type: String,
+        unique: true,
+        required: false,
+        trim: true
+    },
     name: {
         type: String,
         required: true,

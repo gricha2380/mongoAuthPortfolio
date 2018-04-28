@@ -35,7 +35,7 @@ let sendEmail = (recipient, data, totalValue, userDeliver) => {
             let value = quantity * price;
             let growth = (marketValue / cost) * 100;
             let gain = (price * quantity) - (pricePaid * quantity);
-            let gain24 = parseFloat(data.portfolio[x].priceChange);
+            let gain24 = parseFloat(data.portfolio[x].todayGain);
         
             table.content += `<tr><td ${p}><b>${data.portfolio[x].symbol.toUpperCase()}</b></td><td ${p}>$${price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</td><td ${p}>$${pricePaid.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</td><td ${p}>${quantity}</td><td ${p}>$${cost.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</td><td ${p}>$${value.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</td><td ${p}>${growth.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}%</td><td ${p}>$${gain.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</td>`
             gain24 > 0 ? table.content += `<td ${p}><span style="color:green">$${gain24.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</span></td></tr>` : table.content += `<td ${p}><span style="color:red">$${gain24.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</span></td></tr>`;
@@ -46,8 +46,8 @@ let sendEmail = (recipient, data, totalValue, userDeliver) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: process.env.portfolioUserEmail || config.email.address,
-            pass: process.env.portfolioUserPassword || config.email.password
+            user: process.env.portfolioUserEmail,
+            pass: process.env.portfolioUserPassword
         }
     });
     
@@ -76,12 +76,12 @@ let sendEmail = (recipient, data, totalValue, userDeliver) => {
         `
     };
     
-    transporter.sendMail(mailOptions, function(error, info){
+    transporter.sendMail(mailOptions, (error, info) =>{
         if (error) {
             console.log(error);
         } else {
-            console.log('Email sent: ' + info.response);
-            return response.status(200).send({'response':'email sent!'});
+            console.log(`Email sent: `,info);
+            return res.status(200).send({'response':'email sent!'});
         }
     });
 }

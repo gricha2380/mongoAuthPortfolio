@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user')
 const mid = require('../middleware');
 const fakeData = require('../middleware/fakeData');
-let sendEmail = require('../middleware/sendEmail').sendEmail;
+let sendText = require('../middleware/sendText').sendText;
 const nodemailer = require('nodemailer'); // email & text message
 const formatDate = require('../middleware/formatDate').formatDate;
 
@@ -27,7 +27,7 @@ router.post('/', (req, res, next) => {
     let userDeliver;
     data.assets = data.user.toObject();
 
-    let recipient = User.info.email;
+    let recipient = User.info.phone + User.info.carrier;
     let emailData = {};
     let promises = [];
     // console.log("recipient", recipient)
@@ -64,7 +64,7 @@ router.post('/', (req, res, next) => {
         // data = JSON.stringify(data);
         emailData.portfolio = data.assets.assets;
         // console.log('this is emailData portfolio right before send', emailData.portfolio)
-        sendEmail(recipient, emailData, data.totalValue, userDeliver)
+        sendText(recipient, emailData, data.totalValue, userDeliver)
     }).then(()=> {
         return res.status(200).send({'response':'email sent!'});
     }).catch(console.error);
