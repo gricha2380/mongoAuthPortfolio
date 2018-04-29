@@ -12,12 +12,13 @@ var app = {};
         modalBox.innerHTML = 
             `
             <div class="inner">
-            <label>Name<input value="" id="nameModal"></label>
-            <label>Symbol<input value="" id="symbolModal"></label>
-            <label>Type<select id="typeModal"><option value="stock">Stock</option><option value="crypto">Crypto</option></select></label>
-            <label>Quantity<input value="" id="quantityModal"></label>
-            <label>Price Paid<input value="" id="purchasePriceModal"></label>
-            <label>Exchange<input value="" id="exchangeModal"></label>
+            <label for="nameModal">Name<input value="" id="nameModal"></label>
+            <label for="symbolModal">Symbol<input value="" id="symbolModal"></label>
+            <label for="typeModal">Type<select id="typeModal"><option value="stock">Stock</option><option value="crypto">Crypto</option></select></label>
+            <label for="quantityModal">Quantity<input value="" id="quantityModal"></label>
+            <label for="purchasePriceModal">Price Paid<input value="" id="purchasePriceModal"></label>
+            <label for="exchangeModal">Exchange<input value="" id="exchangeModal"></label>
+            <label for="deleteModal">Delete This Asset<input id="deleteModal" type="checkbox"></label>
             <input id="currentIDModal">
             </div>
             `;
@@ -39,6 +40,7 @@ var app = {};
             document.querySelector('#purchasePriceModal').value = asset.purchasePrice;
             document.querySelector('#exchangeModal').value = asset.exchange;
             document.querySelector('#currentIDModal').value = asset.id;
+            document.querySelector("label[for=deleteModal]").setAttribute("style","display: block");
         } else {
             // document.querySelector('#currentIDModal').value = document.querySelectorAll('#assetList #symbol .cell').length+1;
         }
@@ -62,7 +64,7 @@ var app = {};
 
     document.querySelector('.refresh').addEventListener('click', (event) => {
         console.log('refresh coming soon...')
-        // refresh();
+        refresh();
     })
 
     let refresh = () => {
@@ -85,7 +87,7 @@ var app = {};
         let newAsset = document.querySelector('#newForm');
         if (newAsset) {
             document.querySelector('#newForm').addEventListener('click',function(event){
-                event.preventDefault();
+                // event.preventDefault();
 
                 let asset = {
                     "name": document.querySelector('#nameModal').value,
@@ -95,7 +97,8 @@ var app = {};
                     "purchasePrice": document.querySelector('#purchasePriceModal').value,
                     "exchange": document.querySelector('#exchangeModal').value,
                     "currentID": document.querySelector('#currentIDModal').value,
-                    "id": document.querySelectorAll('#assetList #symbol .cell').length+1
+                    "id": document.querySelectorAll('#assetList #symbol .cell').length+1,
+                    "deleteAsset": document.querySelector('#deleteModal').checked
                 };
 
                 console.log('asset contents',asset);

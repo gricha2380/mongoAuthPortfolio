@@ -243,6 +243,11 @@ table.alt tr:nth-of-type(even),.alt>div:nth-of-type(even) {
     padding-bottom: 1rem;
     text-align: right;
 }
+
+.modal .inner label[for="deleteModal"] {
+    display: none;
+}
+
 .button {
 
 }

@@ -78,14 +78,14 @@ router.put('/save', (req, res, next) => {
             "unix": Date.now(),
             "cryptoCount": data.totalValue.cryptoCount,
             "cryptoGains": data.totalValue.cryptoGains,
-            "cryptoGrowth": data.totalValue.cryptoGrowth,
+            "cryptoGrowth": data.totalValue.cryptoGrowth * 100,
             "cryptoValue": data.totalValue.cryptoValue,
             "portfolioGains": data.totalValue.portfolioGains,
-            "portfolioGrowth": data.totalValue.portfolioGrowth,
+            "portfolioGrowth": data.totalValue.portfolioGrowth * 100,
             "portfolioValue": data.totalValue.portfolioValue,
             "stockCount": data.totalValue.stockCount,
             "stockGains": data.totalValue.stockGains,
-            "stockGrowth": data.totalValue.stockGrowth,
+            "stockGrowth": data.totalValue.stockGrowth * 100,
             "stockValue": data.totalValue.stockValue
         }
         

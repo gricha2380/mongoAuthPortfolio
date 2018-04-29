@@ -83,9 +83,56 @@ router.get('/edit/:id', (req, res) =>{
 // edit asset
 router.post('/edit/:id', (req, res) =>{
     let rb = req.body;
+    
     if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange) {
         response.status(400).send(JSON.stringify(request.body));
-    } else {
+    } 
+    else if (rb.deleteAsset===true){
+        console.log("deleting asset...",rb.name)
+        let item = {
+            "name": rb.name,
+            "symbol": rb.symbol,
+            "type": rb.type,
+            "purchasePrice": rb.purchasePrice,
+            "quantity": rb.quantity,
+            "exchange": rb.exchange
+        }
+        console.log("looking for id",req.params.id)
+        //User.info.assets works
+        // console.log('here is a delete ID',User.info.assets["$.id"](req.params.id))
+
+        // User.assets.id(req.params.id).remove();
+        // User.save(function (err) {
+        // if (err) return handleError(err);
+        // console.log('the voter was removed')
+        // });
+        // User.remove(
+        //     { "assets.id": Number(req.params.id) },
+        //     (err, result) => {
+        //     if (err) {
+        //         console.log("error:",err);
+        //     } else {
+        //         console.log("asset deleted", result);
+        //         res.send(`${rb.name} asset deleted`);
+        //     }
+        // })
+        User.update(
+            { "assets.id": Number(req.params.id) },
+            { $pull: {
+                assets: { id: Number(req.params.id) }
+                }
+            },
+            
+            (err, result) => {
+                if (err) {
+                    console.log("error:",err);
+                } else {
+                    // console.log("success, asset updated", result);
+                    res.send(`${rb.name} asset deleted`);
+                }
+            })
+    }
+    else {
         console.log("id is...",req.params.id)
         let item = {
             "name": rb.name,
