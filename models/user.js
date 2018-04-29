@@ -36,6 +36,7 @@ let userSchema = new mongoose.Schema({
     //     type: String
     // }],
     assets : { type : Array , "default" : [] },
+    snapshots : { type : Array , "default" : [] },
     password: {
         type: String,
         required: true
@@ -67,9 +68,16 @@ userSchema.statics.authenticate = (name, password, callback) => {
     })
 }
 
-// has password before saving to database
+// hash password before saving to database
 userSchema.pre('save', function (next) {
     let user = this;
+
+    // only hash the password if it has been modified (or is new)
+    if (!user.isModified('password')) {
+        console.log('password not modified');
+        return next();
+    }
+
     bcrypt.hash(user.password, 10, function (err,hash) {
         if (err) {
             return next(err);

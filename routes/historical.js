@@ -2,56 +2,104 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
 const mid = require('../middleware');
+const formatDate = require('../middleware/formatDate').formatDate;
+const superagent = require('superagent');
+
+let coinAPI = "https://api.coinmarketcap.com/v1/ticker/"; // e.g.: https://api.coinmarketcap.com/v1/ticker/Ethereum
+let stockAPI = {
+    "start": "https://api.iextrading.com/1.0/stock/",
+    "end": "/delayed-quote"
+} // e.g.: https://api.iextrading.com/1.0/stock/aapl/delayed-quote
 
 router.get('/', mid.requiresLogin, (req, res, next) => {
     let data = {
         user: User.info,
-        snapshots: [],
-        chartpoints: []
+        totalValue: {
+            portfolioValue: 0, portfolioGrowth: 0, portfolioGains: 0, stockValue: 0, stockGrowth: 0, stockGains: 0, cryptoValue: 0, cryptoGrowth: 0, cryptoGains: 0
+        },
+        snapshots: {}
     }
     let promises = [];
-
-    data.snapshots = [
-        {
-          "cryptoCount" : 1,
-          "cryptoGains" : 25736.54,
-          "cryptoGrowth" : 3.8585517241379312,
-          "cryptoValue" : 32406.54,
-          "date" : "01/13/2018",
-          "portfolioGains" : 32198.3,
-          "portfolioGrowth" : 2.221921402644542,
-          "portfolioValue" : 42693.29999999999,
-          "stockCount" : 5,
-          "stockGains" : 6461.76,
-          "stockGrowth" : 1.8945953383458647,
-          "stockValue" : 10286.76,
-          "unix" : 1515993998141
-        },
-        {
-            "cryptoCount" : 1,
-            "cryptoGains" : 23806.839999999997,
-            "cryptoGrowth" : 356.92413793103447,
-            "cryptoValue" : 30476.839999999997,
-            "date" : "01/15/2018",
-            "portfolioGains" : 29579.329999999998,
-            "portfolioGrowth" : 220.1322989740361,
-            "portfolioValue" : 39774.329999999994,
-            "stockCount" : 6,
-            "stockGains" : 5772.49,
-            "stockGrowth" : 197.3336591478697,
-            "stockValue" : 9297.49,
-            "unix" : 1515993868864
-          }
-    ]
-    
-    
     data.assets = data.user.toObject(); // turn into a real object
-    //parse from: data.assets.snapshot
-        Promise.all(promises).then(function(results) {
+    data.snapshots = data.assets.snapshots;
+    // console.log("I expect snapshots now", data.snapshots);
+        Promise.all(promises).then( (results) => {
             data = JSON.stringify(data);
+            // console.log("snapshots before send", data)
             if (req.body.refresh) res.send(data)
             else {return res.render('historical', {data, partials : { menuPartial : './partials/nav'} })}
         });
+});
+
+router.put('/save', (req, res, next) => {
+    // console.log('save route entered')
+    let rb = req.body;
+    let data = {
+        user: User.info,
+        totalValue: {
+            portfolioValue: 0, portfolioGrowth: 0, portfolioGains: 0, stockValue: 0, stockGrowth: 0, stockGains: 0, cryptoValue: 0, cryptoGrowth: 0, cryptoGains: 0,
+            portfolioValue: 0, portfolioGrowth: 0, portfolioGains: 0, stockValue: 0, stockGrowth: 0,stockGains: 0, stockCount: 0, cryptoValue: 0, cryptoGrowth: 0, cryptoGains: 0, cryptoCount: 0, stockCount: 0
+        }
+    }
+    data.assets = data.user.toObject();
+    let promises = [];
+    
+    for (let a in data.assets.assets) {
+        if (data.assets.assets[a].type=='stock') {
+            promises.push(superagent.get(stockAPI.start+data.assets.assets[a].symbol+stockAPI.end).then((res) => {  
+                data.totalValue.stockCount++;  
+                data.assets.assets[a].price = res.body.delayedPrice;
+                data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                data.totalValue.stockValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                data.totalValue.stockGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.stockGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+            }).catch(console.error))
+        }
+        if (data.assets.assets[a].type=='crypto') {
+            promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {
+                data.totalValue.cryptoCount++;
+                data.assets.assets[a].price = res.body[0].price_usd;
+                data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                data.totalValue.cryptoValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                data.totalValue.cryptoGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                data.totalValue.cryptoGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+            }).catch(console.error))
+        }
+    }
+
+    Promise.all(promises).then( (results) => {
+        // console.log('inside saveSnapshot')
+        let item = {
+            "date": formatDate('slash'),
+            "unix": Date.now(),
+            "cryptoCount": data.totalValue.cryptoCount,
+            "cryptoGains": data.totalValue.cryptoGains,
+            "cryptoGrowth": data.totalValue.cryptoGrowth,
+            "cryptoValue": data.totalValue.cryptoValue,
+            "portfolioGains": data.totalValue.portfolioGains,
+            "portfolioGrowth": data.totalValue.portfolioGrowth,
+            "portfolioValue": data.totalValue.portfolioValue,
+            "stockCount": data.totalValue.stockCount,
+            "stockGains": data.totalValue.stockGains,
+            "stockGrowth": data.totalValue.stockGrowth,
+            "stockValue": data.totalValue.stockValue
+        }
+        
+        // console.log("what's in item now?",item)
+        let query   = { _id: User.info._id }; 
+        let update  = { $push: {snapshots: item}}; 
+        let options = { new: true }; 
+        User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+            if (err) throw err;
+            console.log(`${item.date} new snapshot added...`,asset)
+            res.send(`${item.date} snapshot created`)
+        });
+
+    });
 });
 
 module.exports = router;

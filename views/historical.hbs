@@ -11,13 +11,13 @@
 <body>
     <div class="headerBar" id="headerBar">
         <div class="maxHolder">
-            <div class='dropdown menu' id='userMenu'></div>
+            {{>menuPartial}}
             <h1 class="center sectionTitle">Historical</h1>
             <div class="refresh button"></div>
         </div>
     </div>
     <div class="container full">
-        <div class="inner hide">
+        <div class="inner max hide">
             <div id="assetList" class="grid ten box table">
                 <div id="date" class="col">
                     <div class="minorLightText miniTitle">Date</div>
@@ -73,14 +73,14 @@
     <script type="text/javascript">
         let dataHolder = `{{{data}}}`;
         dataHolder = JSON.parse(dataHolder);
-        console.log('dataholder here',dataHolder);
+        //console.log('dataholder here',dataHolder);
 
         let initUser = (u) => {
             let costBasis, marketValue, totalGrowth, totalGain, todayPercent, todayGain;
             let assets = {};
             let id = 0;
 
-            let current = dataHolder.assets.assets;
+            let current = dataHolder.snapshots;
             console.log('assets showing',current, current.length)
             for(let i=0;i<current.length;i++){
                 document.querySelector('#date').innerHTML += `<div class='cell'>${current[i].date}</div>`;  

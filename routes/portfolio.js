@@ -93,7 +93,7 @@ router.post('/edit/:id', (req, res) =>{
             "type": rb.type,
             "purchasePrice": rb.purchasePrice,
             "quantity": rb.quantity,
-            "exchange" : rb.exchange
+            "exchange": rb.exchange
         }
 
         // experimental example, updating nested asset array

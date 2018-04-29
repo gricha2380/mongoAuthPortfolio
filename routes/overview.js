@@ -4,7 +4,6 @@ const User = require('../models/user')
 const mid = require('../middleware');
 const fakeData = require('../middleware/fakeData');
 //import getSnapshots()... & getAssets()
-
 const superagent = require('superagent'); 
 
 let coinAPI = "https://api.coinmarketcap.com/v1/ticker/"; // e.g.: https://api.coinmarketcap.com/v1/ticker/Ethereum

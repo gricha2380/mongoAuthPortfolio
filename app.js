@@ -71,7 +71,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-let port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000;
+let port = process.env.PORT || 3000;
 app.listen(port, function () {
   console.log('Express app listening on port 3000');
 });
