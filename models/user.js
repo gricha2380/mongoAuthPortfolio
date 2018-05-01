@@ -41,8 +41,24 @@ let userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    color: {
-        type: String,
+    assetCount: {
+        type: Number,
+        required: false
+    },
+    emailDelivery: {
+        type: Boolean,
+        required: true
+    },
+    emailFrequency: {
+        type: Number,
+        required: false
+    },
+    textDelivery: {
+        type: Boolean,
+        required: true
+    },
+    textFrequency: {
+        type: Number,
         required: false
     }
 })

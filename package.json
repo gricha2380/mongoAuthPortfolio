@@ -9,7 +9,8 @@
     "start": "node ./app",
     "export": "mongoexport -h ds263988.mlab.com:63988 -d portfolioapp2380 -c users -u $mongoUser -p $mongoPass -o dbexport/users-export.json",
     "seed": "coming soon(ish)!",
-    "deploy": "git push heroku master && echo '🚀  Deployed to Heroku!'"
+    "deploy": "git push heroku master && echo '🚀  Deployed to Heroku!'",
+    "snapshot": "node -e 'require(\"./cron/snapshot.js\").updateHistorical()'"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",

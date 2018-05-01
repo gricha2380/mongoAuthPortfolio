@@ -15,7 +15,7 @@ let stockAPI = {
 
 router.get('/', mid.requiresLogin, (req, res, next) => {
     // console.log("user id here!!",User.info._id)
-
+console.log("global counter", User.info.assetCount)
     let data = {
         user: User.info,
         totalValue: {
@@ -98,24 +98,6 @@ router.post('/edit/:id', (req, res) =>{
             "exchange": rb.exchange
         }
         console.log("looking for id",req.params.id)
-        //User.info.assets works
-        // console.log('here is a delete ID',User.info.assets["$.id"](req.params.id))
-
-        // User.assets.id(req.params.id).remove();
-        // User.save(function (err) {
-        // if (err) return handleError(err);
-        // console.log('the voter was removed')
-        // });
-        // User.remove(
-        //     { "assets.id": Number(req.params.id) },
-        //     (err, result) => {
-        //     if (err) {
-        //         console.log("error:",err);
-        //     } else {
-        //         console.log("asset deleted", result);
-        //         res.send(`${rb.name} asset deleted`);
-        //     }
-        // })
         User.update(
             { "assets.id": Number(req.params.id) },
             { $pull: {
@@ -169,10 +151,9 @@ router.post('/edit/:id', (req, res) =>{
 // new asset
 router.post('/add', (req, res) =>{
     let rb = req.body;
-    if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange || !rb.id) {
+    if (!rb.name || !rb.symbol || !rb.type || !rb.purchasePrice || !rb.quantity || !rb.exchange) {
         response.status(400).send(JSON.stringify(request.body));
     } else {
-        console.log("id is...",rb.id)
         let item = {
             "name": rb.name,
             "symbol": rb.symbol,
@@ -180,7 +161,7 @@ router.post('/add', (req, res) =>{
             "purchasePrice": rb.purchasePrice,
             "quantity": rb.quantity,
             "exchange" : rb.exchange,
-            "id" : rb.id
+            "id" : User.info.assetCount+1
         }
         // console.log("what's in item now?",item)
         let query   = { _id: User.info._id }; 
@@ -189,7 +170,25 @@ router.post('/add', (req, res) =>{
         User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
             if (err) throw err;
             console.log("new asset added...",asset)
-            res.send(`${rb.name} asset created`)
+            
+            // TODO: update client model
+            let refresh = new User(asset);
+            // refresh.save();
+            // refresh.save( (err, data) => {
+            //     if (err) return console.error(err);
+            //     console.log("asset added live", data)
+            // });
+            
+            //update global assetId
+            User.update(
+                { "_id": User.info._id},
+                { $set:  { "User.info.assetCount": User.info.assetCount+1 }},
+                (err, result) => {
+                if (err) {console.log("error:",err)} else {
+                    console.log("global ID updated", User.info.assetCount);
+                    res.send(`${rb.name} asset created`);
+                }})
+            // res.send(`${rb.name} asset created`)
         });
     }
 })

@@ -97,7 +97,7 @@ var app = {};
                     "purchasePrice": document.querySelector('#purchasePriceModal').value,
                     "exchange": document.querySelector('#exchangeModal').value,
                     "currentID": document.querySelector('#currentIDModal').value,
-                    "id": document.querySelectorAll('#assetList #symbol .cell').length+1,
+                    // "id": document.querySelectorAll('#assetList #symbol .cell').length+1,
                     "deleteAsset": document.querySelector('#deleteModal').checked
                 };
 
@@ -167,14 +167,9 @@ var app = {};
     }
 
     let populateEditFields = (data) => {
-        // console.log(data, typeof data);
-        // for (let i in data.asset) {
-            if (data) {
-                // console.log(data.asset[i].id)
-                modal(data)
-            }
-        // }
-        // modal(data.asset);
+        if (data) {
+            modal(data)
+        }
     }
 
     let showLoader = () => {
