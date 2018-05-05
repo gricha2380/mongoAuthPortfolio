@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
-const mid = require('../middleware');
+// const mid = require('../middleware');
 const fakeData = require('../middleware/fakeData');
 let sendEmail = require('../middleware/sendEmail').sendEmail;
 const nodemailer = require('nodemailer'); // email & text message

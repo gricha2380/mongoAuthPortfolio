@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
-const mid = require('../middleware');
+const login = require('../middleware/login');
 const fakeData = require('../middleware/fakeData');
 let sendText = require('../middleware/sendText').sendText;
 const nodemailer = require('nodemailer'); // email & text message
 const formatDate = require('../middleware/formatDate').formatDate;
-
 const superagent = require('superagent'); 
 
 let coinAPI = "https://api.coinmarketcap.com/v1/ticker/"; // e.g.: https://api.coinmarketcap.com/v1/ticker/Ethereum

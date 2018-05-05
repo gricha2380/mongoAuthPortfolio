@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
-const mid = require('../middleware');
+const login = require('../middleware/login');
 const fakeData = require('../middleware/fakeData');
 //import getSnapshots()... & getAssets()
 const superagent = require('superagent'); 
@@ -12,7 +12,7 @@ let stockAPI = {
     "end": "/delayed-quote"
 } // e.g.: https://api.iextrading.com/1.0/stock/aapl/delayed-quote
 
-router.get('/', mid.requiresLogin, (req, res, next) => {
+router.get('/', login.requiresLogin, (req, res, next) => {
     let data = {
         user: User.info,
         totalValue: {

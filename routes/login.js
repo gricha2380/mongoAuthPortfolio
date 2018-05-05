@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
-const mid = require('../middleware');
+// const mid = require('../middleware');
+const login = require('../middleware/login');
 
-router.get('/', mid.loggedOut, (req, res, next) => {
+router.get('/', login.loggedOut, (req, res, next) => {
     return res.render('login')
   })
   
