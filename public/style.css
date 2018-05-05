@@ -30,6 +30,9 @@ thead {
 .colorDefault {
     color: inherit;
 }
+.hr {
+    border-top: 1px solid rgba(255, 255, 255, .2);
+}
 /********************* LAYOUT *********************/
 .container {
     padding: 1rem;
@@ -152,6 +155,8 @@ table.alt tr:nth-of-type(even),.alt>div:nth-of-type(even) {
     align-items: center;
     justify-content: center;
 }
+
+
 /********************* MODULE *********************/
 .bar {
     padding: 1rem;
@@ -347,8 +352,6 @@ nav a.active {
     color: inherit;
     text-decoration: none;
 }
-
-#logOut {border-top: 1px solid rgba(255, 255, 255, .2);}
 
 #userMenu {
     position: absolute;
