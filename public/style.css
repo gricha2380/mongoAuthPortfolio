@@ -283,6 +283,12 @@ table.alt tr:nth-of-type(even),.alt>div:nth-of-type(even) {
     padding: .5rem 1rem;
 }
 
+.modalTitle {
+    text-transform: uppercase;
+    color: rgba(179, 200, 211, .5);
+}
+
+
 .edit {
     float: right;
     opacity: .2;
@@ -381,7 +387,7 @@ nav a.active {
     cursor: pointer;
 }
 
-#signin {
+#login #signin {
     width: 100%;
     background: black;
     color: white;
@@ -421,6 +427,38 @@ nav a.active {
 }
 
 #mainTitle { padding-bottom: 0;}
+
+#infoIcon {
+    width: 1rem;
+    height: 1rem;
+    margin: 2rem auto 0;
+    background: rgba(255, 255, 255, .5);
+    border-radius: .5rem;
+    text-align: center;
+    line-height: 1rem;   
+}
+
+#infoIcon:hover {
+    background: rgba(255, 255, 255, .3);
+    cursor: pointer;
+}
+
+#about.modal .inner {width: 500px;}
+
+#about.modal .primary {
+    width: 100%;
+    margin: 1rem -2rem 0;
+    padding: .5rem 2rem;
+}
+
+#about.modal .madeBy {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+#about.modal a {
+    color: white;
+}
 
 /********************* STATE *********************/
 .button:hover{

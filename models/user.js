@@ -63,6 +63,8 @@ let userSchema = new mongoose.Schema({
     }
 })
 
+userSchema.set('toObject', { virtuals: true }); // please make them normal objects...
+
 // authenticate input against database documents
 userSchema.statics.authenticate = (name, password, callback) => {
     User.findOne({ name: name})
