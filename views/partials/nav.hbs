@@ -11,9 +11,9 @@
 </div>
 <script>
     let menuName = `{{{data}}}`;
-    console.log('headerholder type',typeof menuName);
+    //console.log('headerholder type',typeof menuName);
     menuName = JSON.parse(menuName)
-    console.log('headerholder type two',typeof menuName);
-    console.log("incase I need it, here's menuName object",menuName)
+    //console.log('headerholder type two',typeof menuName);
+    //console.log("incase I need it, here's menuName object",menuName)
     document.querySelector('#userName').innerHTML = menuName.user.name
 </script>

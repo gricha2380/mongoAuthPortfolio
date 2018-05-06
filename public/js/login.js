@@ -6,14 +6,14 @@ if (document.querySelector('#infoIcon')) {
 
 let modalAbout = (asset) => {
     let modalBox = document.createElement('div');
-    modalBox.setAttribute("id", "about");
+    modalBox.setAttribute("id", "aboutModal");
     modalBox.setAttribute("class", "modal");
     modalBox.innerHTML = 
         `
         <div class="inner">
-        <div class="modalTitle center">PortfolioApp2380</div>
+        <div class="modalTitle center">Portfolio App <span class="minor">2380</span></div>
         <div>
-        <div class="madeBy">Made by Gregor Richardson</div>
+        <div class="madeBy center">Made by Gregor Richardson</div>
         </div>
         <div><a href="https://github.com/gricha2380/portfolioApp2380" target="_blank">Source Code</a></div>
         <div><a href="http://gregorrichardson.com/blog/portfolio-app-v2/" target="_blank">Blog Post</a></div>
@@ -30,7 +30,7 @@ let modalAbout = (asset) => {
 
 let modalListeners = () => {
     console.log('listeners activated')
-    let item = document.querySelector('#about');
+    let item = document.querySelector('#aboutModal');
     item.addEventListener('click',function(event){
         if (event.target.matches('div.close')) {
             console.log('clicked')

@@ -443,20 +443,20 @@ nav a.active {
     cursor: pointer;
 }
 
-#about.modal .inner {width: 500px;}
+#aboutModal.modal .inner {width: 500px;}
 
-#about.modal .primary {
+#aboutModal.modal .primary {
     width: 100%;
     margin: 1rem -2rem 0;
     padding: .5rem 2rem;
 }
 
-#about.modal .madeBy {
+#aboutModal.modal .madeBy {
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
-#about.modal a {
+#aboutModal.modal a {
     color: white;
 }
 
@@ -669,5 +669,13 @@ nav a.active div:before {
     }
     #actionList .menu {
         padding: 1rem 0;
+    }
+    .modal .inner {
+        left: 0;
+    }
+    
+    #aboutModal.modal .inner {
+        width: 100%;
+        left: 0;
     }
 }
