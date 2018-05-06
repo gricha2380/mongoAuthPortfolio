@@ -9,5 +9,6 @@ module.exports = function (app) {
   app.use('/logout', require('./logout'));
   app.use('/email/send', require('./email'));
   app.use('/text/send', require('./text'));
+  app.use('/cron/historical', require('./cron'));
   app.use('/', require('./root'));
 };
