@@ -75,6 +75,7 @@ router.get('/', (req, res, next) => {
                         data.emailData.portfolio = data.assets;
                         // console.log('this is emailData portfolio right before send', emailData.portfolio)
                         sendText(data.recipient, data.emailData, data.totalValue)
+                        res.json({"SMS sent": data}) // browser test
                     }).catch(console.error);
                 }
 
