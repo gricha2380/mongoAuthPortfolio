@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer'); // email & text message
 const formatDate = require('../middleware/formatDate').formatDate;
 // const tableTemp = require('../middleware/tableTemp'); // use for dummy email data
 
-let sendEmail = (recipient, data, totalValue, userDeliver) => {
+let sendEmail = (recipient, data, totalValue) => {
     
     let userEmail = process.env.portfolioUserEmail;
     let userPassword = process.env.portfolioUserPassword;

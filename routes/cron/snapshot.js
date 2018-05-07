@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user')
-const formatDate = require('../middleware/formatDate').formatDate;
+const User = require('../../models/user')
+const formatDate = require('../../middleware/formatDate').formatDate;
 const superagent = require('superagent'); 
 
 // const mongoose = require('mongoose');
@@ -17,13 +17,6 @@ let stockAPI = {
 
 router.get('/', (req, res, next) => {
     // protect against hammering: create table for today's date. If current day > saved day then run
-
-    // parse User object
-    // forEach on each user
-        // forEach in each portfolio
-        // append new historic to user's archive
-        // console.log("This is big User", User.info)
-    // User.findOne({ name: name})
 
     let assetHolder=[], promises=[];
     let data = {

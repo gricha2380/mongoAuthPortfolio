@@ -7,8 +7,6 @@ let sendText = (recipient, data, totalValue) => {
     let userEmail = process.env.portfolioUserEmail;
     let userPassword = process.env.portfolioUserPassword;
     
-    
-    
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {

@@ -7,8 +7,10 @@ module.exports = function (app) {
   app.use('/login', require('./login'));
   app.use('/register', require('./register'));
   app.use('/logout', require('./logout'));
-  app.use('/email/send', require('./email'));
-  app.use('/text/send', require('./text'));
-  app.use('/cron/historical', require('./cron'));
+  app.use('/email/send', require('./trigger/email'));
+  app.use('/text/send', require('./trigger/SMS'));
+  app.use('/cron/historical', require('./cron/snapshot'));
+  app.use('/cron/SMS', require('./cron/SMS'));
+  app.use('/cron/email', require('./cron/email'));
   app.use('/', require('./root'));
 };

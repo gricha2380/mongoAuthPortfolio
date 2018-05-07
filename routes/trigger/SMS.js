@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user')
-const login = require('../middleware/login');
-const fakeData = require('../middleware/fakeData');
-let sendText = require('../middleware/sendText').sendText;
+const User = require('../../models/user')
+const login = require('../../middleware/login');
+const fakeData = require('../../middleware/fakeData');
+let sendText = require('../../middleware/sendText').sendText;
 const nodemailer = require('nodemailer'); // email & text message
-const formatDate = require('../middleware/formatDate').formatDate;
+const formatDate = require('../../middleware/formatDate').formatDate;
 const superagent = require('superagent'); 
 
 let coinAPI = "https://api.coinmarketcap.com/v1/ticker/"; // e.g.: https://api.coinmarketcap.com/v1/ticker/Ethereum
@@ -23,7 +23,6 @@ router.post('/', (req, res, next) => {
         snapshots: {},
         chartpoints: []
     }
-    let userDeliver;
     data.assets = data.user.toObject();
 
     let recipient = User.info.phone + User.info.carrier;
@@ -62,8 +61,8 @@ router.post('/', (req, res, next) => {
     Promise.all(promises).then( (results) => {
         // data = JSON.stringify(data);
         emailData.portfolio = data.assets.assets;
-        // console.log('this is emailData portfolio right before send', emailData.portfolio)
-        sendText(recipient, emailData, data.totalValue, userDeliver)
+        // console.log('this is emailData portfolio right before send', emailData)
+        sendText(recipient, emailData, data.totalValue)
     }).then(()=> {
         return res.status(200).send({'response':'email sent!'});
     }).catch(console.error);

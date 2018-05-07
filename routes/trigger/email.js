@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user')
+const User = require('../../models/user')
 // const mid = require('../middleware');
-const fakeData = require('../middleware/fakeData');
-let sendEmail = require('../middleware/sendEmail').sendEmail;
+const fakeData = require('../../middleware/fakeData');
+let sendEmail = require('../../middleware/sendEmail').sendEmail;
 const nodemailer = require('nodemailer'); // email & text message
-const formatDate = require('../middleware/formatDate').formatDate;
+const formatDate = require('../../middleware/formatDate').formatDate;
 
 const superagent = require('superagent'); 
 
@@ -64,7 +64,7 @@ router.post('/', (req, res, next) => {
         // data = JSON.stringify(data);
         emailData.portfolio = data.assets.assets;
         // console.log('this is emailData portfolio right before send', emailData.portfolio)
-        sendEmail(recipient, emailData, data.totalValue, userDeliver)
+        sendEmail(recipient, emailData, data.totalValue)
     }).then(()=> {
         return res.status(200).send({'response':'email sent!'});
     }).catch(console.error);

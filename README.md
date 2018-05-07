@@ -52,3 +52,10 @@ mongo
 
 ## Debugging
 To troubleshoot database, uncomment `mongoose.set('debug', true)` in app.js
+
+Manually test/trigger cron jobs in bash: `node cron/job_name.js`  
+
+**Cron delivery schedule:**
+snapshots: 1:30 UTC  
+emails: 7:30 UTC  
+SMS: 12:00UTC
