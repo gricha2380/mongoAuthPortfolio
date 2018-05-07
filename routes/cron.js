@@ -38,6 +38,8 @@ router.get('/', (req, res, next) => {
           console.log(err);
         } else{          
             portfolio.forEach((p,i,arr)=>{
+                console.log("what my name is",p._id)
+                let id = p._id;
                 console.log("how many assets",p.assets.length)
                 data.assets=p.assets;
                 console.log("what hold data asset", data.assets)
@@ -72,37 +74,38 @@ router.get('/', (req, res, next) => {
                         }).catch(console.error))
                     }
                 })
+                Promise.all(promises).then((results) => {
+                    let item = {
+                        "date": formatDate('slash'),
+                        "unix": Date.now(),
+                        "cryptoCount": data.totalValue.cryptoCount,
+                        "cryptoGains": data.totalValue.cryptoGains,
+                        "cryptoGrowth": data.totalValue.cryptoGrowth * 100,
+                        "cryptoValue": data.totalValue.cryptoValue,
+                        "portfolioGains": data.totalValue.portfolioGains,
+                        "portfolioGrowth": data.totalValue.portfolioGrowth * 100,
+                        "portfolioValue": data.totalValue.portfolioValue,
+                        "stockCount": data.totalValue.stockCount,
+                        "stockGains": data.totalValue.stockGains,
+                        "stockGrowth": data.totalValue.stockGrowth * 100,
+                        "stockValue": data.totalValue.stockValue
+                    }
+                    
+                    console.log(`${item.date} new snapshot added...`,item)
+                    let update  = { $push: {snapshots: item}}; 
+                    let options = { new: true }; 
+                    let query = { _id: id }; 
+                    User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+                        if (err) throw err;
+                        console.log(`${item.date} new snapshot added...`,portfolio[index])
+                        res.json({"snapshot": item}) // browser test
+                    });
+                        // portfolio.update({$push: {snapshots: item}})
+                        // res.json({"snapshot": item}) // browser test
+                    }).catch(console.error);
+
             })
-            Promise.all(promises).then((results) => {
-                let item = {
-                    "date": formatDate('slash'),
-                    "unix": Date.now(),
-                    "cryptoCount": data.totalValue.cryptoCount,
-                    "cryptoGains": data.totalValue.cryptoGains,
-                    "cryptoGrowth": data.totalValue.cryptoGrowth * 100,
-                    "cryptoValue": data.totalValue.cryptoValue,
-                    "portfolioGains": data.totalValue.portfolioGains,
-                    "portfolioGrowth": data.totalValue.portfolioGrowth * 100,
-                    "portfolioValue": data.totalValue.portfolioValue,
-                    "stockCount": data.totalValue.stockCount,
-                    "stockGains": data.totalValue.stockGains,
-                    "stockGrowth": data.totalValue.stockGrowth * 100,
-                    "stockValue": data.totalValue.stockValue
-                }
-                
-                // console.log("what's in item now?",item)
-                let query  // = { _id: User.info._id }; 
-                let update  = { $push: {snapshots: item}}; 
-                let options = { new: true }; 
-                console.log(`${item.date} new snapshot added...`,item)
-                res.json({"snapshot": item}) // browser test
-                // User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
-                //     if (err) throw err;
-                //     console.log(`${item.date} new snapshot added...`,portfolio[0])
-                //     res.send(`${item.date} snapshot created`,item)
-                // });
-            }).catch(console.error);
-        }
+        } // end else
     })
 
 })
