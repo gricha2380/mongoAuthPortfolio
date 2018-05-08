@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/user')
 const formatDate = require('../../middleware/formatDate').formatDate;
+let sendText = require('../../middleware/sendText').sendText;
 const superagent = require('superagent'); 
 
 // const mongoose = require('mongoose');
@@ -18,6 +19,7 @@ let stockAPI = {
 router.get('/', (req, res, next) => {
     // protect against hammering: create table for today's date. If current day > saved day then run
 
+    console.log("getting starting")
     let assetHolder=[], promises=[];
     let data = {
         totalValue: {
@@ -32,9 +34,17 @@ router.get('/', (req, res, next) => {
           console.log(err);
         } else{          
             portfolio.forEach((p,i,arr)=>{
-
-                if (p.textDelivery) {
-                    data.recipient = p.phone + p.carrier;
+                console.log("looking for SMS delivery")
+                User.findById(p._id, 'textDelivery carrier phone', (err,info)=>{
+                    console.log("Delivery setting is...", info.textDelivery)
+                    console.log("recieptit is... ",info.phone+info.carrier)
+                    data.recipient = info.phone+info.carrier
+                    if (info.textDelivery) processDelivery();
+                    else res.send("Delivery setting false") // browser test
+                })
+                console.log("user info",p)
+                let processDelivery = ()=>{
+                    // data.recipient = p.phone + p.carrier;
                     console.log("what my name is",p._id)
                     let id = p._id;
                     console.log("how many assets",p.assets.length)

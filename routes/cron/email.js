@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/user')
 const formatDate = require('../../middleware/formatDate').formatDate;
+let sendEmail = require('../../middleware/sendEmail').sendEmail;
 const superagent = require('superagent'); 
 
 // const mongoose = require('mongoose');
@@ -17,7 +18,7 @@ let stockAPI = {
 
 router.get('/', (req, res, next) => {
     // protect against hammering: create table for today's date. If current day > saved day then run
-
+console.log("getting started")
     let assetHolder=[], promises=[];
     let data = {
         totalValue: {
@@ -32,9 +33,17 @@ router.get('/', (req, res, next) => {
           console.log(err);
         } else{          
             portfolio.forEach((p,i,arr)=>{
-
-                if (p.emailDelivery) {
-                    data.recipient = p.email;
+                console.log("looking for email delivery")
+                User.findById(p._id, 'emailDelivery email', (err,info)=>{
+                    console.log("Delivery setting is...", info.emailDelivery)
+                    console.log("recieptit is... ",info.email)
+                    data.recipient = info.email
+                    if (info.emailDelivery) processDelivery();
+                    else res.send("Delivery setting false") // browser test
+                })
+                let processDelivery = ()=>{
+                    console.log("starting delovery process")
+                    // data.recipient = p.email;
                     console.log("what my name is",p._id)
                     let id = p._id;
                     console.log("how many assets",p.assets.length)
