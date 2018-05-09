@@ -30,6 +30,9 @@ thead {
 .padTop05 {
     padding-top: 0.5rem;
 }
+.padBottom {
+    padding-bottom: 1rem;
+}
 .colorDefault {
     color: inherit;
 }

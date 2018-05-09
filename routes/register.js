@@ -14,17 +14,9 @@ router.post('/', (req, res, next) => {
         email: req.body.email,
         name: req.body.name,
         password: req.body.password,
-        assets: [
-            {
-                "exchange" : "etrade",
-                "id" : 2,
-                "name" : "Microsoft",
-                "purchasePrice" : "25",
-                "quantity" : "5",
-                "symbol" : "msft",
-                "type" : "stock"
-            }
-        ],
+        carrier: req.body.carrier,
+        phone: req.body.phone,
+        assets: [],
         snapshots: {}
       }
       console.log('userData',userData)

@@ -12,15 +12,13 @@ let userSchema = new mongoose.Schema({
         type: String,
         unique: false,
         required: false,
-        trim: true,
-        "default" : "3059895420"
+        trim: true
     },
     carrier: {
         type: String,
-        unique: true,
+        unique: false,
         required: false,
-        trim: true,
-        "default" : "@messaging.sprintpcs.com"
+        trim: true
     },
     name: {
         type: String,

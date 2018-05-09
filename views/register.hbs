@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="headerBar">
-        <h1 class="center">{{title}}</h1>
+        <h1 class="center sectionTitle">{{title}}</h1>
     </div>
     <div class="container">
         <div id="" class="padTop flex flexCenter">
@@ -18,25 +18,47 @@
                 <div>
                     <label class="minorLightText miniTitle">
                         Name
-                        <input type="text" placeholder="Name" id="name" name="name">
+                        <input type="text" placeholder="Name" id="name" name="name" required>
                     </label>
                 </div>
                 <div>
                     <label class="minorLightText miniTitle">
                         Email
-                        <input type="text" placeholder="email" id="email" name="email">
+                        <input type="text" placeholder="email" id="email" name="email" required>
                     </label>
                 </div>
                 <div>
                     <label class="minorLightText miniTitle">
                         Password
-                        <input type="password" placeholder="password" id="password" name="password">
+                        <input type="password" placeholder="password" id="password" name="password" required>
                     </label>
                 </div>
                 <div>
                     <label class="minorLightText miniTitle">
                         Confirm Password
-                        <input type="password" placeholder="confirm password" id="confirmPassword" name="confirmPassword">
+                        <input type="password" placeholder="confirm password" id="confirmPassword" name="confirmPassword" required>
+                    </label>
+                </div>
+                <div>
+                    <label class="minorLightText miniTitle">
+                        Phone Number
+                        <input type="phone" placeholder="##########" id="phone" name="phone">
+                    </label>
+                </div>
+                <div class="padBottom">
+                    <label class="minorLightText miniTitle">
+                        <div>
+                        Carrier Gateway
+                        </div>
+                        <select id="carrier" name="carrier">
+                            <option value=""></option>
+                            <option value="@txt.att.net">AT&T</option>
+                            <option value="@myboostmobile.com">Boost Mobile</option>
+                            <option value="@sms.mycricket.com">Cricket</option>
+                            <option value="@messaging.sprintpcs.com">Sprint</option>
+                            <option value="@tmomail.net">T-Mobile</option>
+                            <option value="@vmobl.com">Virgin Mobile</option>
+                        </select>
                     </label>
                 </div>
                 <input type="submit" value="Register" id="signin" />
