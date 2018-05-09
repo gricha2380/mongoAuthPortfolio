@@ -27,6 +27,9 @@ thead {
 .padTop2 {
     padding-top: 2rem;
 }
+.padTop05 {
+    padding-top: 0.5rem;
+}
 .colorDefault {
     color: inherit;
 }
@@ -155,7 +158,18 @@ table.alt tr:nth-of-type(even),.alt>div:nth-of-type(even) {
     align-items: center;
     justify-content: center;
 }
-
+.midWidth {
+    width: 900px;
+}
+.settings a {color: inherit;}
+.settings .minorLightText {padding-left: .5rem; line-height: 1.5rem;}
+.settings input {min-width: 12rem;}
+.settings .label {line-height: inherit}
+.alert {
+    padding: .5rem;
+    position: absolute;
+    color: #A70000;
+}
 
 /********************* MODULE *********************/
 .bar {
@@ -357,6 +371,7 @@ nav a.active {
 #actionList a {
     color: inherit;
     text-decoration: none;
+    display: block;
 }
 
 #userMenu {
@@ -458,6 +473,10 @@ nav a.active {
 
 #aboutModal.modal a {
     color: white;
+}
+
+#emailSettings {
+    width: 900px;
 }
 
 /********************* STATE *********************/
@@ -673,7 +692,7 @@ nav a.active div:before {
     .modal .inner {
         left: 0;
     }
-    
+
     #aboutModal.modal .inner {
         width: 100%;
         left: 0;

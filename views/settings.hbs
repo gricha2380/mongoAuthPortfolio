@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/png" href="img/cointoss.png"/>
+    <link rel="stylesheet" href="style.css">
+    <title>Settings</title>
+</head>
+<body>
+    <div class="headerBar" id="headerBar">
+        <div class="maxHolder">
+            {{>menuPartial}}
+            <h1 class="center sectionTitle">Settings</h1>
+        </div>
+    </div>
+    <div class="container" id="settings">
+        <div id="" class="padTop2 flex flexCenter">
+            <div id="emailSettings" class="grid three box table midWidth settings">
+                <div id="emailAddressCol" class="col block">
+                    <div class="minorLightText miniTitle">Email Address</div>
+                    <div class="minorLightText emailCell">gregor.richardson@gmail.com</div>
+                    <div class="alert"></div>
+                </div>
+
+                <div id="" class="col">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                </div>
+                
+                <div id="" class="col center">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                    <div class="minorLightText emailActionCell"><a href="#" class="action">Change</a></div>
+                    {{!-- <div class="minorLightText emailActionCell"><a href="#" class="action">Save</a></div> --}}
+                </div>
+            </div>
+        </div>
+        
+        <div id="" class="padTop2 flex flexCenter">
+            
+            <div id="passwordSettings" class="grid three box table midWidth settings">
+                <div id="passwordCol" class="col block">
+                    <div class="minorLightText miniTitle">Password</div>
+                    <div class="minorLightText passwordLabelCell label">Current</div>
+                    <div class="minorLightText passwordCell">********</div>
+                    <div class="alert"></div>
+                </div>
+
+                <div id="" class="col">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                    <div class="minorLightText passwordNewLabel label"></div>
+                    <div class="minorLightText passwordNewCell"></div>
+                    <div class="minorLightText passwordConfirmLabel label padTop05"></div>
+                    <div class="minorLightText passwordConfirmCell"></div>
+                </div>
+                
+                <div id="" class="col center">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                    <div class="minorLightText">&nbsp;</div>
+                    <div class="minorLightText"><a href="#" class="action">Change</a></div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div id="" class="padTop2 flex flexCenter">
+            
+            <div id="textSettings" class="grid three box table midWidth settings">
+                <div id="passwordCol" class="col block">
+                    <div class="minorLightText miniTitle">Text Message (SMS)</div>
+                    <div class="minorLightText textStatusLabel">Status: <span class="textStatus">On</span></div>
+                    <div class="minorLightText textFrequencyLabel">Frequency: <span class="textFrequency">Daily</span></div>
+                    <div class="alert"></div>
+                </div>
+
+                <div id="" class="col">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                    <div class="minorLightText textPhoneLabel">Phone: <span class="textPhone">305-989-5420</span></div>
+                    <div class="minorLightText textCarrierLabel">Carrier: <span class="textCarrier">Sprint</span></div>
+                </div>
+                
+                <div id="" class="col center">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                    <div class="minorLightText">&nbsp;</div>
+                    <div class="minorLightText"><a href="#" class="action">Change</a></div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div id="" class="padTop2 flex flexCenter">
+            
+            <div id="emailDeliverySettings" class="grid three box table midWidth settings">
+                <div id="passwordCol" class="col block">
+                    <div class="minorLightText miniTitle">Email Delivery</div>
+                    <div class="minorLightText emailDeliveryStatusLabel">Status: <span class="emailDeliveryStatus">On</span></div>
+                    <div class="minorLightText emailDeliveryFrequencyLabel">Frequency: <span class="emailDeliveryFrequency">Daily</span></div>
+                    <div class="alert"></div>
+                </div>
+
+                <div id="" class="col">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                </div>
+                
+                <div id="" class="col center">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                    <div class="minorLightText"><a href="#" class="action">Change</a></div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div id="" class="padTop2 flex flexCenter">
+            
+            <div id="deleteAccountSettings" class="grid three box table midWidth settings">
+                <div id="passwordCol" class="col block">
+                    <div class="minorLightText miniTitle">Delete account (Dangerous)</div>
+                    <div class="minorLightText deleteAccountStatusLabel">Status: <span class="deleteAccountStatus">Active</span></div>
+                    <div class="alert"></div>
+                </div>
+
+                <div id="" class="col">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                </div>
+                
+                <div id="" class="col center">
+                    <div class="minorLightText miniTitle">&nbsp;</div>
+                    <div class="minorLightText"><a href="#" class="action">Change</a></div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+    <nav class="">
+        <div class="grid four maxHolder">
+            <a class="button" href="/overview"><div>Overview</div></a>
+            <a class="button" href="/portfolio"><div>Portfolio</div></a>
+            <a class="button" href="/stats"><div>Stats</div></a>
+            <a class="button" href="/historical"><div>Historical</div></a>
+        </div>
+    </nav>
+    <script src="js/app.js"></script>
+    <script src="js/settings.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-17373319-21"></script>
+    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());gtag('config', 'UA-17373319-21');
+    </script>
+</body>
+</html>
