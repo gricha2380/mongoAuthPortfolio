@@ -161,9 +161,11 @@ router.post('/add', (req, res) =>{
             "purchasePrice": rb.purchasePrice,
             "quantity": rb.quantity,
             "exchange" : rb.exchange,
-            "id" : User.info.assetCount+1
+            "id" : User.info.assetCount + 1
         }
-        // console.log("what's in item now?",item)
+        console.log("asset count is...",item.id);
+
+        // Push asset into historical
         let query   = { _id: User.info._id }; 
         let update  = { $push: {assets: item}}; 
         let options = { new: true }; 
@@ -172,24 +174,24 @@ router.post('/add', (req, res) =>{
             console.log("new asset added...",asset)
             
             // TODO: update client model
-            let refresh = new User(asset);
-            // refresh.save();
-            // refresh.save( (err, data) => {
-            //     if (err) return console.error(err);
-            //     console.log("asset added live", data)
-            // });
-            
-            //update global assetId
-            User.update(
-                { "_id": User.info._id},
-                { $set:  { "User.info.assetCount": User.info.assetCount+1 }},
-                (err, result) => {
-                if (err) {console.log("error:",err)} else {
-                    console.log("global ID updated", User.info.assetCount);
-                    res.send(`${rb.name} asset created`);
-                }})
-            // res.send(`${rb.name} asset created`)
+            // let refresh = new User(asset);
+            //refresh.save();
+            res.send(`${rb.name} asset created`)
         });
+        
+        // refresh.save( (err, data) => {
+        //     if (err) return console.error(err);
+        //     console.log("asset added live", data)
+        // });
+        
+        // increment asset counter
+        let q = { _id: User.info._id }; 
+        let u = { assetCount: item.id}; 
+        let o = { new: true }; 
+        User.findOneAndUpdate(q, u, o, (err, asset)=>{ 
+            if (err) throw err;
+            console.log(`asset count updated...`,asset)
+        })
     }
 })
 
