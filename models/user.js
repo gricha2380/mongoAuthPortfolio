@@ -10,15 +10,17 @@ let userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        unique: true,
+        unique: false,
         required: false,
-        trim: true
+        trim: true,
+        "default" : "3059895420"
     },
     carrier: {
         type: String,
         unique: true,
         required: false,
-        trim: true
+        trim: true,
+        "default" : "@messaging.sprintpcs.com"
     },
     name: {
         type: String,
@@ -43,23 +45,28 @@ let userSchema = new mongoose.Schema({
     },
     assetCount: {
         type: Number,
-        required: false
+        required: false,
+        "default" : 0
     },
     emailDelivery: {
         type: Boolean,
-        required: true
+        required: true,
+        "default" : true
     },
     emailFrequency: {
         type: Number,
-        required: false
+        required: false,
+        "default" : 1
     },
     textDelivery: {
         type: Boolean,
-        required: true
+        required: true,
+        "default" : true
     },
     textFrequency: {
         type: Number,
-        required: false
+        required: false,
+        "default" : 1
     }
 })
 
