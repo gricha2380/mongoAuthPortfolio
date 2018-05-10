@@ -82,17 +82,19 @@
 
             let current = dataHolder.snapshots;
             console.log('assets showing',current, current.length)
-            for(let i=0;i<current.length;i++){
-                document.querySelector('#date').innerHTML += `<div class='cell'>${current[i].date}</div>`;  
-                document.querySelector('#portfolioValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].portfolioValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#portfolioGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].portfolioGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#portfolioGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].portfolioGrowth).toFixed(2)}%</div>`;  
-                document.querySelector('#cryptoValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].cryptoValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#cryptoGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].cryptoGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#cryptoGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].cryptoGrowth).toFixed(2)}%</div>`;  
-                document.querySelector('#stockValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].stockValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#stockGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].stockGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
-                document.querySelector('#stockGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].stockGrowth).toFixed(2)}%</div>`;  
+            if (current.length > 1) {
+                for(let i=0;i<current.length;i++){
+                    document.querySelector('#date').innerHTML += `<div class='cell'>${current[i].date}</div>`;  
+                    document.querySelector('#portfolioValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].portfolioValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                    document.querySelector('#portfolioGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].portfolioGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                    document.querySelector('#portfolioGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].portfolioGrowth).toFixed(2)}%</div>`;  
+                    document.querySelector('#cryptoValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].cryptoValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                    document.querySelector('#cryptoGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].cryptoGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                    document.querySelector('#cryptoGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].cryptoGrowth).toFixed(2)}%</div>`;  
+                    document.querySelector('#stockValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].stockValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                    document.querySelector('#stockGain').innerHTML += `<div class='cell'>$${parseFloat(current[i].stockGains).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
+                    document.querySelector('#stockGrowth').innerHTML += `<div class='cell'>${parseFloat(current[i].stockGrowth).toFixed(2)}%</div>`;  
+                }
             }
         }
         initUser()

@@ -48,8 +48,8 @@ console.log("global counter", User.info.assetCount)
         if (data.assets.assets[a].type=='crypto') {
             promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {    
                 data.assets.assets[a].price = res.body[0].price_usd;
-                data.assets.assets[a].todayPercent = res.body[0].percent_change_24h;
-                data.assets.assets[a].todayGain = parseInt(res.body[0].percent_change_24h) * parseInt(res.body[0].price_usd);
+                data.assets.assets[a].todayPercent = parseInt(res.body[0].percent_change_24h) * .01;
+                data.assets.assets[a].todayGain =  data.assets.assets[a].todayPercent * parseInt(res.body[0].price_usd);
                 data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
                 data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
                 data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
@@ -161,7 +161,7 @@ router.post('/add', (req, res) =>{
             "purchasePrice": rb.purchasePrice,
             "quantity": rb.quantity,
             "exchange" : rb.exchange,
-            "id" : User.info.assetCount + 1
+            "id" : User.info.assetCount ? User.info.assetCount + 1 : 1
         }
         console.log("asset count is...",item.id);
 

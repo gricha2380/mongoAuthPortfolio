@@ -11,8 +11,8 @@ router.post('/', (req, res, next) => {
     if (req.body.email && req.body.name && req.body.password && req.body.confirmPassword) {
       // confirm passwords match
       let userData = {
-        email: req.body.email,
-        name: req.body.name,
+        email: req.body.email.toLowerCase(),
+        name: req.body.name.toLowerCase(),
         password: req.body.password,
         carrier: req.body.carrier,
         phone: req.body.phone,
@@ -21,7 +21,6 @@ router.post('/', (req, res, next) => {
       }
       console.log('userData',userData)
       console.log('user password', userData.password)
-
   
       User.create(userData, (error, user) => {
         if (error) {

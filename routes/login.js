@@ -10,7 +10,8 @@ router.get('/', login.loggedOut, (req, res, next) => {
   
 router.post('/', (req, res, next)=> {
     if (req.body.email && req.body.password) {
-        User.authenticate(req.body.email, req.body.password, (error, user) => {
+        console.log("info", req.body.password, req.body.email)
+        User.authenticate(req.body.email.toLowerCase(), req.body.password, (error, user) => {
         if (error || !user) {
             let err = new Error('Wrong username or password');
             err.status = 401;

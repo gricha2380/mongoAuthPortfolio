@@ -100,18 +100,20 @@
 
             // chart data
             let snapHolder = dataHolder.user.snapshots;
-            console.log('I found chartpoints',chartPoints);
-            console.log('this should be a snapshot',typeof(snapHolder),snapHolder)
-            console.log('snap inside spot 0',snapHolder[0]);
-            for (let e = 0;e<snapHolder.length;e++){
-                chartPoints.push([snapHolder[e].date,snapHolder[e].portfolioValue,snapHolder[e].portfolioGrowth])
-            }
-            console.log('chart data, yall',chartPoints);
-            chartPoints.forEach(item => {
-                //document.querySelector('#chartHolder').innerHTML += `<div class='row'>${item}</div>`;
-            })
+            if (snapHolder.length > 1) {
+                console.log('I found chartpoints!!!',chartPoints);
+                console.log('this should be a snapshot',typeof(snapHolder),snapHolder)
+                console.log('snap inside spot 0',snapHolder[0]);
+                for (let e = 0;e<snapHolder.length;e++){
+                    chartPoints.push([snapHolder[e].date,snapHolder[e].portfolioValue,snapHolder[e].portfolioGrowth])
+                }
+                console.log('chart data, yall',chartPoints);
+                chartPoints.forEach(item => {
+                    //document.querySelector('#chartHolder').innerHTML += `<div class='row'>${item}</div>`;
+                })
 
-            runValueCanvas();
+                runValueCanvas();
+            }
             document.querySelector('.inner').classList.remove('hide')
            console.log('ready')
         }
