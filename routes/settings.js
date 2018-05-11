@@ -17,11 +17,12 @@ router.patch('/update/email', (req, res, next) => {
     console.log("inside update email route", rb)
     
     if (!rb.email) {
-        res.status(400).send("No email found");
+        return res.status(400).send("No email found");
     } 
     else {
         console.log("request body is...",rb)
-        res.send(`I did my job`);
+        res.statusMessage = "Email Address Saved!";
+        return res.status(200).send('maybe work');
         // console.log("id is...",req.params.id)
         // let item = {
         //     "name": rb.name,

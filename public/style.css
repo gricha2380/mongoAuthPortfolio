@@ -173,6 +173,9 @@ table.alt tr:nth-of-type(even),.alt>div:nth-of-type(even) {
     position: absolute;
     color: #A70000;
 }
+.alert.good {
+    color: #4F9601;
+}
 
 /********************* MODULE *********************/
 .bar {

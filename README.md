@@ -30,7 +30,7 @@ This will create file inside `/dbexport`
 
 ## Tech Stack   
 **Model:** MongoDB, Mongoose  
-**View:** Handlebars  
+**View:** Handlebars, Chart.js  
 **Controller:**  Node.js, Express.js
 
 ```

@@ -3,11 +3,14 @@ console.log("this is dataholder", dataHolder)
 
 
 let changeResponse = (response, target) => {
-    console.log("here is response")
-    document.querySelector(target).innerHTML = response;
+    console.log("here is response", response)
+    document.querySelector(target).innerHTML = response.statusText;
+    if (response.status == 200) document.querySelector(target).classList.add('good')
+
     setTimeout(() =>{
         document.querySelector(target).innerHTML = ``;
-    }, 5000);
+        if (response.status == 200) document.querySelector(target).classList.remove('good')
+    }, 6000);
 }
 
 document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
@@ -21,6 +24,7 @@ let emailEditMode = (x) => {
     
     document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
         // validation
+        console.log('validate, eventually.')
 
         // send content to update field
         let formData = {
@@ -33,9 +37,9 @@ let emailEditMode = (x) => {
               },
             body: JSON.stringify(formData), // must match 'Content-Type' header
         }).then(response => {
-            emailViewMode();
-            console.log(response)
+            console.log("direct response",response)
             changeResponse(response, `#emailSettings .alert`);
+            emailViewMode();
         });
     })
 }
