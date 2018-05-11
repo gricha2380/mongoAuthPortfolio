@@ -1,6 +1,4 @@
-console.log("this is dataholder", dataHolder)
-// inside settings.js, fill cells with db values taken from {{data}} holder
-
+console.log("current DB values", dataHolder)
 
 let changeResponse = (response, target) => {
     console.log("here is response", response)
@@ -12,11 +10,6 @@ let changeResponse = (response, target) => {
         if (response.status == 200) document.querySelector(target).classList.remove('good')
     }, 6000);
 }
-
-document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
-    console.log("clicked email edit")
-    emailEditMode();
-})
 
 let emailEditMode = (x) => {
     document.querySelector('#emailSettings .action').innerHTML = "Save";
