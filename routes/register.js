@@ -17,7 +17,7 @@ router.post('/', (req, res, next) => {
         carrier: req.body.carrier,
         phone: req.body.phone,
         assets: [],
-        snapshots: {}
+        snapshots: []
       }
       console.log('userData',userData)
       console.log('user password', userData.password)

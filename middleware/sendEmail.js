@@ -72,7 +72,7 @@ let sendEmail = (recipient, data, totalValue) => {
         <div style="margin: 50px auto">
         ${table.content}
         </div>
-        <div style="text-align:center"><a href="portfolioapp2380.herokuapp.com">View Portfolio</a></div>
+        <div style="text-align:center"><a href="https://portfolioapp2380.herokuapp.com">View Portfolio</a></div>
         `
     };
     
