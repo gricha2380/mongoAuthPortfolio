@@ -66,7 +66,7 @@ let userSchema = new mongoose.Schema({
         required: false,
         "default" : 1
     }
-})
+},{ autoIndex: false })
 
 userSchema.set('toObject', { virtuals: true }); // please make them normal objects...
 
