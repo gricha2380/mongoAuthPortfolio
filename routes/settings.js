@@ -22,37 +22,21 @@ router.patch('/update/email', (req, res, next) => {
     else {
         console.log("request body is...",rb)
         res.statusMessage = "Email Address Saved!";
-        return res.status(200).send('maybe work');
+        // return res.status(200).send();
         // console.log("id is...",req.params.id)
-        // let item = {
-        //     "name": rb.name,
-        //     "symbol": rb.symbol,
-        //     "type": rb.type,
-        //     "purchasePrice": rb.purchasePrice,
-        //     "quantity": rb.quantity,
-        //     "exchange": rb.exchange
-        // }
-
-        // experimental example, updating nested asset array
-        // console.log("what's in item now?",item)
-        // User.update(
-        //     { "assets.id": Number(req.params.id) },
-        //     { $set:  { 
-        //         "assets.$.name": item.name,
-        //         "assets.$.symbol": item.symbol,
-        //         "assets.$.type": item.type,
-        //         "assets.$.purchasePrice": item.purchasePrice,
-        //         "assets.$.quantity": item.quantity,
-        //         "assets.$.exchange": item.exchange
-        //     }},
-        //     (err, result) => {
-        //     if (err) {
-        //         console.log("error:",err);
-        //     } else {
-        //         // console.log("success, asset updated", result);
-        //         res.send(`${rb.name} asset updated`);
-        //     }
-        // })
+        let item = {
+            "email": rb.email
+        }
+        let update  = item; 
+        let options = { new: true }; 
+        let query = { _id:User.info._id }; 
+        console.log('findNupdate',query, update, options, "old info:",User.info.email)
+        return res.status(200).send();
+        // User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+        //     if (err) throw err;
+        //     console.log(`${item.email} email address updated...`)
+        //     return res.status(200).send();
+        // });
     }
 });
 

@@ -1,7 +1,8 @@
 console.log("current DB values", dataHolder)
+let emailValue, emailEdit = false;
 
 let changeResponse = (response, target) => {
-    console.log("here is response", response)
+    // console.log("here is response", response)
     document.querySelector(target).innerHTML = response.statusText;
     if (response.status == 200) document.querySelector(target).classList.add('good')
 
@@ -12,38 +13,60 @@ let changeResponse = (response, target) => {
 }
 
 let emailEditMode = (x) => {
-    document.querySelector('#emailSettings .action').innerHTML = "Save";
-    document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${dataHolder.email}">`; // set value from DB doc
+    if (emailEdit) {
+        // console.log("now in edit mode")
+        document.querySelector('#emailSettings .action').innerHTML = "Save";
+        // document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${emailValue}">`; // set value from local var for testing
+        document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${dataHolder.email}">`; // set value from DB doc
+        
+        document.querySelector('#emailSettings .emailCell input').addEventListener('blur', (e)=>{
+            emailValue = document.querySelector('#emailSettings .emailCell input').value;
+            // console.log("New value typed", emailValue)
+        })
+        
+        document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
     
-    document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
-        // validation
-        console.log('validate, eventually.')
-
-        // send content to update field
-        let formData = {
-            "email" : document.querySelector('#emailSettings .emailCell input').value
-        }
-        fetch(`/settings/update/email`, {
-            method: 'PATCH',
-            headers: {
-                'content-type': 'application/json'
-              },
-            body: JSON.stringify(formData), // must match 'Content-Type' header
-        }).then(response => {
-            console.log("direct response",response)
-            changeResponse(response, `#emailSettings .alert`);
-            emailViewMode();
-        });
-    })
+            // console.log("save button clicked. sending data", emailValue)
+    
+            // validation
+            console.log('validate, coming eventually...')
+    
+            // send content to update field
+            let formData = {
+                "email" : emailValue
+            }
+    
+            // console.log("form data before click",formData)
+    
+            fetch(`/settings/update/email`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json'
+                  },
+                body: JSON.stringify(formData), // must match 'Content-Type' header
+            }).then(response => {
+                console.log("direct response",response)
+                changeResponse(response, `#emailSettings .alert`);
+                emailEdit = false;
+                emailViewMode();
+            });
+        })
+    }
 }
 
 let emailViewMode = (x) => {
-    document.querySelector('#emailSettings .action').innerHTML = "Change";
-    document.querySelector('#emailSettings .emailCell').innerHTML = `${dataHolder.email}`; // set value from user DB doc
-    document.querySelector('#textSettings .alert').innerHTML = ``;
-    document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
-        emailEditMode();
-    })
+    if (!emailEdit) {
+        // console.log('now in view mode')
+        document.querySelector('#emailSettings .action').innerHTML = "Change";
+        document.querySelector('#emailSettings .emailCell').innerHTML = `${dataHolder.email}`; // set value from user DB doc
+        // document.querySelector('#emailSettings .emailCell').innerHTML = `${emailValue}`; // set value from local var for testing
+        document.querySelector('#textSettings .alert').innerHTML = ``;
+        document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
+            // console.log('change button clicked. leaving view mode')
+            emailEdit = true;
+            emailEditMode();
+        })
+    }
 }
 
 
@@ -189,7 +212,7 @@ let deleteAccountViewMode = (x) => {
 
 
 // call all view modes at load
-emailViewMode();
+emailViewMode(true);
 passwordViewMode();
 textViewMode();
 emailDeliveryViewMode();
