@@ -73,14 +73,14 @@ router.get('/', (req, res, next) => {
                         "unix": Date.now(),
                         "cryptoCount": data.totalValue.cryptoCount,
                         "cryptoGains": data.totalValue.cryptoGains,
-                        "cryptoGrowth": data.totalValue.cryptoGrowth * 100,
+                        "cryptoGrowth": data.totalValue.cryptoGrowth,
                         "cryptoValue": data.totalValue.cryptoValue,
                         "portfolioGains": data.totalValue.portfolioGains,
-                        "portfolioGrowth": data.totalValue.portfolioGrowth * 100,
+                        "portfolioGrowth": data.totalValue.portfolioGrowth,
                         "portfolioValue": data.totalValue.portfolioValue,
                         "stockCount": data.totalValue.stockCount,
                         "stockGains": data.totalValue.stockGains,
-                        "stockGrowth": data.totalValue.stockGrowth * 100,
+                        "stockGrowth": data.totalValue.stockGrowth,
                         "stockValue": data.totalValue.stockValue
                     }
                     

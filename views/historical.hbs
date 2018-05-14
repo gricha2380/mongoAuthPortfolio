@@ -82,6 +82,15 @@
 
             let current = dataHolder.snapshots;
             console.log('assets showing',current, current.length)
+
+            current.sort((a, b) => {
+                a = new Date(a.unix);
+                b = new Date(b.unix);
+                return a>b ? -1 : a<b ? 1 : 0;
+            });
+
+            console.log('current in reverse chronological order', current);
+
             if (current.length > 1) {
                 for(let i=0;i<current.length;i++){
                     document.querySelector('#date').innerHTML += `<div class='cell'>${current[i].date}</div>`;  
