@@ -127,6 +127,14 @@ function initUserMenu(){
     } // end expandMenu
 }
 
+let capitalize = (word) => {
+    // console.log("here's the word", word)
+    word = word.toLowerCase();
+    word = word[0].toUpperCase()+word.substr(1);
+    // console.log("converted word", word)
+    return word;
+}
+
 (function(module) {
 
     let refresh = document.querySelector('.refresh');

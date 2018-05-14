@@ -88,22 +88,23 @@ var app = {};
         if (newAsset) {
             document.querySelector('#newForm').addEventListener('click',function(event){
                 // event.preventDefault();
-
-                let asset = {
-                    "name": document.querySelector('#nameModal').value,
-                    "symbol": document.querySelector('#symbolModal').value,
-                    "type": document.querySelector('#typeModal').value,
-                    "quantity": document.querySelector('#quantityModal').value,
-                    "purchasePrice": document.querySelector('#purchasePriceModal').value,
-                    "exchange": document.querySelector('#exchangeModal').value,
-                    "currentID": document.querySelector('#currentIDModal').value,
-                    // "id": document.querySelectorAll('#assetList #symbol .cell').length+1,
-                    "deleteAsset": document.querySelector('#deleteModal').checked
-                };
-
-                console.log('asset contents',asset);
                 if (event.target.matches('div.save')) {
                     // console.log('you cllicked save');
+                    console.log('preview of proper name',capitalize(document.querySelector('#nameModal').value))
+    
+                    let asset = {
+                        "name": capitalize(document.querySelector('#nameModal').value),
+                        "symbol": document.querySelector('#symbolModal').value.toUpperCase(),
+                        "type": document.querySelector('#typeModal').value,
+                        "quantity": document.querySelector('#quantityModal').value,
+                        "purchasePrice": document.querySelector('#purchasePriceModal').value,
+                        "exchange": capitalize(document.querySelector('#exchangeModal').value),
+                        "currentID": document.querySelector('#currentIDModal').value,
+                        // "id": document.querySelectorAll('#assetList #symbol .cell').length+1,
+                        "deleteAsset": document.querySelector('#deleteModal').checked
+                    };
+    
+                    console.log('asset contents',asset);
                     
                     asset.currentID ? updateRecord(asset) : insertRecord(asset);
                     // clearForm();
