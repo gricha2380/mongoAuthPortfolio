@@ -79,16 +79,16 @@ router.put('/save', (req, res, next) => {
             "unix": Date.now(),
             "cryptoCount": data.totalValue.cryptoCount,
             "cryptoGains": data.totalValue.cryptoGains,
-            "cryptoGrowth": data.totalValue.cryptoGrowth * 100,
             "cryptoValue": data.totalValue.cryptoValue,
             "portfolioGains": data.totalValue.portfolioGains,
-            "portfolioGrowth": data.totalValue.portfolioGrowth * 100,
             "portfolioValue": data.totalValue.portfolioValue,
             "stockCount": data.totalValue.stockCount,
             "stockGains": data.totalValue.stockGains,
-            "stockGrowth": data.totalValue.stockGrowth * 100,
             "stockValue": data.totalValue.stockValue
         }
+        item.portfolioGrowth = (item.portfolioValue/(item.portfolioValue - item.portfolioGains)-1)*100;
+        item.cryptoGrowth = (item.cryptoValue/(item.cryptoValue - item.cryptoGains)-1)*100;
+        item.stockGrowth = (item.stockValue/(item.stockValue - item.stockGains)-1)*100;
         
         // console.log("what's in item now?",item)
         let query   = { _id: User.info._id }; 
