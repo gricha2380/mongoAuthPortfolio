@@ -15,55 +15,72 @@ let stockAPI = {
 
 router.get('/', login.requiresLogin, (req, res, next) => {
     // console.log("user id here!!",User.info._id)
-console.log("global counter", User.info.assetCount)
+    // console.log("global counter", User.info.assetCount)
+    // console.log("User.info printout from root route", User.info)
+
     let data = {
-        user: User.info,
+        // user: User.info, // use find by ID instead .info._id
+        assets: [],
         totalValue: {
             portfolioValue: 0, portfolioGrowth: 0, portfolioGains: 0, stockValue: 0, stockGrowth: 0, stockGains: 0, cryptoValue: 0, cryptoGrowth: 0, cryptoGains: 0
         },
         snapshots: [],
         chartpoints: []
     }
-    
-    data.assets = data.user.toObject();
+
+    User.findById(User.info._id).then((e)=>{
+        if (!e) console.log("No data received")
+        populateUser(e);
+        processAssets();
+    })
+
+    let populateUser = (value) => {
+        data.assets = value;
+    }
+
+    // console.log("this is after the block")
+
     // data.totalValue = fakeData.totalValue
     // data.user.snapshots = fakeData.snapshots
 
-    let promises = [];
+    let processAssets = () => {
+        let promises = [];
     
-    for (let a in data.assets.assets) {
-        if (data.assets.assets[a].type=='stock') {
-            promises.push(superagent.get(stockAPI.start+data.assets.assets[a].symbol+stockAPI.end).then((res) => {    
-                data.assets.assets[a].price = res.body.delayedPrice;
-                res.body.low ? data.assets.assets[a].todayPercent = res.body.delayedPrice / res.body.low : data.assets.assets[a].todayPercent = 0;
-                res.body.low ? data.assets.assets[a].todayGain = res.body.delayedPrice - res.body.low : data.assets.assets[a].todayGain = 0;
-                data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
-                data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
-                data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
-                data.totalValue.stockValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
-                data.totalValue.stockGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
-                data.totalValue.stockGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
-            }).catch(console.error))
+        for (let a in data.assets.assets) {
+            if (data.assets.assets[a].type=='stock') {
+                promises.push(superagent.get(stockAPI.start+data.assets.assets[a].symbol+stockAPI.end).then((res) => {    
+                    data.assets.assets[a].price = res.body.delayedPrice;
+                    res.body.low ? data.assets.assets[a].todayPercent = res.body.delayedPrice / res.body.low : data.assets.assets[a].todayPercent = 0;
+                    res.body.low ? data.assets.assets[a].todayGain = res.body.delayedPrice - res.body.low : data.assets.assets[a].todayGain = 0;
+                    data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                    data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                    data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                    data.totalValue.stockValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                    data.totalValue.stockGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                    data.totalValue.stockGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                }).catch(console.error))
+            }
+            if (data.assets.assets[a].type=='crypto') {
+                promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {    
+                    data.assets.assets[a].price = res.body[0].price_usd;
+                    data.assets.assets[a].todayPercent = parseInt(res.body[0].percent_change_24h) * .01;
+                    data.assets.assets[a].todayGain =  data.assets.assets[a].todayPercent * parseInt(res.body[0].price_usd);
+                    data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                    data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                    data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                    data.totalValue.cryptoValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
+                    data.totalValue.cryptoGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
+                    data.totalValue.cryptoGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
+                }).catch(console.error))
+            }
         }
-        if (data.assets.assets[a].type=='crypto') {
-            promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {    
-                data.assets.assets[a].price = res.body[0].price_usd;
-                data.assets.assets[a].todayPercent = parseInt(res.body[0].percent_change_24h) * .01;
-                data.assets.assets[a].todayGain =  data.assets.assets[a].todayPercent * parseInt(res.body[0].price_usd);
-                data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
-                data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
-                data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
-                data.totalValue.cryptoValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
-                data.totalValue.cryptoGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
-                data.totalValue.cryptoGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
-            }).catch(console.error))
-        }
+        Promise.all(promises).then(function(results) {
+            data = JSON.stringify(data);
+            if (req.body.refresh) res.send(data.totalValue, data.snapshots)
+            else {return res.render('portfolio', {data, partials : { menuPartial : './partials/nav'} })}
+        });
     }
-    Promise.all(promises).then(function(results) {
-        data = JSON.stringify(data);
-        if (req.body.refresh) res.send(data.totalValue, data.snapshots)
-        else {return res.render('portfolio', {data, partials : { menuPartial : './partials/nav'} })}
-    });
+    
 });
 
 // find asset
@@ -141,7 +158,7 @@ router.post('/edit/:id', (req, res) =>{
             if (err) {
                 console.log("error:",err);
             } else {
-                // console.log("success, asset updated", result);
+                console.log("success, asset updated", result);
                 res.send(`${rb.name} asset updated`);
             }
         })
@@ -169,26 +186,17 @@ router.post('/add', (req, res) =>{
         let query   = { _id: User.info._id }; 
         let update  = { $push: {assets: item}}; 
         let options = { new: true }; 
-        User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+        return User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
             if (err) throw err;
             console.log("new asset added...",asset)
-            
-            // TODO: update client model
-            // let refresh = new User(asset);
-            //refresh.save();
             res.send(`${rb.name} asset created`)
         });
-        
-        // refresh.save( (err, data) => {
-        //     if (err) return console.error(err);
-        //     console.log("asset added live", data)
-        // });
         
         // increment asset counter
         let q = { _id: User.info._id }; 
         let u = { assetCount: item.id}; 
         let o = { new: true }; 
-        User.findOneAndUpdate(q, u, o, (err, asset)=>{ 
+        return User.findOneAndUpdate(q, u, o, (err, asset)=>{ 
             if (err) throw err;
             console.log(`asset count updated...`,asset)
         })
