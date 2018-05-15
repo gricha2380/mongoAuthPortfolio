@@ -103,7 +103,7 @@ router.post('/edit/:id', (req, res) =>{
             { $pull: {
                 assets: { id: Number(req.params.id) }
                 }
-            },
+            },{ new: true },
             
             (err, result) => {
                 if (err) {
@@ -136,7 +136,7 @@ router.post('/edit/:id', (req, res) =>{
                 "assets.$.purchasePrice": item.purchasePrice,
                 "assets.$.quantity": item.quantity,
                 "assets.$.exchange": item.exchange
-            }},
+            }},{ new: true },
             (err, result) => {
             if (err) {
                 console.log("error:",err);

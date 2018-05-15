@@ -26,15 +26,6 @@ let userSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    // assets: [{
-    //     exchange: String,
-    //     id: Number,
-    //     name: String,
-    //     purchasePrice: Number,
-    //     quantity: Number,
-    //     symbol: String,
-    //     type: String
-    // }],
     assets : { type : Array , "default" : [] },
     snapshots : { type : Array , "default" : [] },
     password: {
@@ -65,6 +56,10 @@ let userSchema = new mongoose.Schema({
         type: Number,
         required: false,
         "default" : 1
+    },
+    created: { 
+        type: Date,
+        default: Date.now
     }
 },{ autoIndex: false })
 

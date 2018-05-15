@@ -73,16 +73,16 @@ router.get('/', (req, res, next) => {
                         "unix": Date.now(),
                         "cryptoCount": data.totalValue.cryptoCount,
                         "cryptoGains": data.totalValue.cryptoGains,
-                        "cryptoGrowth": data.totalValue.cryptoGrowth,
                         "cryptoValue": data.totalValue.cryptoValue,
                         "portfolioGains": data.totalValue.portfolioGains,
-                        "portfolioGrowth": data.totalValue.portfolioGrowth,
                         "portfolioValue": data.totalValue.portfolioValue,
                         "stockCount": data.totalValue.stockCount,
                         "stockGains": data.totalValue.stockGains,
-                        "stockGrowth": data.totalValue.stockGrowth,
                         "stockValue": data.totalValue.stockValue
                     }
+                    item.portfolioGrowth = (item.portfolioValue/(item.portfolioValue - item.portfolioGains)-1)*100;
+                    item.cryptoGrowth = (item.cryptoValue/(item.cryptoValue - item.cryptoGains)-1)*100;
+                    item.stockGrowth = (item.stockValue/(item.stockValue - item.stockGains)-1)*100;
                     
                     console.log(`${item.date} new snapshot added...`,item)
                     let update  = { $push: {snapshots: item}}; 

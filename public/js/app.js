@@ -1,8 +1,8 @@
 'use strict';
 
 var app = {};
-// var __API_URL__ = 'https://portfolioapp2380.herokuapp.com'; // deployed URL
-var __API_URL__ = 'http://localhost:3000'; // local URL
+var __API_URL__ = 'https://portfolioapp2380.herokuapp.com'; // deployed URL
+// var __API_URL__ = 'http://localhost:3000'; // local URL
 
 let chartPoints = [];
 let exchangePoints = [];
