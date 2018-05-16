@@ -1,4 +1,4 @@
-# Portfolio App 2380 v0.6
+# Portfolio App 2380 v0.7
 Financial portfolio tracking system, built for personal use and for practice with full stack Javascript development.
 
 ## Features  
