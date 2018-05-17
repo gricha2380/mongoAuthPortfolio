@@ -280,7 +280,6 @@
                 }
                 assets[i].totalGrowth = `${((assets[i].marketValue/assets[i].costBasis)-1)*100}`;
                 assets[i].totalGain = `${assets[i].marketValue - assets[i].costBasis}`;
-
             }
             console.log("assets after loop",assets)
 
@@ -301,7 +300,7 @@
                 })
             }
                 
-            runStats(assets);
+            runStats(assets, dataHolder.totalValue);
             runValueCanvas();
             runExchangeCanvas();    
         }    
