@@ -28,7 +28,7 @@ router.get('/', login.requiresLogin, (req, res, next) => {
 
     let populateUser = (value) => {
         data.assets = value;
-        data.snapshots = data.assets.snapshots;
+        // data.snapshots = data.assets.snapshots;
     }
     
     let promises = [];
