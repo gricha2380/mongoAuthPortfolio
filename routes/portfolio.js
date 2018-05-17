@@ -19,7 +19,7 @@ router.get('/', login.requiresLogin, (req, res, next) => {
     // console.log("User.info printout from root route", User.info)
 
     let data = {
-        // user: User.info, // use find by ID instead .info._id
+        user: User.info, // use find by ID instead .info._id
         assets: [],
         totalValue: {
             portfolioValue: 0, portfolioGrowth: 0, portfolioGains: 0, stockValue: 0, stockGrowth: 0, stockGains: 0, cryptoValue: 0, cryptoGrowth: 0, cryptoGains: 0

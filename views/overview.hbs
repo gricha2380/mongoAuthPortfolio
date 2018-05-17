@@ -100,7 +100,7 @@
 
             // chart data
             let snapHolder = dataHolder.user.snapshots;
-            if (snapHolder.length > 1) {
+            if (snapHolder.length >= 1) {
                 console.log('I found chartpoints!!!',chartPoints);
                 console.log('this should be a snapshot',typeof(snapHolder),snapHolder)
                 console.log('snap inside spot 0',snapHolder[0]);
@@ -113,9 +113,11 @@
                 })
 
                 runValueCanvas();
+            } else {
+                document.querySelector('#overviewChartHolder').innerHTML= "<div class='center padTop2 minorLightText subtitle'>No chart data available</div>";
             }
-            document.querySelector('.inner').classList.remove('hide')
-           console.log('ready')
+            document.querySelector('.inner').classList.remove('hide');
+           console.log('ready');
         }
         initUser();
     </script>

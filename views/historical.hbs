@@ -91,7 +91,7 @@
 
             console.log('current in reverse chronological order', current);
 
-            if (current.length > 1) {
+            if (current.length >= 1) {
                 for(let i=0;i<current.length;i++){
                     document.querySelector('#date').innerHTML += `<div class='cell'>${current[i].date}</div>`;  
                     document.querySelector('#portfolioValue').innerHTML += `<div class='cell'>$${parseFloat(current[i].portfolioValue).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>`;  
