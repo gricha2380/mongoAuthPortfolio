@@ -95,7 +95,7 @@ router.get('/', (req, res, next) => {
                     });
                         // portfolio.update({$push: {snapshots: item}})
                         // res.json({"snapshot": item}) // browser test
-                    }).catch(console.error);
+                }).catch(console.error);
 
             })
         } // end else

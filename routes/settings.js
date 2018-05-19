@@ -21,22 +21,22 @@ router.patch('/update/email', (req, res, next) => {
     } 
     else {
         console.log("request body is...",rb)
-        res.statusMessage = "Email Address Saved!";
-        // return res.status(200).send();
-        // console.log("id is...",req.params.id)
+        let statusMessage = "Email Address Saved!";
+        // return res.status(200).send(); // for testing without saving
+
         let item = {
             "email": rb.email
         }
-        let update  = item; 
+        let update  = item;
         let options = { new: true }; 
         let query = { _id:User.info._id }; 
         console.log('findNupdate',query, update, options, "old info:",User.info.email)
-        return res.status(200).send();
-        // User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
-        //     if (err) throw err;
-        //     console.log(`${item.email} email address updated...`)
-        //     return res.status(200).send();
-        // });
+        // return res.status(200).send();
+        User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+            if (err) throw err;
+            console.log(`${item.email} email address updated...`);
+            return res.status(200).send({email:item.email,message:statusMessage,status:200});
+        });
     }
 });
 

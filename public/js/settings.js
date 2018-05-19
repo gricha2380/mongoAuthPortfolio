@@ -3,7 +3,7 @@ let emailValue, emailEdit = false;
 
 let changeResponse = (response, target) => {
     // console.log("here is response", response)
-    document.querySelector(target).innerHTML = response.statusText;
+    document.querySelector(target).innerHTML = response.message;
     if (response.status == 200) document.querySelector(target).classList.add('good')
 
     setTimeout(() =>{
@@ -18,25 +18,25 @@ let emailEditMode = (x) => {
         document.querySelector('#emailSettings .action').innerHTML = "Save";
         // document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${emailValue}">`; // set value from local var for testing
         document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${dataHolder.email}">`; // set value from DB doc
+        document.querySelector('#emailSettings .emailCell input').select();
         
-        document.querySelector('#emailSettings .emailCell input').addEventListener('blur', (e)=>{
+        document.querySelector('#emailSettings .emailCell input').addEventListener('change', (e)=>{
             emailValue = document.querySelector('#emailSettings .emailCell input').value;
-            // console.log("New value typed", emailValue)
+            console.log("New value typed", emailValue)
         })
-        
         document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
-    
-            // console.log("save button clicked. sending data", emailValue)
-    
             // validation
             console.log('validate, coming eventually...')
-    
+            sendForm();
+        })
+
+        let sendForm =()=> {
             // send content to update field
             let formData = {
                 "email" : emailValue
             }
-    
-            // console.log("form data before click",formData)
+
+            console.log("this is formData",formData, JSON.stringify(formData));
     
             fetch(`/settings/update/email`, {
                 method: 'PATCH',
@@ -44,13 +44,16 @@ let emailEditMode = (x) => {
                     'content-type': 'application/json'
                   },
                 body: JSON.stringify(formData), // must match 'Content-Type' header
-            }).then(response => {
-                console.log("direct response",response)
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log("direct response",response, response.email)
+                dataHolder.email = response.email;
                 changeResponse(response, `#emailSettings .alert`);
                 emailEdit = false;
                 emailViewMode();
             });
-        })
+        }
     }
 }
 
