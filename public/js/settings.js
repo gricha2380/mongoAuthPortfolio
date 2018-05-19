@@ -12,9 +12,19 @@ let changeResponse = (response, target) => {
     }, 6000);
 }
 
+let toggleEdit = ()=>{
+    // console.log('change button clicked. leaving view mode')
+    emailEdit = !emailEdit;
+    console.log("emailEdittoggle value", emailEdit)
+    emailEdit = true ? emailEditMode() : emailViewMode();
+    // document.querySelector('#emailSettings .action').removeEventListener('click', toggleEdit);
+}
+
+document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit);
+
 let emailEditMode = (x) => {
-    if (emailEdit) {
-        // console.log("now in edit mode")
+    if (emailEdit == true) {
+        console.log("now in edit mode")
         document.querySelector('#emailSettings .action').innerHTML = "Save";
         // document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${emailValue}">`; // set value from local var for testing
         document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${dataHolder.email}">`; // set value from DB doc
@@ -22,27 +32,22 @@ let emailEditMode = (x) => {
         
         document.querySelector('#emailSettings .emailCell input').addEventListener('change', (e)=>{
             emailValue = document.querySelector('#emailSettings .emailCell input').value;
-            console.log("New value typed", emailValue)
+            console.log("New value typed", emailValue);
         })
-        document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
-            // validation
-            console.log('validate, coming eventually...')
-            sendForm();
-        })
-
+        
         let sendForm =()=> {
-            // send content to update field
+            // field validation coming eventually
             let formData = {
                 "email" : emailValue
             }
-
+            
             console.log("this is formData",formData, JSON.stringify(formData));
-    
+            
             fetch(`/settings/update/email`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json'
-                  },
+                },
                 body: JSON.stringify(formData), // must match 'Content-Type' header
             })
             .then(response => response.json())
@@ -51,25 +56,25 @@ let emailEditMode = (x) => {
                 dataHolder.email = response.email;
                 changeResponse(response, `#emailSettings .alert`);
                 emailEdit = false;
+                console.log("email edit now false", emailEdit)
+                // document.querySelector('#emailSettings .action.save').removeEventListener('click', sendForm)
                 emailViewMode();
             });
         }
-    }
+        document.querySelector('#emailSettings .action').classList.add('save');
+        document.querySelector('#emailSettings .action.save').addEventListener('click',sendForm,{once: true});
+    } else console.log("I cant edit while emailedit is false")
 }
 
 let emailViewMode = (x) => {
-    if (!emailEdit) {
-        // console.log('now in view mode')
+    if (emailEdit == false) {
+        console.log('now in view mode')
+        if(document.querySelector('#emailSettings .action.save')) document.querySelector('#emailSettings .action.save').classList.remove('save');
         document.querySelector('#emailSettings .action').innerHTML = "Change";
         document.querySelector('#emailSettings .emailCell').innerHTML = `${dataHolder.email}`; // set value from user DB doc
         // document.querySelector('#emailSettings .emailCell').innerHTML = `${emailValue}`; // set value from local var for testing
         document.querySelector('#textSettings .alert').innerHTML = ``;
-        document.querySelector('#emailSettings .action').addEventListener('click', (e)=>{
-            // console.log('change button clicked. leaving view mode')
-            emailEdit = true;
-            emailEditMode();
-        })
-    }
+    } else console.log("I cant view while emailedit is true")
 }
 
 
