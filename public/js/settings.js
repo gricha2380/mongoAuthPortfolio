@@ -1,8 +1,7 @@
-console.log("current DB values", dataHolder)
-let emailValue, emailEdit = false;
+let emailValue, emailEdit = false; // emailEdit boolean determines if user can access view or edit mode
 
+// display on screen status message from server
 let changeResponse = (response, target) => {
-    // console.log("here is response", response)
     document.querySelector(target).innerHTML = response.message;
     if (response.status == 200) document.querySelector(target).classList.add('good')
 
@@ -12,31 +11,36 @@ let changeResponse = (response, target) => {
     }, 6000);
 }
 
+// flip emailEdit value to protect edit route
 let toggleEdit = ()=>{
-    // console.log('change button clicked. leaving view mode')
     emailEdit = !emailEdit;
-    console.log("emailEdittoggle value", emailEdit)
+    console.log("emailEdit toggle value", emailEdit)
     emailEdit = true ? emailEditMode() : emailViewMode();
-    // document.querySelector('#emailSettings .action').removeEventListener('click', toggleEdit);
+    // document.querySelector('#emailSettings .action').removeEventListener('click', toggleEdit); // not needed with {once}
 }
 
-document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit);
+// document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit, {once: true}); // always listen for action click
 
+// Edit config & request
 let emailEditMode = (x) => {
     if (emailEdit == true) {
         console.log("now in edit mode")
-        document.querySelector('#emailSettings .action').innerHTML = "Save";
-        // document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${emailValue}">`; // set value from local var for testing
+        document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit, {once: true}); // listen for action click
+        
+        // create edit fields
+        document.querySelector('#emailSettings .action').innerHTML = "Save"; // change button text
         document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${dataHolder.email}">`; // set value from DB doc
         document.querySelector('#emailSettings .emailCell input').select();
         
+        // capture field input
         document.querySelector('#emailSettings .emailCell input').addEventListener('change', (e)=>{
             emailValue = document.querySelector('#emailSettings .emailCell input').value;
             console.log("New value typed", emailValue);
         })
         
+        // send input in request
         let sendForm =()=> {
-            // field validation coming eventually
+
             let formData = {
                 "email" : emailValue
             }
@@ -48,7 +52,7 @@ let emailEditMode = (x) => {
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(formData), // must match 'Content-Type' header
+                body: JSON.stringify(formData),
             })
             .then(response => response.json())
             .then(response => {
@@ -62,13 +66,14 @@ let emailEditMode = (x) => {
             });
         }
         document.querySelector('#emailSettings .action').classList.add('save');
-        document.querySelector('#emailSettings .action.save').addEventListener('click',sendForm,{once: true});
+        document.querySelector('#emailSettings .action.save').addEventListener('click',sendForm,{once: true}, false);
     } else console.log("I cant edit while emailedit is false")
 }
 
 let emailViewMode = (x) => {
     if (emailEdit == false) {
         console.log('now in view mode')
+        document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit, {once: true}); // listen for action click
         if(document.querySelector('#emailSettings .action.save')) document.querySelector('#emailSettings .action.save').classList.remove('save');
         document.querySelector('#emailSettings .action').innerHTML = "Change";
         document.querySelector('#emailSettings .emailCell').innerHTML = `${dataHolder.email}`; // set value from user DB doc
