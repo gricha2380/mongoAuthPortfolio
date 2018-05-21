@@ -12,20 +12,21 @@ let changeResponse = (response, target) => {
 }
 
 // flip emailEdit value to protect edit route
-let toggleEdit = ()=>{
+let toggleEmailEdit = ()=>{
     emailEdit = !emailEdit;
     console.log("emailEdit toggle value", emailEdit)
-    emailEdit = true ? emailEditMode() : emailViewMode();
-    // document.querySelector('#emailSettings .action').removeEventListener('click', toggleEdit); // not needed with {once}
+    emailEdit === true ? emailEditMode() : emailViewMode();
+    // document.querySelector('#emailSettings .action').removeEventListener('click', toggleEmailEdit); // not needed with {once}
 }
 
-// document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit, {once: true}); // always listen for action click
+
+// document.querySelector('#emailSettings .action').addEventListener('click', toggleEmailEdit, {once: true}); // always listen for action click
 
 // Edit config & request
 let emailEditMode = (x) => {
     if (emailEdit == true) {
         console.log("now in edit mode")
-        document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit, {once: true}); // listen for action click
+        document.querySelector('#emailSettings .action').addEventListener('click', toggleEmailEdit, {once: true}); // listen for action click
         
         // create edit fields
         document.querySelector('#emailSettings .action').innerHTML = "Save"; // change button text
@@ -73,7 +74,7 @@ let emailEditMode = (x) => {
 let emailViewMode = (x) => {
     if (emailEdit == false) {
         console.log('now in view mode')
-        document.querySelector('#emailSettings .action').addEventListener('click', toggleEdit, {once: true}); // listen for action click
+        document.querySelector('#emailSettings .action').addEventListener('click', toggleEmailEdit, {once: true}); // listen for action click
         if(document.querySelector('#emailSettings .action.save')) document.querySelector('#emailSettings .action.save').classList.remove('save');
         document.querySelector('#emailSettings .action').innerHTML = "Change";
         document.querySelector('#emailSettings .emailCell').innerHTML = `${dataHolder.email}`; // set value from user DB doc
@@ -82,40 +83,92 @@ let emailViewMode = (x) => {
     } else console.log("I cant view while emailedit is true")
 }
 
+let currentPassword,newPassword,newPasswordConfirm, passwordEdit = false;
 
 document.querySelector('#passwordSettings .action').addEventListener('click', (e)=>{
     console.log("clicked password edit")
     passwordEditMode();
 })
 
-let passwordEditMode = (x) => {
-    document.querySelector('#passwordSettings .action').innerHTML = "Save";
-    document.querySelector('#passwordSettings .passwordCell').innerHTML = `<input type="password" value="">`;
-    document.querySelector('#passwordSettings .passwordNewCell').innerHTML = `<input type="password" value="">`;
-    document.querySelector('#passwordSettings .passwordNewLabel').innerHTML = `New`;
-    document.querySelector('#passwordSettings .passwordConfirmCell').innerHTML = `<input type="password" value="">`;
-    document.querySelector('#passwordSettings .passwordConfirmLabel').innerHTML = `Confirm`;
-    document.querySelector('#passwordSettings .alert').innerHTML = `Everything's on fire.`
+let togglePasswordEdit = ()=>{
+    passwordEdit = !passwordEdit;
+    console.log("passwordEdit toggle value", passwordEdit)
+    passwordEdit === true ? passwordEditMode() : passwordViewMode();
+    // document.querySelector('#passwordSettings .action').removeEventListener('click', togglePasswordEdit); // not needed with {once}
+}
 
-    document.querySelector('#passwordSettings .action').addEventListener('click', (e)=>{
-        // validation
-        // send content to update field
-        passwordViewMode();
-    })
+let passwordEditMode = (x) => {
+    
+    if (passwordEdit == true) {
+        console.log("now in edit mode")
+        document.querySelector('#passwordSettings .action').addEventListener('click', togglePasswordEdit, {once: true}); // listen for action click
+        // document.querySelector('#passwordSettings .alert').innerHTML = `Everything's on fire.`
+        
+        // create edit fields
+        document.querySelector('#passwordSettings .action').innerHTML = "Save";
+        document.querySelector('#passwordSettings .passwordCell').innerHTML = `<input type="password" value="">`; // current password
+        document.querySelector('#passwordSettings .passwordNewLabel').innerHTML = `New`;
+        document.querySelector('#passwordSettings .passwordNewCell').innerHTML = `<input type="password" value="">`;
+        document.querySelector('#passwordSettings .passwordConfirmCell').innerHTML = `<input type="password" value="">`;
+        document.querySelector('#passwordSettings .passwordConfirmLabel').innerHTML = `Confirm`;
+        document.querySelector('#passwordSettings .passwordCell input').select();
+        
+        // capture field input
+        document.querySelector('#passwordSettings .passwordCell input').addEventListener('change', (e)=>{
+            currentPassword = document.querySelector('#passwordSettings .passwordCell input').value;
+            // console.log("New value typed", currentPassword);
+        })
+        document.querySelector('#passwordSettings .passwordNewCell input').addEventListener('change', (e)=>{
+            newPassword = document.querySelector('#passwordSettings .passwordNewCell input').value;
+            // console.log("New value typed", newPassword);
+        })
+        
+        // send input in request
+        let sendForm =()=> {
+
+            let formData = {
+                "currentPassword" : currentPassword,
+                "newPassword" : newPassword
+            }
+            
+            console.log("this is formData",formData, JSON.stringify(formData));
+            
+            fetch(`/settings/update/password`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log("direct response",response, response.password)
+                dataHolder.password = response.password;
+                changeResponse(response, `#passwordSettings .alert`);
+                passwordEdit = false;
+                console.log("password edit now false", passwordEdit)
+                // document.querySelector('#passwordSettings .action.save').removeEventListener('click', sendForm)
+                passwordViewMode();
+            });
+        }
+        document.querySelector('#passwordSettings .action').classList.add('save');
+        document.querySelector('#passwordSettings .action.save').addEventListener('click',sendForm,{once: true}, false);
+    } else console.log("I cant edit while passwordedit is false")
 }
 
 let passwordViewMode = (x) => {
-    document.querySelector('#passwordSettings .action').innerHTML = "Change";
-    document.querySelector('#passwordSettings .passwordCell').innerHTML = `********`; //change to real new password length?
-    document.querySelector('#passwordSettings .passwordConfirmLabel').innerHTML = ``;
-    document.querySelector('#passwordSettings .passwordNewLabel').innerHTML = ``;
-    document.querySelector('#passwordSettings .passwordNewCell').innerHTML = ``;
-    document.querySelector('#passwordSettings .passwordConfirmCell').innerHTML = ``;
-    document.querySelector('#passwordSettings .alert').innerHTML = ``;
-
-    document.querySelector('#passwordSettings .action').addEventListener('click', (e)=>{
-        passwordEditMode();
-    })
+    if (passwordEdit == false) {
+        console.log('now in view mode')
+        document.querySelector('#passwordSettings .action').addEventListener('click', togglePasswordEdit, {once: true}); // listen for action click
+        if(document.querySelector('#passwordSettings .action.save')) document.querySelector('#passwordSettings .action.save').classList.remove('save');
+        document.querySelector('#passwordSettings .action').innerHTML = "Change";
+        document.querySelector('#passwordSettings .passwordCell').innerHTML = `**********`;
+        document.querySelector('#passwordSettings .passwordConfirmLabel').innerHTML = ``;
+        document.querySelector('#passwordSettings .passwordNewLabel').innerHTML = ``;
+        document.querySelector('#passwordSettings .passwordNewCell').innerHTML = ``;
+        document.querySelector('#passwordSettings .passwordConfirmCell').innerHTML = ``;
+        document.querySelector('#textSettings .alert').innerHTML = ``;
+    } else console.log("I cant view while passwordedit is true")
 }
 
 
