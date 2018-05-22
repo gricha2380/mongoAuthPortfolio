@@ -4,15 +4,16 @@ const User = require('../models/user');
 const login = require('../middleware/login');
 const bcrypt = require('bcrypt');
 
+// ROOT LEVEL
 router.get('/', login.requiresLogin, (req, res, next) => {
   let data = {
     user: User.info
 }
   data = JSON.stringify(data);
-  // make sure I'm sending the info the page needs
   return res.render('settings', { data, partials : { menuPartial : './partials/nav'} });
 });
 
+// EMAIL ROUTE
 router.patch('/update/email', (req, res, next) => {
     let rb = req.body;
     console.log("inside update email route", rb)
@@ -23,8 +24,6 @@ router.patch('/update/email', (req, res, next) => {
     else {
         console.log("request body is...",rb)
         let statusMessage = "Email Address Saved!";
-        // return res.status(200).send(); // for testing without saving
-
         let item = {
             "email": rb.email
         }
@@ -32,7 +31,6 @@ router.patch('/update/email', (req, res, next) => {
         let options = { new: true }; 
         let query = { _id:User.info._id }; 
         console.log('findNupdate',query, update, options, "old info:",User.info.email)
-        // return res.status(200).send();
         User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
             if (err) throw err;
             console.log(`${item.email} email address updated...`);
@@ -41,6 +39,7 @@ router.patch('/update/email', (req, res, next) => {
     }
 });
 
+// PASSWORD ROUTE
 router.patch('/update/password', (req, res, next) => {
     let rb = req.body;
     console.log("inside update password route", rb)
@@ -94,26 +93,14 @@ router.patch('/update/password', (req, res, next) => {
             } else {
                 console.log("Password does not match!!")
                 let statusMessage = "Password does not match!";
-                return res.status(400).send("Passwords don't match");
+                return res.status(400).send({password:item.password.length,message:statusMessage,status:400});
             } 
             });
     }
 
-    // let checkPassword = (value) => {
-    //     currentPasswordHashed = value;
-    //     if (currentPasswordFromRequestHashed === currentPasswordHashed){
-    //         newPasswordHashed = hashPass(rb.newPassword);
-    //     }
-    //     else {
-    //         console.log("Passwords don't match!",currentPasswordFromRequestHashed,currentPasswordHashed)
-    //         return res.status(400).send("Passwords don't match");
-    //     }
-    // }
-
-
-    
     if (!rb.newPassword || !rb.currentPassword) {
-        return res.status(400).send("No password found");
+        let statusMessage = "No password found!";
+        return res.status(400).send({password:item.password.length,message:statusMessage,status:400});
     }
     // note: check confirm password on client side...
     else {
@@ -127,9 +114,37 @@ router.patch('/update/password', (req, res, next) => {
         })
     
     }
-    // else {
-    //     return res.status(400).send("Password error");
-    // }
+});
+
+
+// TEXT MESSAGE ROUTE
+router.patch('/update/text', (req, res, next) => {
+    let rb = req.body;
+    console.log("inside update text message route", rb)
+    
+    if (!rb.textStatus || !rb.textFrequency || !rb.textPhone || !rb.textCarrier) {
+        let statusMessage = "No text status found!";
+        return res.status(400).send({textStatus:rb.textStatus,message:statusMessage,status:400});
+    } 
+    else {
+        console.log("request body is...",rb)
+        let statusMessage = "text settings saved!";
+        let item = {
+            "textDelivery": rb.textStatus,
+            "textFrequency": rb.textFrequency,
+            "phone": rb.textPhone,
+            "carrier": rb.textCarrier
+        }
+        let update  = item;
+        let options = { new: true }; 
+        let query = { _id:User.info._id }; 
+        console.log('findNupdate',query, update, options, "old info:",User.info.text)
+        User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+            if (err) throw err;
+            console.log(`text status updated...`,item);
+            return res.status(200).send({phone:item.phone,textStatus:item.textDelivery,carrier:item.carrier,message:statusMessage,status:200});
+        });
+    }
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-let emailValue, emailEdit = false; // emailEdit boolean determines if user can access view or edit mode
+console.log("dataHolder",dataHolder);
 
 // display on screen status message from server
 let changeResponse = (response, target) => {
@@ -11,8 +11,11 @@ let changeResponse = (response, target) => {
     }, 6000);
 }
 
+let emailValue, emailEdit = false; // emailEdit boolean determines if user can access view or edit mode
+
 // flip emailEdit value to protect edit route
-let toggleEmailEdit = ()=>{
+let toggleEmailEdit = (e)=>{
+    e.preventDefault();
     emailEdit = !emailEdit;
     console.log("emailEdit toggle value", emailEdit)
     emailEdit === true ? emailEditMode() : emailViewMode();
@@ -85,12 +88,8 @@ let emailViewMode = (x) => {
 
 let currentPassword,newPassword,newPasswordConfirm, passwordEdit = false;
 
-document.querySelector('#passwordSettings .action').addEventListener('click', (e)=>{
-    console.log("clicked password edit")
-    passwordEditMode();
-})
-
-let togglePasswordEdit = ()=>{
+let togglePasswordEdit = (e)=>{
+    e.preventDefault();
     passwordEdit = !passwordEdit;
     console.log("passwordEdit toggle value", passwordEdit)
     passwordEdit === true ? passwordEditMode() : passwordViewMode();
@@ -171,52 +170,137 @@ let passwordViewMode = (x) => {
     } else console.log("I cant view while passwordedit is true")
 }
 
+let textStatus, textFrequency, textPhone, textCarrier, textEdit = false;
 
-document.querySelector('#textSettings .action').addEventListener('click', (e)=>{
-    console.log("clicked text edit")
-    textEditMode();
-})
+let toggleTextEdit = (e)=>{
+    e.preventDefault();
+    textEdit = !textEdit;
+    console.log("textEdit toggle value", textEdit);
+    textEdit === true ? textEditMode() : textViewMode();
+}
+
+
+let textViewMode = (x) => {
+
+    if (textEdit == false) {
+        console.log('now in text view mode')
+        document.querySelector('#textSettings .action').addEventListener('click', toggleTextEdit, {once: true}); // listen for action click
+        if(document.querySelector('#textSettings .action.save')) document.querySelector('#textSettings .action.save').classList.remove('save');
+        
+        document.querySelector('#textSettings .action').innerHTML = "Change";
+        document.querySelector('#textSettings .alert').innerHTML = ``;
+        document.querySelector('#textSettings .action').innerHTML = "Change";
+        
+        dataHolder.textDelivery ? document.querySelector('#textSettings .textStatus').innerHTML = `${"On"}` : document.querySelector('#textSettings .textStatus').innerHTML = `${"Off"}`;
+
+        if (dataHolder.textFrequency == 1) document.querySelector('#textSettings .textFrequency').innerHTML = `${"Daily"}`; 
+        if (dataHolder.textFrequency == 7) document.querySelector('#textSettings .textFrequency').innerHTML = `${"Weekly"}`; 
+
+        document.querySelector('#textSettings .textPhone').innerHTML = `${dataHolder.phone}`;
+        
+        if (dataHolder.carrier == "@txt.att.net") document.querySelector('#textSettings .textCarrier').innerHTML = `AT&T`;
+        if (dataHolder.carrier == "@myboostmobile.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Boost Mobile`;
+        if (dataHolder.carrier == "@sms.mycricket.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Cricket`;
+        if (dataHolder.carrier == "@messaging.sprintpcs.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Sprint`;
+        if (dataHolder.carrier == "@tmomail.net") document.querySelector('#textSettings .textCarrier').innerHTML = `T-Mobile`;
+        if (dataHolder.carrier == "@vmobl.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Virgin Mobile`;
+
+    } else console.log("I cant view while textedit is true")
+
+}
 
 let textEditMode = (x) => {
     document.querySelector('#textSettings .action').innerHTML = "Save";
-    document.querySelector('#textSettings .textStatus').innerHTML = `<select><option>On</option><option>Off</option></select>`; //set value from user DB doc
-    document.querySelector('#textSettings .textFrequency').innerHTML = `<select><option>Daily</option></select>`; //set value from user DB doc
-    document.querySelector('#textSettings .textPhone').innerHTML = `<input type="text" value=${dataHolder.phone}>`; //set value from user DB doc
-    document.querySelector('#textSettings .textCarrier').innerHTML = `<select><option value=${dataHolder.carrier}>Sprint</option></select>`; // get from DB
 
-    document.querySelector('#textSettings .action').addEventListener('click', (e)=>{
-        // validation
-        // send content to update field
-        textViewMode();
-    })
-}
+    if (textEdit == true) {
+        console.log('now in text edit mode')
+        document.querySelector('#textSettings .action').addEventListener('click', toggleTextEdit, {once: true}); // listen for action click
+        if(document.querySelector('#textSettings .action.save')) document.querySelector('#textSettings .action.save').classList.remove('save');
+        document.querySelector('#textSettings .action').innerHTML = "Change";    
+        document.querySelector('#textSettings .textStatus').innerHTML = `<select><option value="true">On</option><option value="false">Off</option></select>`; //set value from user DB doc
+        document.querySelector('#textSettings .textFrequency').innerHTML = `<select><option value="1">Daily</option></select>`; //set value from user DB doc
+        document.querySelector('#textSettings .textPhone').innerHTML = `<input type="text" value=${dataHolder.phone}>`; //set value from user DB doc
+        document.querySelector('#textSettings .textCarrier').innerHTML = `
+        <select id="carrier">
+        <option value=""></option>
+        <option value="@txt.att.net">AT&T</option>
+        <option value="@myboostmobile.com">Boost Mobile</option>
+        <option value="@sms.mycricket.com">Cricket</option>
+        <option value="@messaging.sprintpcs.com">Sprint</option>
+        <option value="@tmomail.net">T-Mobile</option>
+        <option value="@vmobl.com">Virgin Mobile</option>
+        </select>
+        `; 
+        document.querySelector('#textSettings .alert').innerHTML = ``;
 
-let textViewMode = (x) => {
-    document.querySelector('#textSettings .action').innerHTML = "Change";
+        // set carrrier menu value
+        document.querySelector('#textSettings .textCarrier select').value = dataHolder.carrier;
+        document.querySelector('#textSettings .textStatus select').value = dataHolder.textDelivery;
+        console.log("dataholder phone is",dataHolder.carrier);
+
+
+        textStatus = document.querySelector('#textSettings .textStatus select').value;
+        textFrequency = document.querySelector('#textSettings .textFrequency select').value;
+        textPhone = document.querySelector('#textSettings .textPhone input').value;
+        textCarrier = document.querySelector('#textSettings .textCarrier select').value;
+
+        // capture field input
+        document.querySelector('#textSettings .textStatus select').addEventListener('change', (e)=>{
+            textStatus = document.querySelector('#textSettings .textStatus select').value;
+        })
+        
+        document.querySelector('#textSettings .textFrequency select').addEventListener('change', (e)=>{
+            textFrequency = document.querySelector('#textSettings .textFrequency select').value;
+        })
+        
+        document.querySelector('#textSettings .textPhone input').addEventListener('change', (e)=>{
+            textPhone = document.querySelector('#textSettings .textPhone input').value;
+        })
+        
+        document.querySelector('#textSettings .textCarrier select').addEventListener('change', (e)=>{
+            textCarrier = document.querySelector('#textSettings .textCarrier select').value;
+        })
+        
+        // send input in request
+        let sendForm =()=> {
+
+            let formData = {
+                "textStatus": textStatus,
+                "textFrequency" : textFrequency,
+                "textPhone" : textPhone,
+                "textCarrier" : textCarrier
+            }
+            
+            console.log("this is formData",formData, JSON.stringify(formData));
+            
+            fetch(`/settings/update/text`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log("direct response",response)
+                dataHolder.textDelivery = response.textStatus;
+                dataHolder.carrier = response.carrier;
+                dataHolder.phone = response.phone;
+                changeResponse(response, `#textSettings .alert`);
+                textEdit = false;
+                console.log("text edit now false", textEdit)
+                
+                textViewMode();
+            });
+        }
+        document.querySelector('#textSettings .action').classList.add('save');
+        document.querySelector('#textSettings .action.save').addEventListener('click',sendForm,{once: true}, false);
+    } else console.log("I cant edit while textedit is true")
     
-    dataHolder.textDelivery ? document.querySelector('#textSettings .textStatus').innerHTML = `${"On"}` : document.querySelector('#textSettings .textStatus').innerHTML = `${"Off"}`;
-
-    if (dataHolder.textFrequency == 1) document.querySelector('#textSettings .textFrequency').innerHTML = `${"Daily"}`; 
-    if (dataHolder.textFrequency == 7) document.querySelector('#textSettings .textFrequency').innerHTML = `${"Weekly"}`; 
-
-    document.querySelector('#textSettings .textPhone').innerHTML = `${dataHolder.phone}`;
-    
-    if (dataHolder.carrier == "@txt.att.net") document.querySelector('#textSettings .textCarrier').innerHTML = `AT&T`;
-    if (dataHolder.carrier == "@myboostmobile.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Boost Mobile`;
-    if (dataHolder.carrier == "@sms.mycricket.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Cricket`;
-    if (dataHolder.carrier == "@messaging.sprintpcs.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Sprint`;
-    if (dataHolder.carrier == "@tmomail.net") document.querySelector('#textSettings .textCarrier').innerHTML = `T-Mobile`;
-    if (dataHolder.carrier == "@vmobl.com") document.querySelector('#textSettings .textCarrier').innerHTML = `Virgin Mobile`;
-
-    document.querySelector('#textSettings .alert').innerHTML = ``;
-
-    document.querySelector('#textSettings .action').addEventListener('click', (e)=>{
-        textEditMode();
-    })
 }
-
 
 document.querySelector('#emailDeliverySettings .action').addEventListener('click', (e)=>{
+    e.preventDefault();
     console.log("clicked emailDelivery edit")
     emailDeliveryEditMode();
 })
