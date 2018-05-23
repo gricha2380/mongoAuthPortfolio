@@ -147,4 +147,32 @@ router.patch('/update/text', (req, res, next) => {
     }
 });
 
+// EMAIL DELIVERY ROUTE
+router.patch('/update/emailDelivery', (req, res, next) => {
+    let rb = req.body;
+    console.log("inside update text message route", rb)
+    
+    if (!rb.emailDelivery || !rb.emailFrequency) {
+        let statusMessage = "No email delivery settings found!";
+        return res.status(400).send({textStatus:rb.textStatus,message:statusMessage,status:400});
+    } 
+    else {
+        console.log("request body is...",rb)
+        let statusMessage = "email delivery settings saved!";
+        let item = {
+            "emailDelivery": rb.emailDelivery,
+            "emailFrequency": rb.emailFrequency
+        }
+        let update  = item;
+        let options = { new: true }; 
+        let query = { _id:User.info._id }; 
+        console.log('findNupdate',query, update, options, "old info:",User.info.emailDelivery)
+        User.findOneAndUpdate(query, update, options, (err, asset)=>{ 
+            if (err) throw err;
+            console.log(`text status updated...`,item);
+            return res.status(200).send({emailDelivery:item.emailDelivery,emailFrequency:item.emailFrequency,message:statusMessage,status:200});
+        });
+    }
+});
+
 module.exports = router;

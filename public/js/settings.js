@@ -36,6 +36,9 @@ let emailEditMode = (x) => {
         document.querySelector('#emailSettings .emailCell').innerHTML = `<input type="email" value="${dataHolder.email}">`; // set value from DB doc
         document.querySelector('#emailSettings .emailCell input').select();
         
+        // initalize fields
+        emailValue = document.querySelector('#emailSettings .emailCell input').value;
+        
         // capture field input
         document.querySelector('#emailSettings .emailCell input').addEventListener('change', (e)=>{
             emailValue = document.querySelector('#emailSettings .emailCell input').value;
@@ -82,7 +85,7 @@ let emailViewMode = (x) => {
         document.querySelector('#emailSettings .action').innerHTML = "Change";
         document.querySelector('#emailSettings .emailCell').innerHTML = `${dataHolder.email}`; // set value from user DB doc
         // document.querySelector('#emailSettings .emailCell').innerHTML = `${emailValue}`; // set value from local var for testing
-        document.querySelector('#textSettings .alert').innerHTML = ``;
+        document.querySelector('#emailSettings .alert').innerHTML = ``;
     } else console.log("I cant view while emailedit is true")
 }
 
@@ -299,47 +302,104 @@ let textEditMode = (x) => {
     
 }
 
-document.querySelector('#emailDeliverySettings .action').addEventListener('click', (e)=>{
+
+let emailDeliveryValue, emailFrequency, emailDeliveryEdit = false;
+
+let toggleEmailDeliveryEdit = (e)=>{
     e.preventDefault();
-    console.log("clicked emailDelivery edit")
-    emailDeliveryEditMode();
-})
+    emailDeliveryEdit = !emailDeliveryEdit;
+    console.log("emailDeliveryEdit toggle value", emailDeliveryEdit)
+    emailDeliveryEdit === true ? emailDeliveryEditMode() : emailDeliveryViewMode();
+}
 
 let emailDeliveryEditMode = (x) => {
-    document.querySelector('#emailDeliverySettings .action').innerHTML = "Save";
-    document.querySelector('#emailDeliverySettings .emailDeliveryStatus').innerHTML = `<select><option>On</option><option>Off</option></select>`; //set value from user DB doc ... conditional if existing setting is true then set on to selected. else set off to selected
-    document.querySelector('#emailDeliverySettings .emailDeliveryFrequency').innerHTML = `<select><option>Daily</option></select>`; //set value from user DB doc
-    
-    document.querySelector('#emailDeliverySettings .action').addEventListener('click', (e)=>{
-        // validation
-        // send content to update field
-        emailDeliveryViewMode();
-    })
+
+    if (emailDeliveryEdit == true) {
+        console.log("now in edit mode")
+        document.querySelector('#emailDeliverySettings .action').addEventListener('click', toggleEmailDeliveryEdit, {once: true}); // listen for action click
+        
+        // create edit fields
+        document.querySelector('#emailDeliverySettings .emailDeliveryStatus').innerHTML = `<select><option value="true">On</option><option value="false">Off</option></select>`;
+        document.querySelector('#emailDeliverySettings .emailDeliveryFrequency').innerHTML = `<select><option value="1">Daily</option></select>`;
+        document.querySelector('#emailDeliverySettings .action').innerHTML = "Save";
+
+        // set emailDelivery menu values
+        document.querySelector('#emailDeliverySettings .emailDeliveryStatus select').value = dataHolder.emailDelivery;
+        document.querySelector('#emailDeliverySettings .emailDeliveryFrequency select').value = dataHolder.emailFrequency;
+        
+        // initalize fields
+        emailDeliveryValue = document.querySelector('#emailDeliverySettings .emailDeliveryStatus select').value;
+        emailFrequency = document.querySelector('#emailDeliverySettings .emailDeliveryFrequency select').value;
+        
+        // capture field input
+        document.querySelector('#emailDeliverySettings .emailDeliveryStatus select').addEventListener('change', (e)=>{
+            emailDeliveryValue = document.querySelector('#emailDeliverySettings .emailDeliveryStatus select').value;
+            console.log("New value typed", emailDeliveryValue);
+        })
+        
+        document.querySelector('#emailDeliverySettings .emailDeliveryFrequency select').addEventListener('change', (e)=>{
+            emailFrequency = document.querySelector('#emailDeliverySettings .emailDeliveryFrequency select').value;
+            console.log("New value typed", emailFrequency);
+        })
+        
+        // send input in request
+        let sendForm =()=> {
+
+            let formData = {
+                "emailDelivery" : emailDeliveryValue,
+                "emailFrequency": emailFrequency
+            }
+            
+            console.log("this is formData",formData, JSON.stringify(formData));
+            
+            fetch(`/settings/update/emailDelivery`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log("direct response",response, response.email)
+                dataHolder.emailDelivery = response.emailDelivery;
+                dataHolder.emailFrequency = response.emailFrequency;
+                changeResponse(response, `#emailDeliverySettings .alert`);
+                emailEdit = false;
+                console.log("email edit now false", emailEdit)
+                // document.querySelector('#emailDeliverySettings .action.save').removeEventListener('click', sendForm)
+                emailViewMode();
+            });
+        }
+        document.querySelector('#emailDeliverySettings .action').classList.add('save');
+        document.querySelector('#emailDeliverySettings .action.save').addEventListener('click',sendForm,{once: true}, false);
+    } else console.log("I cant edit while emailDeliveryEdit is false")
 }
 
 let emailDeliveryViewMode = (x) => {
-    document.querySelector('#emailDeliverySettings .action').innerHTML = "Change";
-    
-    dataHolder.emailDelivery ? document.querySelector('#emailDeliverySettings .emailDeliveryStatus').innerHTML = `${"On"}` : document.querySelector('#emailDeliverySettings .emailDeliveryStatus').innerHTML = `${"Off"}`
-
+    if (emailDeliveryEdit == false) {
+        console.log('now in view mode')
+        document.querySelector('#emailDeliverySettings .action').addEventListener('click', toggleEmailDeliveryEdit, {once: true});
+        if(document.querySelector('#emailDeliverySettings .action.save')) document.querySelector('#emailDeliverySettings .action.save').classList.remove('save');
+        document.querySelector('#emailDeliverySettings .action').innerHTML = "Change";
+        
+        dataHolder.emailDelivery ? document.querySelector('#emailDeliverySettings .emailDeliveryStatus').innerHTML = `${"On"}` : document.querySelector('#emailDeliverySettings .emailDeliveryStatus').innerHTML = `${"Off"}`
     if (dataHolder.emailFrequency == 1) document.querySelector('#emailDeliverySettings .emailDeliveryFrequency').innerHTML = `${"Daily"}`;
     if (dataHolder.emailFrequency == 7) document.querySelector('#emailDeliverySettings .emailDeliveryFrequency').innerHTML = `${"Weekly"}`;
-    document.querySelector('#emailDeliverySettings .alert').innerHTML = ``;
-
-    document.querySelector('#emailDeliverySettings .action').addEventListener('click', (e)=>{
-        emailDeliveryEditMode();
-    })
+        document.querySelector('#emailDeliverySettings .alert').innerHTML = ``;
+    } else console.log("I cant view while emailedit is true")
 }
 
 
 document.querySelector('#deleteAccountSettings .action').addEventListener('click', (e)=>{
+    e.preventDefault();
     console.log("clicked deleteAccount edit")
     deleteAccountEditMode();
 })
 
 let deleteAccountEditMode = (x) => {
     document.querySelector('#deleteAccountSettings .action').innerHTML = "Save";
-    document.querySelector('#deleteAccountSettings .deleteAccountStatus').innerHTML = `<select><option>Active</option><option>Disabled</option></select>`; //set value from user DB doc
+    document.querySelector('#deleteAccountSettings .deleteAccountStatus').innerHTML = `<select><option>Active</option><option>Disabled</option></select>`; 
     document.querySelector('#deleteAccountSettings .alert').innerHTML = `Warning: Disabled accounts cannot be reactivated`;
     
     document.querySelector('#deleteAccountSettings .action').addEventListener('click', (e)=>{
