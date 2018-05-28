@@ -44,7 +44,7 @@ router.get('/', login.requiresLogin, (req, res, next) => {
                 promises.push(superagent.get(stockAPI.start+data.assets.assets[a].symbol+stockAPI.end).then((res) => {    
                     data.assets.assets[a].price = res.body.delayedPrice;
                     res.body.low ? data.assets.assets[a].todayPercent = res.body.delayedPrice / res.body.low : data.assets.assets[a].todayPercent = 0;
-                    res.body.low ? data.assets.assets[a].todayGain = res.body.delayedPrice - res.body.low : data.assets.assets[a].todayGain = 0;
+                    res.body.low ? data.assets.assets[a].todayGain = (res.body.delayedPrice - res.body.low) * data.assets.assets[a].quantity : data.assets.assets[a].todayGain = 0;
                     data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
                     data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
                     data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;
@@ -60,7 +60,7 @@ router.get('/', login.requiresLogin, (req, res, next) => {
                 promises.push(superagent.get(coinAPI+data.assets.assets[a].name).then((res) => {    
                     data.assets.assets[a].price = res.body[0].price_usd;
                     data.assets.assets[a].todayPercent = parseInt(res.body[0].percent_change_24h) * .01;
-                    data.assets.assets[a].todayGain =  data.assets.assets[a].todayPercent * parseInt(res.body[0].price_usd);
+                    data.assets.assets[a].todayGain =  (data.assets.assets[a].todayPercent * parseInt(res.body[0].price_usd)) * data.assets.assets[a].quantity;
                     data.totalValue.portfolioValue += (data.assets.assets[a].quantity * data.assets.assets[a].price);
                     data.totalValue.portfolioGrowth += (data.assets.assets[a].price / data.assets.assets[a].purchasePrice) - 1;
                     data.totalValue.portfolioGains += (data.assets.assets[a].price - data.assets.assets[a].purchasePrice) * data.assets.assets[a].quantity;

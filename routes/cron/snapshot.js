@@ -40,7 +40,7 @@ router.get('/', (req, res, next) => {
                 p.assets.forEach((asset,index) => {
                     if (asset.type=='stock') {
                         console.log('its a stock!',data.assets[index].name)
-                        promises.push(superagent.get(stockAPI.start+data.assets[index].symbol+stockAPI.end).then((res) => {  
+                        superagent.get(stockAPI.start+data.assets[index].symbol+stockAPI.end).then((res) => {  
                             data.totalValue.stockCount++;  
                             data.assets[index].price = res.body.delayedPrice;
                             data.totalValue.portfolioValue += (data.assets[index].quantity * data.assets[index].price);
@@ -50,11 +50,11 @@ router.get('/', (req, res, next) => {
                             data.totalValue.stockGrowth += (data.assets[index].price / data.assets[index].purchasePrice) - 1;
                             data.totalValue.stockGains += (data.assets[index].price - data.assets[index].purchasePrice) * data.assets[index].quantity;
                             // console.log("what I know...",data.assets[index])
-                        }).catch(console.error))
+                        }).catch(console.error)
                     }
                     if (asset.type=='crypto') {
                         console.log('its a crypto!', data.assets[index].name)
-                        promises.push(superagent.get(coinAPI+data.assets[index].name).then((res) => {
+                        superagent.get(coinAPI+data.assets[index].name).then((res) => {
                             data.totalValue.cryptoCount++;  
                             data.assets[index].price = res.body[0].price_usd;
                             data.totalValue.portfolioValue += (data.assets[index].quantity * data.assets[index].price);
@@ -64,7 +64,7 @@ router.get('/', (req, res, next) => {
                             data.totalValue.cryptoGrowth += (data.assets[index].price / data.assets[index].purchasePrice) - 1;
                             data.totalValue.cryptoGains += (data.assets[index].price - data.assets[index].purchasePrice) * data.assets[index].quantity;
                             // console.log("what I know...",data.assets[index])
-                        }).catch(console.error))
+                        }).catch(console.error)
                     }
                 })
                 Promise.all(promises).then((results) => {
