@@ -41,7 +41,8 @@ router.get('/', (req, res, next) => {
                     if (asset.type=='stock') {
                         console.log('its a stock!',data.assets[index].name)
                         let lookup = stockAPI.start+data.assets[index].symbol+stockAPI.end;
-                        superagent.get(lookup).then((res) => {  
+                        superagent.get(lookup).end((err,res) => {  
+                            if (err) {return console.log(err)}
                             data.totalValue.stockCount++;  
                             data.assets[index].price = res.body.delayedPrice;
                             data.totalValue.portfolioValue += (data.assets[index].quantity * data.assets[index].price);
@@ -56,7 +57,8 @@ router.get('/', (req, res, next) => {
                     if (asset.type=='crypto') {
                         console.log('its a crypto!', data.assets[index].name)
                         let lookup = coinAPI+data.assets[index].name;
-                        superagent.get(lookup).then((res) => {
+                        superagent.get(lookup).end((err,res) => {
+                            if (err) {return console.log(err)}
                             data.totalValue.cryptoCount++;  
                             data.assets[index].price = res.body[0].price_usd;
                             data.totalValue.portfolioValue += (data.assets[index].quantity * data.assets[index].price);
