@@ -27,7 +27,7 @@ router.get('/', (req, res, next) => {
         assets:[]
     }
 
-    User.find({}, 'assets', (err, portfolio) => {
+    User.find({"email":"gregor.richardson@gmail.com"}, 'assets', (err, portfolio) => {
         if(err){
           console.log(err);
         } else{          
