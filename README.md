@@ -13,6 +13,8 @@ Financial portfolio tracking system, built for personal use and for practice wit
 *Ensure that `__API_URL__` is set to localhost inside `/public/js/app.js`*  
 *Also setup all necessary environment variables. See list below.*
 
+Remote branch: heroku git:remote -a portfolioapp2380
+
 Basic setup: `npm install`  
 Start server: `nodemon`  
 Run db: `mongod`  

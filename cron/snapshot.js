@@ -11,4 +11,6 @@ let url = "https://portfolioapp2380.herokuapp.com"
 // module.exports.updateHistorical = updateHistorical;
 
 const https = require('https');
-https.get(`${url}/cron/historical`);
+https.get(`${url}/cron/historical`).on('error', (e) => {
+  console.error(e);
+});;
